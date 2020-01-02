@@ -1,9 +1,11 @@
 <body onload="init()">
 <?php
-    if(isset($_POST['action'])){
+    if(isset($_GET['action'])){
         session_start();
         session_unset();
         session_destroy();
+        header("Location: ./index.php");
+        exit();
     }
 ?>
     <header>
@@ -29,13 +31,25 @@
                                 </button>
                             </li>
                             <li class="nav-item">
-                                <input type="submit" class="btn btn-danger" id="logout-btn" name="logout" value="Çıkış yap" />
+                                <button class="btn btn-info p-0">
+                                    <a href="show.php" class="btn text-white">Görüntüle</a>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-success p-0">
+                                    <a href="edit.php" class="btn text-white">Grafik</a>
+                                </button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-danger p-0">
+                                    <a href="header.php?action=logout" class="btn text-white">Çıkış yap</a>
+                                </button>
                             </li>';
                         }
                         else{
                             echo '<li class="nav-item">
                                 <button class="btn p-0">
-                                    <a href="index.php" class="btn btn-success">Giriş yap</a>
+                                    <a href="index.php" class="btn btn-dark">Giriş yap</a>
                                 </button>
                             </li>';
                         }
