@@ -1,7 +1,7 @@
 <?php
 // CSS and JS files path
-$cssDir = "../CSS";
-$jsDir = "../JS";
+$cssDir = "./CSS";
+$jsDir = "./JS";
 
 // Individual stylesheets
 $styles = [
@@ -19,7 +19,9 @@ $scripts = [
 $titles = [
     'index.php' => 'Giriş yap',
     'write.php' => 'Günlük yaz',
-    'graph.php' => 'Grafik',
+    'edit.php' => 'Günlük Güncelleme',
+    'show.php' => 'Günlük Görüntüleme',
+    'graph.php' => 'Günlük Grafileri',
 ];
 // Get PHP file name
 $this_page = basename($_SERVER['PHP_SELF']);
