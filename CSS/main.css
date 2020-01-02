@@ -1,0 +1,308 @@
+/* --- HTML tags --- */
+/*Body sizes, font decorations, background image*/
+body {
+  margin: 0;
+  font-size: 1.5rem;
+  font-family: Helvetica, sans-serif;
+  background: rgba(200, 200, 200, 0.3);
+  min-width: 100%;
+  min-height: 100%;
+}
+
+/*Header background image and sizes*/
+header {
+  background: #ff7b00;
+  margin: 0;
+}
+
+/*Footer colors and size*/
+footer {
+  background: #ff7b00;
+  color: rgb(54, 40, 0);
+  text-align: center;
+  padding: 0.5%;
+  clear: both;
+  width: 100%;
+}
+
+/*Link decoration: no underline*/
+a {
+  text-decoration: none;
+  color: rgb(100, 100, 255);
+}
+
+/*Hide meta tags*/
+meta {
+  display: none;
+}
+/* --- HTML tags --- */
+
+/* --- Inputs --- */
+/*Input font decoration and sizes*/
+
+input:invalid {
+  background-color: #ffcccc;
+}
+
+input[type="number"]:valid,
+input[type="text"]:valid {
+  border-color: #006900;
+}
+
+input:required {
+  border-color: red;
+  border-width: 1px;
+}
+/* --- Inputs --- */
+
+/* --- Select-option --- */
+/*Select decorated like input tags*/
+.custom-select {
+  width: 12vw;
+  font-size: 1.2vw;
+}
+
+select {
+  font-family: "FontAwesome", "Helvetica";
+}
+
+/*On hover: change text color to black*/
+select:hover {
+  color: #000000;
+}
+
+#opt10 {
+  color: #00ff77;
+}
+
+#opt9 {
+  color: #00ff00;
+}
+
+#opt8 {
+  color: #33ff00;
+}
+
+#opt7 {
+  color: #77ff00;
+}
+
+#opt6 {
+  color: #bbff00;
+}
+
+#opt5 {
+  color: #ffff00;
+}
+
+#opt4 {
+  color: #ffbb00;
+}
+
+#opt3 {
+  color: #ff7700;
+}
+
+#opt2 {
+  color: #ff3300;
+}
+
+#opt1 {
+  color: #ff0000;
+}
+
+#opt0 {
+  color: #ff0077;
+}
+/* --- Select-option --- */
+
+/* --- Main  --- */
+/*Main tag: centered and width adjustment*/
+.main {
+  text-align: center;
+  width: 70%;
+  margin: 0 auto;
+  background: #ffffff;
+}
+/* --- Main  --- */
+
+/* --- Name --- */
+/*Site name centered*/
+#websiteName {
+  text-decoration: none;
+  color: #ffffff;
+  text-shadow: 3px 3px rgb(54, 40, 0);
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/*Site name links to index color change*/
+#websiteName:hover {
+  color: #ff7b00;
+  text-shadow: 0 0 3px #000000;
+}
+/* --- Name  --- */
+
+/* --- Error and success styles  --- */
+.error,
+.notFound {
+  font-size: 0.8em;
+  color: red;
+  margin: 1em;
+  text-align: center;
+}
+
+.success {
+  font-size: 0.8em;
+  color: green;
+  margin: 1em;
+}
+
+.notFound {
+  font-size: 2em;
+  color: #ffffff;
+  text-shadow: 0 0 5px rgb(5, 155, 5);
+  background: rgb(54, 40, 0);
+  margin: 1em;
+}
+/* --- Error and success styles  --- */
+
+/* --- Dark Theme  --- */
+/*Dark Theme Body*/
+.dark-body {
+  background: #333333;
+}
+
+/*Dark Theme Main*/
+.dark-main {
+  background: #444444;
+  color: #ffffff;
+}
+
+/*Dark Theme Inputs*/
+.dark-input,
+.dark-textarea,
+.dark-select {
+  background-color: #555555;
+  color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #333333;
+    min-width: 100%;
+  }
+
+  main {
+    background: #444444 !important;
+    color: #ffffff;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  select,
+  textarea {
+    background-color: #555555 !important;
+    color: #ffffff !important;
+  }
+
+  #dark-theme-selection {
+    display: none;
+  }
+}
+/* --- Dark Theme  --- */
+
+/* ----- SCREEN SIZE BASED OPERATIONS  ----- */
+
+/* Mobile Devices */
+@media only screen and (max-width: 575px) {
+  body {
+    font-size: 1rem;
+    background: #ffffff;
+    max-width: 100% !important;
+  }
+
+  .main {
+    /*Use all screen space width*/
+    width: 100%;
+  }
+
+  /*Site name font size adjustment*/
+  #websiteName a {
+    font-size: 1.5em;
+  }
+
+  /*Input and select tags font and box sizes*/
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="file"],
+  input[type="search"],
+  select {
+    width: 20rem !important;
+    height: 2rem !important;
+    font-size: 1.2rem !important;
+  }
+
+  /*Checkbox and radio sizes*/
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 5rem !important;
+    height: auto !important;
+    font-size: 1.2rem !important;
+  }
+}
+
+/* Tablets */
+@media only screen and (min-width: 576px) and (max-width: 991px) {
+  body {
+    font-size: 1rem;
+    background: #ffffff;
+  }
+
+  .main {
+    /*Use all screen space width*/
+    width: 100%;
+  }
+
+  /*Input and select tags font and box sizes*/
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="file"],
+  input[type="search"],
+  select {
+    width: 20rem !important;
+    height: 2rem !important;
+    font-size: 1.2rem !important;
+  }
+
+  /*Checkbox and radio sizes*/
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 10rem !important;
+    height: auto !important;
+    font-size: 1.5rem !important;
+  }
+}
+
+/* Lower Res Desktop - HD*/
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  body {
+    font-size: 1.5rem;
+  }
+
+  .main {
+    /*Little bit background image*/
+    width: 90%;
+  }
+}
+
+/* High Res Desktop - FullHD+*/
+@media only screen and (min-width: 1200px) {
+}
