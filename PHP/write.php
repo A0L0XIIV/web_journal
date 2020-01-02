@@ -9,26 +9,31 @@
 <?php 
   // define variables and set to empty values
   $work_happiness = $daily_happiness = $total_happiness = $content = "";
-  $error = "";
+  $error = false;
 
   // Check request method for post
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Security operations on text
+    // Get name from session
     $name = $_SESSION['name'];
+    // Security operations on text
     $content = test_input($_POST["content"]);
+    // Encoding change
+    $content = mb_convert_encoding($content, "UTF-16");
+    // Get happiness values
     $work_happiness = $_POST["work_happiness"];
     $daily_happiness = $_POST["daily_happiness"];
     $total_happiness = $_POST["total_happiness"];
+    // Set timezone as GMT and get current date
     date_default_timezone_set('GMT');
     $date = date('Y-m-d H:i:s');
     // Database connection
-    require "../mysqli_connect.php";
-    // Save user into DB
+    require "./mysqli_connect.php";
+    // Save journal into DB
     $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
             VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
-        $error = "Database error!";
+        $error = true;
     }
     else{
         // Bind inputs to query parameters
@@ -137,16 +142,16 @@
         <div>
           <input
             type="submit"
-            value="Submit"
-            name="login-submit"
+            value="Gönder"
+            name="write-submit"
             class="btn btn-primary"
             aria-pressed="false"
           />
         </div>
 
         <!--Error-->
-        <div>
-            <p id="dbError" class="error"><?php echo $error;?></p>
+        <div <?php if(!$error) echo 'style="display: none;"';?>>
+            <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi.";}?></p>
         </div>
 
         <br>
