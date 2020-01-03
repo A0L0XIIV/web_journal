@@ -1,8 +1,4 @@
 <?php 
-    require "head.php";
-?>
-
-<?php 
     require "header.php";
 ?>
 
@@ -67,8 +63,8 @@
                 $error = true;
             }
             else{
-                // Preparing the park name for LIKE query 
-                $param = '%'.$date.'%';
+                // Preparing the date for LIKE query - only back % because it starts with year 
+                $param = $date.'%';
                 // Bind inputs to query parameters
                 mysqli_stmt_bind_param($stmt, "iiisss", $work_happiness, $daily_happiness, 
                                         $total_happiness, $content, $name, $param);
@@ -245,8 +241,8 @@
                         id="content" 
                         cols="30" 
                         rows="10" 
-                        maxlength="500" 
-                        placeholder="max 500 harf"
+                        maxlength="1000" 
+                        placeholder="max 1000 harf"
                     >'.(!empty($content) ? $content : "").'</textarea>
                     <input type="text" name="date" value="'.$date.'" hidden/>
             ';}
