@@ -18,6 +18,7 @@ $scripts = [
 // Individual page titles
 $titles = [
     'index.php' => 'Giriş yap',
+    'password.php' => 'Şifre değiştir',
     'write.php' => 'Günlük yaz',
     'edit.php' => 'Günlük Güncelleme',
     'show.php' => 'Günlük Görüntüleme',
