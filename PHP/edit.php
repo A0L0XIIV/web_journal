@@ -13,6 +13,7 @@
     $error = false;
     $success = false;
     $isDatePicked = false;
+    $errorText = "";
     // Get name from session
     $name = $_SESSION['name'];
   
@@ -72,8 +73,41 @@
                 mysqli_stmt_bind_param($stmt, "iiisss", $work_happiness, $daily_happiness, 
                                         $total_happiness, $content, $name, $param);
                 // Execute sql statement
-                mysqli_stmt_execute($stmt);
-                $success = true;
+                if(mysqli_stmt_execute($stmt))
+                    $success = true;
+                else{
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+            }
+        }
+    }
+    // Check request method for get
+    else if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        // Date picker form
+        if(isset($_GET['date'])){
+            $date = test_input($_GET["date"]);
+            if(!empty($date)){
+                $isDatePicked = true;
+
+                // Check DB for picked date
+                $sql = "SELECT work_happiness, daily_happiness, total_happiness, content 
+                        FROM gunluk WHERE name=? AND date LIKE ?";
+                $stmt = mysqli_stmt_init($conn);
+                if(!mysqli_stmt_prepare($stmt, $sql)){
+                    $error = true;
+                }
+                else{
+                    // Preparing the park name for LIKE query 
+                    $param = '%'.$date.'%';
+                    // Bind inputs to query parameters
+                    mysqli_stmt_bind_param($stmt, "ss", $name, $param);
+                    // Execute sql statement
+                    mysqli_stmt_execute($stmt);
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt, $work_happiness, $daily_happiness, $total_happiness, $content);
+                    // Results fetched below...
+                }
             }
         }
     }
@@ -92,6 +126,11 @@
     <!--Success-->
     <div <?php if(!$success) echo 'style="display: none;"';?>>
         <p id="updateSuccess" class="success"><?php if($success) {echo "Günlük başarılı bir şekilde güncellendi.";}?></p>
+    </div>
+
+    <!--Error-->
+    <div <?php if(!$error) echo 'style="display: none;"';?>>
+        <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
     </div>
 
     <form
@@ -117,10 +156,6 @@
           />
         </div>
 
-        <!--Error-->
-        <div>
-            <p id="dateError" class="error"><?php if($error) {echo "Hata meydana geldi.";}?></p>
-        </div>
         <br>
     </form> 
 
@@ -241,11 +276,6 @@
             class="btn btn-primary"
             aria-pressed="false"
           />
-        </div>
-
-        <!--Error-->
-        <div <?php if(!$error) echo 'style="display: none;"';?>>
-            <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi.";}?></p>
         </div>
 
         <br>
