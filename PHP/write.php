@@ -23,6 +23,11 @@
         $error = true;
     }
     else{
+        // Get name from session
+        $name = $_SESSION['name'];
+        // Set timezone as GMT and get current date
+        date_default_timezone_set('GMT');
+        $date = date('Y-m-d');
         // Preparing the park name for LIKE query 
         $param = $date.'%';
         // Bind inputs to query parameters
@@ -43,8 +48,6 @@
             }
             // Not found any same day entry - Add it into DB
             else{
-                // Get name from session
-                $name = $_SESSION['name'];
                 // Security operations on text
                 $content = test_input($_POST["content"]);
                 // Encoding change
@@ -56,8 +59,6 @@
                 // Set timezone as GMT and get current date
                 date_default_timezone_set('GMT');
                 $date = date('Y-m-d H:i:s');
-                // Database connection
-                require "./mysqli_connect.php";
                 // Save journal into DB
                 $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
                         VALUES (?, ?, ?, ?, ?, ?)";

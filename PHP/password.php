@@ -62,6 +62,15 @@
         action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
         method="post"
       >
+    
+        <h1>
+          Şifreni buradan değiştirebilirsin
+          <?php
+            if(isset($_SESSION['name'])){
+                echo ' '.$_SESSION['name'];
+            }
+          ?>
+        </h1>
 
         <!--Input for user password, type=password-->
         <div class="input-group mb-3">
