@@ -1,8 +1,4 @@
 <?php 
-    require "head.php";
-?>
-
-<?php 
     require "header.php";
 ?>
 
@@ -148,7 +144,7 @@
                         <div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
                             <div class="col-xs-6 col-sm-2 px-0">
                                 <button class="btn btn-primary btn-sm p-0">
-                                    <a href="edit.php?date='.$journal_date.'" class="btn text-white">Güncelle</a>
+                                    <a href="edit.php?date='.explode(" ",$journal_date)[0].'" class="btn text-white">Güncelle</a>
                                 </button>
                             </div>
                             <div class="col-xs-6 col-sm-3 px-0">
@@ -156,17 +152,122 @@
                                 <p>'.$journal_date.'</p>
                             </div>
                             <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orangeText">İş/Okul:</p>
-                                <p>'.$work_happiness.'</p>
-                            </div>
+                                <p class="orangeText">İş/Okul:</p>';
+                                switch($work_happiness){
+                                    case 10:
+                                        echo '<p>Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        echo '<p>Şahane</p>';
+                                        break;
+                                    case 8:
+                                        echo '<p>Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        echo '<p>Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        echo '<p>Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        echo '<p>Normal</p>';
+                                        break;
+                                    case 4:
+                                        echo '<p>Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        echo '<p>Kötü</p>';
+                                        break;
+                                    case 2:
+                                        echo '<p>Berbat</p>';
+                                        break;
+                                    case 1:
+                                        echo '<p>Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                        echo '<p>Yorum Yok</p>';
+                                        break;
+                                }
+                            echo
+                            '</div>
                             <div class="col-xs-4 col-sm-3 px-0">
-                                <p class="orangeText">İş/Okul dışı:</p>
-                                <p>'.$daily_happiness.'</p>
-                            </div>
+                                <p class="orangeText">İş/Okul dışı:</p>';
+                                switch($daily_happiness){
+                                    case 10:
+                                        echo '<p>Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        echo '<p>Şahane</p>';
+                                        break;
+                                    case 8:
+                                        echo '<p>Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        echo '<p>Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        echo '<p>Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        echo '<p>Normal</p>';
+                                        break;
+                                    case 4:
+                                        echo '<p>Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        echo '<p>Kötü</p>';
+                                        break;
+                                    case 2:
+                                        echo '<p>Berbat</p>';
+                                        break;
+                                    case 1:
+                                        echo '<p>Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                        echo '<p>Yorum Yok</p>';
+                                        break;
+                                }
+                            echo
+                            '</div>
                             <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orangeText">Genel:</p>
-                                <p>'.$total_happiness.'</p>
-                            </div>
+                                <p class="orangeText">Genel:</p>';
+                                switch($total_happiness){
+                                    case 10:
+                                        echo '<p>Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        echo '<p>Şahane</p>';
+                                        break;
+                                    case 8:
+                                        echo '<p>Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        echo '<p>Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        echo '<p>Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        echo '<p>Normal</p>';
+                                        break;
+                                    case 4:
+                                        echo '<p>Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        echo '<p>Kötü</p>';
+                                        break;
+                                    case 2:
+                                        echo '<p>Berbat</p>';
+                                        break;
+                                    case 1:
+                                        echo '<p>Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                        echo '<p>Yorum Yok</p>';
+                                        break;
+                                }
+                            echo
+                            '</div>
                         </div>
                         <hr>
                         <div class="text-center">
