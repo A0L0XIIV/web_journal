@@ -10,6 +10,8 @@
   // define variables and set to empty values
   $work_happiness = $daily_happiness = $total_happiness = $content = "";
   $error = false;
+  $success = false;
+  $errorText = "";
 
   // Check request method for post
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,7 +20,7 @@
     // Security operations on text
     $content = test_input($_POST["content"]);
     // Encoding change
-    $content = mb_convert_encoding($content, "UTF-16");
+    $content = mb_convert_encoding($content, "UTF-8");
     // Get happiness values
     $work_happiness = $_POST["work_happiness"];
     $daily_happiness = $_POST["daily_happiness"];
@@ -40,7 +42,12 @@
         mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
                                 $total_happiness, $content, $date);
         // Execute sql statement
-        mysqli_stmt_execute($stmt);
+        if(mysqli_stmt_execute($stmt))
+            $success = true;
+        else{
+            $error = true;
+            $errorText = mysqli_error($conn);
+        }
     }
   }
 
@@ -54,6 +61,16 @@
 
 <!-- Main center div-->
 <main class="main">
+
+    <!--Success-->
+    <div <?php if(!$success) echo 'style="display: none;"';?>>
+        <p id="updateSuccess" class="success"><?php if($success) {echo "Günlük başarılı bir şekilde eklendi.";}?></p>
+    </div>
+
+    <!--Error-->
+    <div <?php if(!$error) echo 'style="display: none;"';?>>
+        <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
+    </div>
 
     <form
         name="write-form"
@@ -132,8 +149,8 @@
             id="content" 
             cols="30" 
             rows="10" 
-            maxlength="500" 
-            placeholder="max 500 harf"
+            maxlength="1000" 
+            placeholder="max 1000 harf"
         ></textarea>
 
         <hr>
@@ -147,11 +164,6 @@
             class="btn btn-primary"
             aria-pressed="false"
           />
-        </div>
-
-        <!--Error-->
-        <div <?php if(!$error) echo 'style="display: none;"';?>>
-            <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi.";}?></p>
         </div>
 
         <br>
