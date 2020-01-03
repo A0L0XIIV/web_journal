@@ -157,14 +157,21 @@ select:hover {
   font-size: 0.8em;
   color: green;
   margin: 1em;
+  text-align: center;
 }
 
 .notFound {
   font-size: 2em;
   color: #ffffff;
-  text-shadow: 0 0 5px rgb(5, 155, 5);
-  background: rgb(54, 40, 0);
+  text-shadow: 0 0 5px #000000;
+  background: #ff7b00;
   margin: 1em;
+  text-align: center;
+}
+
+.orangeText {
+  color: #ff7b00;
+  font-weight: bold;
 }
 /* --- Error and success styles  --- */
 
@@ -199,8 +206,7 @@ select:hover {
     color: #ffffff;
   }
 
-  input[type="text"],
-  input[type="password"],
+  input,
   select,
   textarea {
     background-color: #555555 !important;
