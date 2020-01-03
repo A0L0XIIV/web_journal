@@ -1,8 +1,4 @@
 <?php 
-    require "head.php";
-?>
-
-<?php 
     require "header.php";
 ?>
 
@@ -12,41 +8,76 @@
   $error = false;
   $success = false;
   $errorText = "";
+  $id = 0;
 
   // Check request method for post
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get name from session
-    $name = $_SESSION['name'];
-    // Security operations on text
-    $content = test_input($_POST["content"]);
-    // Encoding change
-    $content = mb_convert_encoding($content, "UTF-8");
-    // Get happiness values
-    $work_happiness = $_POST["work_happiness"];
-    $daily_happiness = $_POST["daily_happiness"];
-    $total_happiness = $_POST["total_happiness"];
-    // Set timezone as GMT and get current date
-    date_default_timezone_set('GMT');
-    $date = date('Y-m-d H:i:s');
+
     // Database connection
     require "./mysqli_connect.php";
-    // Save journal into DB
-    $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+
+    // Check DB for same date entry
+    $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)){
         $error = true;
     }
     else{
+        // Preparing the park name for LIKE query 
+        $param = $date.'%';
         // Bind inputs to query parameters
-        mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
-                                $total_happiness, $content, $date);
+        mysqli_stmt_bind_param($stmt, "ss", $name, $param);
         // Execute sql statement
-        if(mysqli_stmt_execute($stmt))
-            $success = true;
-        else{
+        if(!mysqli_stmt_execute($stmt)){
             $error = true;
             $errorText = mysqli_error($conn);
+        }
+        // Bind result variables
+        mysqli_stmt_bind_result($stmt, $id);
+        // Results fetched
+        if(mysqli_stmt_store_result($stmt)){
+            // Check if DB returned any result - Same day entry check
+            if(mysqli_stmt_num_rows($stmt) > 0){
+                $error = true;
+                $errorText = "Günde sadece 1 tane günlük eklenebilir.";
+            }
+            // Not found any same day entry - Add it into DB
+            else{
+                // Get name from session
+                $name = $_SESSION['name'];
+                // Security operations on text
+                $content = test_input($_POST["content"]);
+                // Encoding change
+                $content = mb_convert_encoding($content, "UTF-8");
+                // Get happiness values
+                $work_happiness = $_POST["work_happiness"];
+                $daily_happiness = $_POST["daily_happiness"];
+                $total_happiness = $_POST["total_happiness"];
+                // Set timezone as GMT and get current date
+                date_default_timezone_set('GMT');
+                $date = date('Y-m-d H:i:s');
+                // Database connection
+                require "./mysqli_connect.php";
+                // Save journal into DB
+                $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
+                        VALUES (?, ?, ?, ?, ?, ?)";
+                $stmt = mysqli_stmt_init($conn);
+                if(!mysqli_stmt_prepare($stmt, $sql)){
+                    $error = true;
+                }
+                else{
+                    // Bind inputs to query parameters
+                    mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
+                                            $total_happiness, $content, $date);
+                    // Execute sql statement
+                    if(mysqli_stmt_execute($stmt))
+                        $success = true;
+                    else{
+                        $error = true;
+                        $errorText = mysqli_error($conn);
+                    }
+                }
+            }
         }
     }
   }
