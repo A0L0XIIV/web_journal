@@ -1,3 +1,7 @@
+<?php 
+    require "head.php";
+?>
+
 <body onload="init()">
 <?php
     if(isset($_GET['action'])){
@@ -38,6 +42,11 @@
                             <li class="nav-item mx-auto">
                                 <button class="btn btn-success p-0">
                                     <a href="graph.php" class="btn text-white">Grafik</a>
+                                </button>
+                            </li>
+                            <li class="nav-item mx-auto">
+                                <button class="btn btn-secondary p-0">
+                                    <a href="password.php" class="btn text-white">Şifre</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto">
