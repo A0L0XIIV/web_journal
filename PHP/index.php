@@ -1,7 +1,4 @@
 <?php 
-    require "head.php";
-?>
-<?php 
     require "header.php";
 ?>
 
@@ -45,18 +42,45 @@
   }
 
   function basic_auth($name, $password){
-    if(
-      $name === "X" || 
-      $name === "Y" ||
-      $name === "Z" ||
-      $name === "T"){
-        if($password === "PW")
-          return true;
-        else
-          return false;
-    } 
-    else
-      return false;
+    // Database connection
+    require "./mysqli_connect.php";
+    // Save journal into DB
+    $sql = "SELECT password FROM user WHERE name=?";
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)){
+        $error = true;
+    }
+    else{
+        // Bind inputs to query parameters
+        mysqli_stmt_bind_param($stmt, "s", $name);
+        // Execute sql statement
+        if(mysqli_stmt_execute($stmt))
+          // Bind result variables
+          mysqli_stmt_bind_result($stmt, $dbPassword);
+          // Store results
+          if(mysqli_stmt_store_result($stmt)){
+            // Check DB if user exist 
+            if(mysqli_stmt_num_rows($stmt) > 0){
+                // User exist
+                while (mysqli_stmt_fetch($stmt)) {
+                    // Password control
+                    $passwordCheck = password_verify($password, $dbPassword);
+                    // Wrong password --> Auth error
+                    if($passwordCheck == false){
+                      return false;
+                    }
+                    // Correct password --> redirect to index page
+                    else{
+                      return true;
+                    }
+                }
+            }
+        }
+        else{
+            return false;
+            $errorText = mysqli_error($conn);
+        }
+    }
   }
 ?>
 
