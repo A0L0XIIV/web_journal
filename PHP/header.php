@@ -20,34 +20,34 @@
                 <ul class="navbar-nav mr-auto">     
                     <?php
                         if(isset($_SESSION['name'])){
-                            echo '<li class="nav-item active">
+                            echo '<li class="nav-item mx-auto active">
                                 <button class="btn btn-primary p-0">
                                     <a href="write.php" class="btn text-white">Yeni Yaz</a>
                                 </button>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-auto">
                                 <button class="btn btn-warning p-0">
                                     <a href="edit.php" class="btn text-white">Güncelle</a>
                                 </button>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-auto">
                                 <button class="btn btn-info p-0">
                                     <a href="show.php" class="btn text-white">Görüntüle</a>
                                 </button>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-auto">
                                 <button class="btn btn-success p-0">
-                                    <a href="edit.php" class="btn text-white">Grafik</a>
+                                    <a href="graph.php" class="btn text-white">Grafik</a>
                                 </button>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mx-auto">
                                 <button class="btn btn-danger p-0">
                                     <a href="header.php?action=logout" class="btn text-white">Çıkış yap</a>
                                 </button>
                             </li>';
                         }
                         else{
-                            echo '<li class="nav-item">
+                            echo '<li class="nav-item mx-auto">
                                 <button class="btn p-0">
                                     <a href="index.php" class="btn btn-dark">Giriş yap</a>
                                 </button>
