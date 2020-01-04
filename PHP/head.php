@@ -28,17 +28,17 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <!-- IPhone adding to home screen -->
-    <link rel="apple-touch-icon" href="../Images/Logos/LogoSmall.png" />
-    <link rel="apple-touch-startup-image" href="../Images/Logos/Logo.png" />
+    <link rel="apple-touch-icon" href="/gunluk/apple-touch-icon.png" />
+    <link rel="apple-touch-startup-image" href="/gunluk/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="viewport" content="width = device-width, initial-scale = 1, minimum-scale = 1, maximum-scale = 1" />
     <!-- Favicon for homescreens -->
-    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-    <link rel="manifest" href="../site.webmanifest">
-    <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#2fa22b">
+    <link rel="apple-touch-icon" sizes="180x180" href="/gunluk/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/gunluk/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/gunluk/favicon-16x16.png">
+    <link rel="manifest" href="/gunluk/site.webmanifest">
+    <link rel="mask-icon" href="/gunluk/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 </head>
