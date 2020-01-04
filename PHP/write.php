@@ -57,8 +57,9 @@
                 $daily_happiness = $_POST["daily_happiness"];
                 $total_happiness = $_POST["total_happiness"];
                 // Set timezone as GMT and get current date
-                date_default_timezone_set('GMT');
-                $date = date('Y-m-d H:i:s');
+                //date_default_timezone_set('GMT');
+                //$date = date('Y-m-d H:i:s'); --> Server time but changed date to client's time
+                $date = $_POST["date"];
                 // Save journal into DB
                 $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
                         VALUES (?, ?, ?, ?, ?, ?)";
@@ -109,6 +110,7 @@
         id="write-form"
         action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
         method="post"
+        onsubmit="return getDate()"
       >
     
         <h1>Günlüğe hoşgeldin
@@ -186,6 +188,9 @@
         ></textarea>
 
         <hr>
+
+        <!--Input for submitting the form, type=submit-->
+        <input type="text" value="" name="date" id="date-input" hidden />
 
         <!--Input for submitting the form, type=submit-->
         <div>
