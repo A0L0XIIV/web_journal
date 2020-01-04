@@ -89,21 +89,21 @@
         <!--Input for date, type=date-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Gün</span>
+                <span class="input-group-text" id="day-label">Gün</span>
             </div>
             <input type="date" name="show-date">
         </div>
         <!--Input for month, type=month-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Ay</span>
+                <span class="input-group-text" id="month-label">Ay</span>
             </div>
             <input type="month" name="show-month">
         </div>
         <!--Input for year, type=text-->
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Yıl</span>
+                <span class="input-group-text" id="year-label">Yıl</span>
             </div>
             <input type="number" name="show-year" min="1000" max="9999" title="Sadece 4 rakam">
         </div>

@@ -126,7 +126,7 @@
 
     <!--Error-->
     <div <?php if(!$error) echo 'style="display: none;"';?>>
-        <p id="dbError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
+        <p id="editError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
     </div>
 
     <form
@@ -184,17 +184,17 @@
                     <p>İşte/okulda</p>
                     <select name="work_happiness" class="custom-select">
                         <option value="" hidden selected>günün nasıl geçti?</option>
-                        <option value="10" id="opt10"'.($work_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                        <option value="9" id="opt9"'.($work_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                        <option value="8" id="opt8"'.($work_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                        <option value="7" id="opt7"'.($work_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                        <option value="6" id="opt6"'.($work_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
-                        <option value="5" id="opt5"'.($work_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                        <option value="4" id="opt4"'.($work_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                        <option value="3" id="opt3"'.($work_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                        <option value="2" id="opt2"'.($work_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                        <option value="1" id="opt1"'.($work_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                        <option value="0" id="opt0"'.($work_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                        <option value="10" class="opt10"'.($work_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
+                        <option value="9" class="opt9"'.($work_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
+                        <option value="8" class="opt8"'.($work_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
+                        <option value="7" class="opt7"'.($work_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
+                        <option value="6" class="opt6"'.($work_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                        <option value="5" class="opt5"'.($work_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
+                        <option value="4" class="opt4"'.($work_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
+                        <option value="3" class="opt3"'.($work_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
+                        <option value="2" class="opt2"'.($work_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
+                        <option value="1" class="opt1"'.($work_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
+                        <option value="0" class="opt0"'.($work_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
                     </select>
 
                     <hr>
@@ -202,17 +202,17 @@
                     <p>İş/okul dışında</p>
                     <select name="daily_happiness" class="custom-select">
                         <option value="" hidden selected>günün nasıl geçti?</option>
-                        <option value="10" id="opt10"'.($daily_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                        <option value="9" id="opt9"'.($daily_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                        <option value="8" id="opt8"'.($daily_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                        <option value="7" id="opt7"'.($daily_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                        <option value="6" id="opt6"'.($daily_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
-                        <option value="5" id="opt5"'.($daily_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                        <option value="4" id="opt4"'.($daily_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                        <option value="3" id="opt3"'.($daily_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                        <option value="2" id="opt2"'.($daily_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                        <option value="1" id="opt1"'.($daily_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                        <option value="0" id="opt0"'.($daily_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                        <option value="10" class="opt10"'.($daily_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
+                        <option value="9" class="opt9"'.($daily_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
+                        <option value="8" class="opt8"'.($daily_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
+                        <option value="7" class="opt7"'.($daily_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
+                        <option value="6" class="opt6"'.($daily_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                        <option value="5" class="opt5"'.($daily_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
+                        <option value="4" class="opt4"'.($daily_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
+                        <option value="3" class="opt3"'.($daily_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
+                        <option value="2" class="opt2"'.($daily_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
+                        <option value="1" class="opt1"'.($daily_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
+                        <option value="0" class="opt0"'.($daily_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
                     </select>
 
                     <hr>
@@ -220,17 +220,17 @@
                     <p>Genelde</p>
                     <select name="total_happiness" class="custom-select">
                         <option value="" hidden selected>günün nasıl geçti?</option>
-                        <option value="10" id="opt10"'.($total_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                        <option value="9" id="opt9"'.($total_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                        <option value="8" id="opt8"'.($total_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                        <option value="7" id="opt7"'.($total_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                        <option value="6" id="opt6"'.($total_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
-                        <option value="5" id="opt5"'.($total_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                        <option value="4" id="opt4"'.($total_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                        <option value="3" id="opt3"'.($total_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                        <option value="2" id="opt2"'.($total_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                        <option value="1" id="opt1"'.($total_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                        <option value="0" id="opt0"'.($total_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                        <option value="10" class="opt10"'.($total_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
+                        <option value="9" class="opt9"'.($total_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
+                        <option value="8" class="opt8"'.($total_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
+                        <option value="7" class="opt7"'.($total_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
+                        <option value="6" class="opt6"'.($total_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                        <option value="5" class="opt5"'.($total_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
+                        <option value="4" class="opt4"'.($total_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
+                        <option value="3" class="opt3"'.($total_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
+                        <option value="2" class="opt2"'.($total_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
+                        <option value="1" class="opt1"'.($total_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
+                        <option value="0" class="opt0"'.($total_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
                     </select>
 
                     <hr>

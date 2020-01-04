@@ -71,47 +71,47 @@ select:hover {
   color: #000000;
 }
 
-#opt10 {
+.opt10 {
   color: #00ff77;
 }
 
-#opt9 {
+.opt9 {
   color: #00ff00;
 }
 
-#opt8 {
+.opt8 {
   color: #33ff00;
 }
 
-#opt7 {
+.opt7 {
   color: #77ff00;
 }
 
-#opt6 {
+.opt6 {
   color: #bbff00;
 }
 
-#opt5 {
+.opt5 {
   color: #ffff00;
 }
 
-#opt4 {
+.opt4 {
   color: #ffbb00;
 }
 
-#opt3 {
+.opt3 {
   color: #ff7700;
 }
 
-#opt2 {
+.opt2 {
   color: #ff3300;
 }
 
-#opt1 {
+.opt1 {
   color: #ff0000;
 }
 
-#opt0 {
+.opt0 {
   color: #ff0077;
 }
 /* --- Select-option --- */

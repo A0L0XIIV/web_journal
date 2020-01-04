@@ -75,7 +75,7 @@
         <!--Input for user password, type=password-->
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">Şifre</span>
+            <span class="input-group-text" id="pw-label">Şifre</span>
           </div>
           <input
             type="password"
