@@ -5,15 +5,9 @@ $jsDir = "./JS";
 
 // Individual stylesheets
 $styles = [
-    'index.php' => 'index.css',
-    'write.php' => 'write.css',
-    'graph.php' => 'graph.css'
 ];
 // Individual script files
 $scripts = [
-    'index.php' => 'index.js',
-    'write.php' => 'write.js',
-    'graph.php' => 'graph.js'
 ];
 // Individual page titles
 $titles = [

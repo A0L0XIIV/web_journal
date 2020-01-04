@@ -66,7 +66,7 @@
                     <li class="nav-item">
                         <!-- Dark theme switch -->
                         <div class="custom-control custom-switch float-right" id="dark-theme-selection">
-                            <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="switchDarkTheme()">
+                            <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="switchDarkTheme(true)">
                             <label class="custom-control-label" for="customSwitches">Karanlık</label>
                         </div>
                     </li>
