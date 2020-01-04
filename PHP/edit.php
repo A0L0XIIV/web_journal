@@ -49,7 +49,7 @@
             // Security operations on text
             $content = test_input($_POST["content"]);
             // Encoding change
-            $content = mb_convert_encoding($content, "UTF-16");
+            $content = mb_convert_encoding($content, "UTF-8");
             // Get happiness values
             $work_happiness = $_POST["work_happiness"];
             $daily_happiness = $_POST["daily_happiness"];
