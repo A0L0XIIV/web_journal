@@ -11,6 +11,9 @@
     $isDatePicked = false;
     // Get name from session
     $name = $_SESSION['name'];
+    // Check if name is empty or not and redirect
+    if($name == "" || $name == NULL)      
+        echo("<script>location.href = './index.php';</script>"); 
   
     // Database connection
     require "./mysqli_connect.php";
@@ -21,8 +24,7 @@
             $date = test_input($_POST["show-date"]);
         }
         else if(!empty($_POST["show-month"])){
-            //$date = test_input($_POST["show-month"]);
-            $date = $_POST["show-month"];
+            $date = test_input($_POST["show-month"]);
         }
         else if(!empty($_POST["show-year"])){
             $date = test_input($_POST["show-year"]);

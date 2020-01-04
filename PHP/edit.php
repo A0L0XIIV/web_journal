@@ -12,6 +12,9 @@
     $errorText = "";
     // Get name from session
     $name = $_SESSION['name'];
+    // Check if name is empty or not and redirect
+    if($name == "" || $name == NULL)      
+        echo("<script>location.href = './index.php';</script>"); 
   
     // Database connection
     require "./mysqli_connect.php";

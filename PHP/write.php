@@ -25,6 +25,9 @@
     else{
         // Get name from session
         $name = $_SESSION['name'];
+        // Check if name is empty or not and redirect
+        if($name == "" || $name == NULL)      
+            echo("<script>location.href = './index.php';</script>"); 
         // Set timezone as GMT and get current date
         date_default_timezone_set('GMT');
         $date = date('Y-m-d');

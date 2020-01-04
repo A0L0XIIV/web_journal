@@ -13,6 +13,9 @@
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Security operations
     $name = $_SESSION['name'];
+    // Check if name is empty or not and redirect
+    if($name == "" || $name == NULL)      
+        echo("<script>location.href = './index.php';</script>"); 
     $password = test_input($_POST["password"]);
 
     // Empty check
