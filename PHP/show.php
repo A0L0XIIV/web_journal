@@ -38,7 +38,7 @@
             $isDatePicked = true;
             // Check DB for picked date
             $sql = "SELECT work_happiness, daily_happiness, total_happiness, content, date 
-                    FROM gunluk WHERE name=? AND date LIKE ?";
+                    FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC";
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
