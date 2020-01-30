@@ -8,6 +8,7 @@ $styles = [
 ];
 // Individual script files
 $scripts = [
+    'graph.php' => 'graph.js',
 ];
 // Individual page titles
 $titles = [
