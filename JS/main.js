@@ -84,12 +84,28 @@ function getCookie(cname) {
 
 function getDate() {
   var currentdate = new Date();
+  var day = currentdate.getDate();
+
+  //2 AM check, ask user for saving journal for yesterday or today
+  if (currentdate.getHours() <= 2) {
+    if (
+      confirm(
+        "Saat 12 ile 2 arasında olduğu için bu günlüğü dün tarihli kaydetmek ister misin?"
+      )
+    ) {
+      day--;
+      alert("Gün " + day + " olarak kaydedildi.");
+    } else {
+      alert("Gün " + day + " olarak kaydedildi.");
+    }
+  }
+
   var datetime =
     currentdate.getFullYear() +
     "-" +
     (currentdate.getMonth() + 1) +
     "-" +
-    currentdate.getDate() +
+    day +
     " " +
     currentdate.getHours() +
     ":" +
