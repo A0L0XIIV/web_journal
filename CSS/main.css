@@ -53,6 +53,10 @@ input:required {
   border-color: red;
   border-width: 1px;
 }
+
+textarea {
+  text-align: justify;
+}
 /* --- Inputs --- */
 
 /* --- Select-option --- */
