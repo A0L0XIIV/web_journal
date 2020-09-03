@@ -26,8 +26,8 @@
         // Get name from session
         $name = $_SESSION['name'];
         // Check if name is empty or not and redirect
-        if($name == "" || $name == NULL)      
-            echo("<script>location.href = './index.php';</script>"); 
+        //if($name == "" || $name == NULL)      
+            //echo("<script>location.href = './index.php';</script>"); 
         // Set timezone as GMT and get current date
         date_default_timezone_set('GMT');
         $date = date('Y-m-d');
@@ -189,6 +189,57 @@
             maxlength="1000" 
             placeholder="max 1000 harf"
         ></textarea>
+
+        <hr>
+
+        <div class="daily-game">
+            <input type="button"
+                    class="btn btn-success"
+                    id="add-game-btn"
+                    onclick="sectionDisplay('game');"
+                    value="Oyun Ekle"/>
+            
+            <div id="add-game" style="display:none;">
+                <div class="row">
+                    <div class="col-6">
+                        <select name="game-select"
+                                id="game-select" 
+                                class="custom-select" 
+                                onchange="addNewGameToDB(this)">
+                            <option value="0" hidden selected>Hangi oyunu oynadın?</option>
+                            <option value="" class="optNew">YENI OYUN</option>
+                            <option value="ID" class="opt10">NAME</option>
+                            <option value="123" class="opt10">GAME1</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <input 
+                            type="number" 
+                            name="game-duration" 
+                            placeholder="Süre (Saat)"
+                            id="game-duration"
+                            min="0"
+                            max="24"
+                            step="0.5"
+                            minlength="0"
+                            maxlength="2">
+                    </div>
+                    <button type="button"
+                            class="btn btn-success"
+                            onclick="addToTheList('game')">
+                            Ekle
+                    </button>
+                    <span id="game-add-error" 
+                            class="error" 
+                            style="display:none;">
+                            Oyun secimi yanlis, lutfen duzgun bir sey sec.
+                    </span>
+                </div>
+
+                <ul id="game-list">
+                </ul>
+            </div>
+        </div>
 
         <hr>
 

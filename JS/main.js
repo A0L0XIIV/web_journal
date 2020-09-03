@@ -116,3 +116,75 @@ function getDate() {
   $("#date-input").val(datetime);
   return true;
 }
+
+/*Game, movie, book section functions*/
+
+// Initial button to display content
+function sectionDisplay(type) {
+  var btnId = "add-" + type + "-btn";
+  var divId = "add-" + type;
+  // Show new content
+  $("#" + divId).css({ display: "inline-block" });
+  // Remove the button from display
+  $("#" + btnId).css({ display: "none" });
+}
+
+function addNewGameToDB(selectElement) {
+  //$("select[name=games]").change(function () {
+  //if ($(this).val() == "") {
+  if (selectElement.value === "") {
+    var newThing = prompt("Enter a name for the new thing:");
+    var newValue = $("option", this).length;
+    $("<option>")
+      .text(newThing)
+      .attr("value", newValue)
+      .insertBefore($("option[value=]", this));
+    $(this).val(newValue);
+  }
+  //});
+}
+
+function addToTheList(type) {
+  // type can be game, movie, series or book
+  var ul = $("#" + type + "-list");
+  // Get value from the select
+  var selectedItemValue = $("#" + type + "-select")
+    .find("option:selected")
+    .attr("value");
+  // If option's value is empty or 0, do not add to list
+  if (selectedItemValue == 0 || selectedItemValue == null) {
+    $("#" + type + "-add-error").css({ display: "inline-block" });
+  } else {
+    // Check for duplication
+    if (ul.find("li#" + selectedItemValue)) {
+      console.log("BULDUM ");
+    } else {
+      // If error is visible, hide it
+      $("#" + type + "-add-error").css({ display: "none" });
+      // Get selected option's text
+      var selectedItemName = $("#" + type + "-select")
+        .find("option:selected")
+        .text();
+      // Create a new li element
+      var li = $("<li></li>");
+      var elementId = type + "-" + selectedItemValue;
+      li.attr("id", elementId); // Set ID
+      li.text(selectedItemName); // Set text
+      li.attr("class", type + "-element"); // Set its class
+      // Create remove button for li element
+      var removeBtn = $("<button></button>");
+      removeBtn.text("X"); // Set text
+      removeBtn.attr("type", "button"); // Set type
+      removeBtn.attr("class", "btn btn-danger"); // Set class
+      removeBtn.attr("onclick", "removeFromTheList('" + elementId + "')"); // Set function
+      // Append button to li element
+      li.append(removeBtn);
+      // Append li element to list
+      ul.append(li);
+    }
+  }
+}
+
+function removeFromTheList(liId) {
+  $("li").remove("#" + liId);
+}

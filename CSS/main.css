@@ -35,6 +35,11 @@ a {
 meta {
   display: none;
 }
+
+/*Hide UL bullets*/
+ul {
+  list-style-type: none;
+}
 /* --- HTML tags --- */
 
 /* --- Inputs --- */
@@ -52,10 +57,6 @@ input[type="text"]:valid {
 input:required {
   border-color: red;
   border-width: 1px;
-}
-
-textarea {
-  text-align: justify;
 }
 /* --- Inputs --- */
 
