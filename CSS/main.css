@@ -206,7 +206,8 @@ select:hover {
     min-width: 100%;
   }
 
-  main {
+  main,
+  .modal-content {
     background: #444444 !important;
     color: #ffffff;
   }
