@@ -26,6 +26,8 @@ function switchDarkTheme(isUserChangeTheme) {
   $("textarea").toggleClass("dark-textarea");
   /* Swicht select theme*/
   $("select").toggleClass("dark-select");
+  /* Swicht modal theme*/
+  $(".modal-content").toggleClass("dark-main");
 
   if (isUserChangeTheme) {
     // Change isDarkTheme in cookie.
@@ -124,22 +126,27 @@ function sectionDisplay(type) {
   var btnId = "add-" + type + "-btn";
   var divId = "add-" + type;
   // Show new content
-  $("#" + divId).css({ display: "inline-block" });
+  $("#" + divId).css({ display: "inline" });
   // Remove the button from display
   $("#" + btnId).css({ display: "none" });
 }
 
-function addNewGameToDB(selectElement) {
+function addNewEntertainmentToDB(type) {
+  // Get name value from the select
+  var selectedItemValue = $("#" + type + "-select")
+    .find("option:selected")
+    .attr("value");
   //$("select[name=games]").change(function () {
   //if ($(this).val() == "") {
-  if (selectElement.value === "") {
-    var newThing = prompt("Enter a name for the new thing:");
+  if (selectedItemValue === "") {
+    $("#add-" + type + "-modal").modal();
+    /*var newThing = prompt("Enter a name for the new thing:");
     var newValue = $("option", this).length;
     $("<option>")
       .text(newThing)
       .attr("value", newValue)
       .insertBefore($("option[value=]", this));
-    $(this).val(newValue);
+    $(this).val(newValue);*/
   }
   //});
 }
@@ -147,38 +154,86 @@ function addNewGameToDB(selectElement) {
 function addToTheList(type) {
   // type can be game, movie, series or book
   var ul = $("#" + type + "-list");
-  // Get value from the select
+
+  // Get name value from the select
   var selectedItemValue = $("#" + type + "-select")
     .find("option:selected")
     .attr("value");
-  // If option's value is empty or 0, do not add to list
-  if (selectedItemValue == 0 || selectedItemValue == null) {
+
+  // Get duration value
+  var duration;
+  if (type === "series") {
+    // Series have episodes
+    duration =
+      "S" +
+      $("#series-season-begin").val() +
+      "E" +
+      $("#series-episode-begin").val() +
+      "-S" +
+      $("#series-season-end").val() +
+      "E" +
+      $("#series-episode-end").val();
+  } else {
+    // Game, movie and books have duration (hour)
+    duration = $("#" + type + "-duration").val() + "S";
+  }
+
+  // If option's or duration's value is empty or 0, do not add to list
+  if (
+    selectedItemValue == 0 ||
+    selectedItemValue == null ||
+    duration == "0S" ||
+    duration == "S" ||
+    duration == "SE-SE"
+  ) {
     $("#" + type + "-add-error").css({ display: "inline-block" });
   } else {
-    // Check for duplication
-    if (ul.find("li#" + selectedItemValue)) {
-      console.log("BULDUM ");
+    // If add error is visible, hide it
+    $("#" + type + "-add-error").css({ display: "none" });
+
+    // Check for duplication in ul for li --> #game-list #game-ID
+    if ($("#" + type + "-list li#" + type + "-" + selectedItemValue).length) {
+      $("#" + type + "-exist-error").css({ display: "inline-block" });
     } else {
-      // If error is visible, hide it
-      $("#" + type + "-add-error").css({ display: "none" });
+      // If exist error is visible, hide it
+      $("#" + type + "-exist-error").css({ display: "none" });
+
       // Get selected option's text
       var selectedItemName = $("#" + type + "-select")
         .find("option:selected")
         .text();
+
       // Create a new li element
       var li = $("<li></li>");
       var elementId = type + "-" + selectedItemValue;
       li.attr("id", elementId); // Set ID
-      li.text(selectedItemName); // Set text
-      li.attr("class", type + "-element"); // Set its class
+      li.text(selectedItemName + " | " + duration); // Set text
+      // Set classes - Every type has different color
+      if (type === "game") {
+        li.attr("class", type + "-element card bg-info mt-2");
+      } else if (type === "series") {
+        li.attr("class", type + "-element card bg-primary mt-2");
+      } else if (type === "movie") {
+        li.attr("class", type + "-element card bg-secondary mt-2");
+      } else if (type === "book") {
+        li.attr("class", type + "-element card bg-warning mt-2");
+      } else {
+        li.attr("class", type + "-element card bg-danger mt-2");
+      }
+
       // Create remove button for li element
-      var removeBtn = $("<button></button>");
-      removeBtn.text("X"); // Set text
+      var removeBtn = $(
+        "<button>" +
+          '<i class="fa fa-trash" aria-hidden="true"></i>' +
+          "</button>"
+      );
       removeBtn.attr("type", "button"); // Set type
       removeBtn.attr("class", "btn btn-danger"); // Set class
       removeBtn.attr("onclick", "removeFromTheList('" + elementId + "')"); // Set function
+
       // Append button to li element
       li.append(removeBtn);
+
       // Append li element to list
       ul.append(li);
     }
@@ -186,5 +241,6 @@ function addToTheList(type) {
 }
 
 function removeFromTheList(liId) {
+  // Remove element from the list
   $("li").remove("#" + liId);
 }
