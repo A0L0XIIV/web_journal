@@ -10,11 +10,11 @@
   $errorText = "";
   $id = 0;
 
-  // Check request method for post
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Database connection
+  require "./mysqli_connect.php";
 
-    // Database connection
-    require "./mysqli_connect.php";
+  // Check request method for post
+  if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Add new game into Oyun Table
     if(isset($_POST['add-new-game-name'])){}
@@ -29,8 +29,8 @@
         // Get name from session
         $name = $_SESSION['name'];
         // Check if name is empty or not and redirect
-        //if($name == "" || $name == NULL)      
-            //echo("<script>location.href = './index.php';</script>"); 
+        if($name == "" || $name == NULL)      
+            echo("<script>location.href = './index.php';</script>"); 
         // Set timezone as GMT and get current date
         date_default_timezone_set('GMT');
         $date = date('Y-m-d');
@@ -87,6 +87,32 @@
                 }
             }
         }
+    }
+  }
+
+  // Check request method for get
+  else if (isset($_GET['ajax'])
+            && $_SERVER["REQUEST_METHOD"] === "GET" 
+            && isset($_GET['type'])) {
+    echo '<p class="error">GET METHODDDD</p>';
+    // Get entertainment type
+    $type = $_GET['type'];
+    if($type == "game"){
+        // Check DB for picked date
+        $sql = "SELECT name FROM user";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $error = true;
+        }
+        else{
+            // Bind inputs to query parameters
+            //mysqli_stmt_bind_param($stmt, "s", $name);
+            // Execute sql statement
+            mysqli_stmt_execute($stmt);
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt, $work_happiness);
+            // Results fetched below...
+        } 
     }
   }
 
@@ -200,7 +226,8 @@
             <button type="button"
                     class="btn btn-info"
                     id="add-game-btn"
-                    onclick="sectionDisplay('game');">
+                    name="add-game-btn"
+                    onclick="getEntertainmentNames('game');">
                     Oyun Ekle
             </button>
             
@@ -216,6 +243,20 @@
                             <option value="">YENi OYUN EKLE</option>
                             <option value="ID">NAME</option>
                             <option value="123">GAME1</option>
+                            <option value="game-option" id="game-option">BOS</option>
+                            <?php
+                            if(mysqli_stmt_store_result($stmt)){
+                                // Check if DB returned any result
+                                if(mysqli_stmt_num_rows($stmt) > 0){
+                                    // Fetch values
+                                    while (mysqli_stmt_fetch($stmt)) {
+                                        echo '<option value="' . $work_happiness . '">' 
+                                            . $work_happiness 
+                                            . '</option>';
+                                    }
+                                }
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
