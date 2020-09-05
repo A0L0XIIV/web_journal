@@ -244,3 +244,55 @@ function removeFromTheList(liId) {
   // Remove element from the list
   $("li").remove("#" + liId);
 }
+
+// AJAX get and showing the entertainment results
+function getEntertainmentNames(type) {
+  // jQuery request variable
+  var request;
+
+  // Abort any pending request
+  if (request) {
+    request.abort();
+  }
+
+  $.ajax({
+    type: "GET",
+    data: { type: type },
+    success: function (data) {
+      sectionDisplay(type);
+      alert(data);
+    },
+  });
+  /*
+  // Send request to server
+  request = $.ajax({
+    type: "GET",
+    url: "write.php",
+    data: { type: "game" },
+  });
+
+  // Get server's response and handle it
+  request.done(function (response, textStatus, jqXHR) {
+    // Success response
+    if (textStatus == "success") {
+      // Show section
+      sectionDisplay(type);
+      console.log(response);
+      $("#game-option").html(response);
+    }
+    // Response error
+    else {
+      $("#game-select").html('<p class="error">AJAX error!</p>');
+    }
+  });
+
+  // Server failure response
+  request.fail(function (jqXHR, textStatus, errorThrown) {
+    console.error("AJAX error: " + textStatus, errorThrown);
+    $("#game-select").show(1);
+    $("#game-select").html('<p class="error">AJAX error!</p>');
+  });
+
+  // Always promise --> success or fail
+  request.always(function () {});*/
+}
