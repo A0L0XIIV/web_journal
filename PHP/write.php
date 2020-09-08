@@ -1,105 +1,37 @@
-<?php 
-    require "header.php";
-?>
+<?php
+    // Entertainment AJAX request handler
 
-<?php 
-  // define variables and set to empty values
-  $work_happiness = $daily_happiness = $total_happiness = $content = "";
-  $error = false;
-  $success = false;
-  $errorText = "";
-  $id = 0;
+    // Database connection
+    require "./mysqli_connect.php";
+    
+    if ($_SERVER["REQUEST_METHOD"] === "POST"
+        && isset($_POST['type'])) {
+        // Get entertainment type
+        $type = $_POST['type'];
 
-  // Database connection
-  require "./mysqli_connect.php";
-
-  // Check request method for post
-  if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    // Add new game into Oyun Table
-    if(isset($_POST['add-new-game-name'])){}
-
-    // Check DB for same date entry
-    $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
-    $stmt = mysqli_stmt_init($conn);
-    if(!mysqli_stmt_prepare($stmt, $sql)){
-        $error = true;
-    }
-    else{
-        // Get name from session
-        $name = $_SESSION['name'];
-        // Check if name is empty or not and redirect
-        if($name == "" || $name == NULL)      
-            echo("<script>location.href = './index.php';</script>"); 
-        // Set timezone as GMT and get current date
-        date_default_timezone_set('GMT');
-        $date = date('Y-m-d');
-        // Preparing the park name for LIKE query 
-        $param = $date.'%';
-        // Bind inputs to query parameters
-        mysqli_stmt_bind_param($stmt, "ss", $name, $param);
-        // Execute sql statement
-        if(!mysqli_stmt_execute($stmt)){
-            $error = true;
-            $errorText = mysqli_error($conn);
+        // Each type has different tables
+        // Get game names
+        if($type === "game"){
+            // Check DB for picked date
+            $sql = "SELECT name FROM user";
         }
-        // Bind result variables
-        mysqli_stmt_bind_result($stmt, $id);
-        // Results fetched
-        if(mysqli_stmt_store_result($stmt)){
-            // Check if DB returned any result - Same day entry check
-            if(mysqli_stmt_num_rows($stmt) > 0){
-                $error = true;
-                $errorText = "Günde sadece 1 tane günlük eklenebilir.";
-            }
-            // Not found any same day entry - Add it into DB
-            else{
-                // Security operations on text
-                $content = test_input($_POST["content"]);
-                // Encoding change
-                $content = mb_convert_encoding($content, "UTF-8");
-                // Get happiness values
-                $work_happiness = $_POST["work_happiness"];
-                $daily_happiness = $_POST["daily_happiness"];
-                $total_happiness = $_POST["total_happiness"];
-                // Set timezone as GMT and get current date
-                //date_default_timezone_set('GMT');
-                //$date = date('Y-m-d H:i:s'); --> Server time but changed date to client's time
-                $date = $_POST["date"];
-                // Save journal into DB
-                $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
-                        VALUES (?, ?, ?, ?, ?, ?)";
-                $stmt = mysqli_stmt_init($conn);
-                if(!mysqli_stmt_prepare($stmt, $sql)){
-                    $error = true;
-                }
-                else{
-                    // Bind inputs to query parameters
-                    mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
-                                            $total_happiness, $content, $date);
-                    // Execute sql statement
-                    if(mysqli_stmt_execute($stmt))
-                        $success = true;
-                    else{
-                        $error = true;
-                        $errorText = mysqli_error($conn);
-                    }
-                }
-            }
+        // Series SQL
+        else if($type === "series"){
+            // Check DB for picked date
+            $sql = "SELECT id FROM user";
         }
-    }
-  }
+        // Series SQL
+        else if($type === "movie"){
+            // Check DB for picked date
+            $sql = "SELECT name FROM user ORDER BY name DESC";
+        }
+        // Series SQL
+        else if($type === "book"){
+            // Check DB for picked date
+            $sql = "SELECT id FROM user ORDER BY id DESC";
+        }
 
-  // Check request method for get
-  else if (isset($_GET['ajax'])
-            && $_SERVER["REQUEST_METHOD"] === "GET" 
-            && isset($_GET['type'])) {
-    echo '<p class="error">GET METHODDDD</p>';
-    // Get entertainment type
-    $type = $_GET['type'];
-    if($type == "game"){
-        // Check DB for picked date
-        $sql = "SELECT name FROM user";
+        // Start SQL query
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)){
             $error = true;
@@ -112,9 +44,124 @@
             // Bind result variables
             mysqli_stmt_bind_result($stmt, $work_happiness);
             // Results fetched below...
+            if(mysqli_stmt_store_result($stmt)){
+                // Check if DB returned any result
+                if(mysqli_stmt_num_rows($stmt) > 0){
+                    // Fetch values
+                    //$gameArray = [];
+                    while (mysqli_stmt_fetch($stmt)) {
+                        //array_push($gameArray, array('value' => htmlspecialchars($work_happiness), 'name' => $work_happiness));
+                        $gameArray[] = array(
+                            'id' =>htmlspecialchars($work_happiness),
+                            'desc' => $work_happiness,
+                            );
+                    }
+                    exit(json_encode($gameArray));
+                    
+                }
+            }
         } 
+        
+    }
+?>
+
+<?php 
+    require "header.php";
+?>
+
+<?php
+  // New Journal Entry POST Request Handler
+
+  // define variables and set to empty values
+  $work_happiness = $daily_happiness = $total_happiness = $content = "";
+  $error = false;
+  $success = false;
+  $errorText = "";
+  $id = 0;
+
+  // Database connection
+  //require "./mysqli_connect.php";
+
+  // Check request method for post
+  if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Get name from session
+    $name = $_SESSION['name'];
+    // Check if name is empty or not and redirect
+    if($name == "" || $name == NULL)      
+        echo("<script>location.href = './index.php';</script>"); 
+
+    // Add new game into Oyun Table
+    if(isset($_POST['add-new-game-name'])){}
+
+    // New Journal Entry POST Request Handler
+    else{
+        // Check DB for same date entry
+        $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $error = true;
+        }
+        else{
+            // Set timezone as GMT and get current date
+            date_default_timezone_set('GMT');
+            $date = date('Y-m-d');
+            // Preparing the date for LIKE query 
+            $param = $date.'%';
+            // Bind inputs to query parameters
+            mysqli_stmt_bind_param($stmt, "ss", $name, $param);
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt)){
+                $error = true;
+                $errorText = mysqli_error($conn);
+            }
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt, $id);
+            // Results fetched
+            if(mysqli_stmt_store_result($stmt)){
+                // Check if DB returned any result - Same day entry check
+                if(mysqli_stmt_num_rows($stmt) > 0){
+                    $error = true;
+                    $errorText = "Günde sadece 1 tane günlük eklenebilir.";
+                }
+                // Not found any same day entry - Add it into DB
+                else{
+                    // Security operations on text
+                    $content = test_input($_POST["content"]);
+                    // Encoding change
+                    $content = mb_convert_encoding($content, "UTF-8");
+                    // Get happiness values
+                    $work_happiness = $_POST["work_happiness"];
+                    $daily_happiness = $_POST["daily_happiness"];
+                    $total_happiness = $_POST["total_happiness"];
+                    // Set timezone as GMT and get current date
+                    //date_default_timezone_set('GMT');
+                    //$date = date('Y-m-d H:i:s'); --> Server time but changed date to client's time
+                    $date = $_POST["date"];
+                    // Save journal into DB
+                    $sql = "INSERT INTO gunluk (name, work_happiness, daily_happiness, total_happiness, content, date) 
+                            VALUES (?, ?, ?, ?, ?, ?)";
+                    $stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
+                                                $total_happiness, $content, $date);
+                        // Execute sql statement
+                        if(mysqli_stmt_execute($stmt))
+                            $success = true;
+                        else{
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                    }
+                }
+            }
+        }
     }
   }
+
 
   function test_input($data) {
     $data = trim($data);
@@ -226,7 +273,6 @@
             <button type="button"
                     class="btn btn-info"
                     id="add-game-btn"
-                    name="add-game-btn"
                     onclick="getEntertainmentNames('game');">
                     Oyun Ekle
             </button>
@@ -241,22 +287,6 @@
                                 onchange="addNewEntertainmentToDB('game')">
                             <option value="0" hidden selected>Hangi oyunu oynadın?</option>
                             <option value="">YENi OYUN EKLE</option>
-                            <option value="ID">NAME</option>
-                            <option value="123">GAME1</option>
-                            <option value="game-option" id="game-option">BOS</option>
-                            <?php
-                            if(mysqli_stmt_store_result($stmt)){
-                                // Check if DB returned any result
-                                if(mysqli_stmt_num_rows($stmt) > 0){
-                                    // Fetch values
-                                    while (mysqli_stmt_fetch($stmt)) {
-                                        echo '<option value="' . $work_happiness . '">' 
-                                            . $work_happiness 
-                                            . '</option>';
-                                    }
-                                }
-                            }
-                            ?>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
@@ -294,6 +324,11 @@
                 <!--Game list-->
                 <ul id="game-list" class="mb-0 px-3"></ul>
             </div>
+
+            <div id="get-game-names-error" style="display: none;">
+                <p class="error">ERROR (AJAX): Couldn't get game names from server.</p>
+            </div>
+
             <!-- Modal: Add new game into database -->
             <div class="modal fade" id="add-game-modal" tabindex="-1">
                 <div class="modal-dialog">
@@ -328,7 +363,7 @@
             <button type="button"
                     class="btn btn-primary"
                     id="add-series-btn"
-                    onclick="sectionDisplay('series');">
+                    onclick="getEntertainmentNames('series');">
                     Dizi Ekle
             </button>
             
@@ -340,7 +375,6 @@
                         onchange="addNewEntertainmentToDB('series')">
                     <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
                     <option value="">YENi DİZİ EKLE</option>
-                    <option value="1">DİZİ</option>
                 </select>
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -415,6 +449,10 @@
                 <!--Series list-->
                 <ul id="series-list" class="mb-0 px-3"></ul>
             </div>
+
+            <div id="get-series-names-error" style="display: none;">
+                <p class="error">ERROR (AJAX): Couldn't get series names from server.</p>
+            </div>
         </div>
 
         <hr>
@@ -424,7 +462,7 @@
             <button type="button"
                     class="btn btn-secondary"
                     id="add-movie-btn"
-                    onclick="sectionDisplay('movie');">
+                    onclick="getEntertainmentNames('movie');">
                     Film Ekle
             </button>
             
@@ -438,8 +476,6 @@
                                 onchange="addNewEntertainmentToDB('movie')">
                             <option value="0" hidden selected>Hangi filmi seyrettin?</option>
                             <option value="">YENI FILM EKLE</option>
-                            <option value="ID">NAME</option>
-                            <option value="123">GAME1</option>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
@@ -477,6 +513,10 @@
                 <!--Movie list-->
                 <ul id="movie-list" class="mb-0 px-3"></ul>
             </div>
+
+            <div id="get-movie-names-error" style="display: none;">
+                <p class="error">ERROR (AJAX): Couldn't get movie names from server.</p>
+            </div>
         </div>
 
         <hr>
@@ -486,7 +526,7 @@
             <button type="button"
                     class="btn btn-warning"
                     id="add-book-btn"
-                    onclick="sectionDisplay('book');">
+                    onclick="getEntertainmentNames('book');">
                     Kitap Ekle
             </button>
             
@@ -500,8 +540,6 @@
                                 onchange="addNewEntertainmentToDB('book')">
                             <option value="0" hidden selected>Hangi kitabi okudun?</option>
                             <option value="">YENI KITAP EKLE</option>
-                            <option value="ID">NAME</option>
-                            <option value="123">GAME1</option>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
@@ -538,6 +576,10 @@
                 </p>
                 <!--Book list-->
                 <ul id="book-list" class="mb-0 px-3"></ul>
+            </div>
+
+            <div id="get-book-names-error" style="display: none;">
+                <p class="error">ERROR (AJAX): Couldn't get book names from server.</p>
             </div>
         </div>
 
