@@ -254,45 +254,101 @@ function getEntertainmentNames(type) {
   if (request) {
     request.abort();
   }
-
+  /*
+  $.post(
+    "write.php",
+    { type: type },
+    function (data) {
+      sectionDisplay(type);
+      console.log(data + data.length);
+      var sel = $("#" + type + "-select");
+      //sel.empty();
+      for (var i = 0; i < data.length; i++) {
+        sel.append(
+          '<option value="' + data[i].id + '">' + data[i].desc + "</option>"
+        );
+      }
+    },
+    "json"
+  );
+  */
+  /*
+  $.getJSON("write.php", { type: type }, function (e) {
+    alert("Result from PHP: " + e.result);
+  });
+  */
+  /*
   $.ajax({
-    type: "GET",
+    type: "POST",
     data: { type: type },
+    dataType: "json",
     success: function (data) {
       sectionDisplay(type);
-      alert(data);
+      //console.log(data + data.length);
+      var sel = $("#" + type + "-select");
+      //sel.empty();
+      for (var i = 0; i < data.length; i++) {
+        sel.append(
+          '<option value="' + data[i].id + '">' + data[i].desc + "</option>"
+        );
+      }
+    },
+    error: function (data) {
+      $("#" + type + "-select").append(
+        '<option value="ERR" class="error">AJAX ERROR</option>'
+      );
+    },
+    timeout: function (data) {
+      $("#" + type + "-select").append(
+        '<option value="TO" class="error">AJAX TIMEOUT</option>'
+      );
     },
   });
-  /*
+  */
+
   // Send request to server
   request = $.ajax({
-    type: "GET",
-    url: "write.php",
-    data: { type: "game" },
+    type: "POST",
+    //url: "write.php",
+    data: { type: type },
+    dataType: "json",
   });
 
   // Get server's response and handle it
   request.done(function (response, textStatus, jqXHR) {
+    // Show section
+    sectionDisplay(type);
     // Success response
     if (textStatus == "success") {
-      // Show section
-      sectionDisplay(type);
-      console.log(response);
-      $("#game-option").html(response);
+      //console.log(response + response.length);
+      var sel = $("#" + type + "-select");
+      //sel.empty();
+      for (var i = 0; i < response.length; i++) {
+        sel.append(
+          '<option value="' +
+            response[i].id +
+            '">' +
+            response[i].desc +
+            "</option>"
+        );
+      }
     }
     // Response error
     else {
-      $("#game-select").html('<p class="error">AJAX error!</p>');
+      $("#" + type + "-select").append(
+        '<option value="ERR" class="error">AJAX ERROR</option>'
+      );
     }
+    // If AJAX error is displayed, hide it
+    $("#get-" + type + "-names-error").css({ display: "none" });
   });
 
   // Server failure response
   request.fail(function (jqXHR, textStatus, errorThrown) {
     console.error("AJAX error: " + textStatus, errorThrown);
-    $("#game-select").show(1);
-    $("#game-select").html('<p class="error">AJAX error!</p>');
+    $("#get-" + type + "-names-error").css({ display: "inline" });
   });
 
   // Always promise --> success or fail
-  request.always(function () {});*/
+  request.always(function () {});
 }
