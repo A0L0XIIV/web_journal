@@ -84,6 +84,17 @@ function getCookie(cname) {
   return "";
 }
 
+// Before submitting form to PHP, handle those
+function beforeFormSubmit() {
+  // Get the current date
+  getDate();
+  // Convert games, series, moveies and books into input in form
+  convertEntertainmentListToInput();
+  // Return true
+  return true;
+}
+
+// Get current date and set it to input
 function getDate() {
   var currentdate = new Date();
 
@@ -116,7 +127,6 @@ function getDate() {
     currentdate.getSeconds();
   //console.log(datetime);
   $("#date-input").val(datetime);
-  return true;
 }
 
 /*Game, movie, book section functions*/
@@ -131,26 +141,7 @@ function sectionDisplay(type) {
   $("#" + btnId).css({ display: "none" });
 }
 
-function addNewEntertainmentToDB(type) {
-  // Get name value from the select
-  var selectedItemValue = $("#" + type + "-select")
-    .find("option:selected")
-    .attr("value");
-  //$("select[name=games]").change(function () {
-  //if ($(this).val() == "") {
-  if (selectedItemValue === "") {
-    $("#add-" + type + "-modal").modal();
-    /*var newThing = prompt("Enter a name for the new thing:");
-    var newValue = $("option", this).length;
-    $("<option>")
-      .text(newThing)
-      .attr("value", newValue)
-      .insertBefore($("option[value=]", this));
-    $(this).val(newValue);*/
-  }
-  //});
-}
-
+// Add new entertainment elements into list to show to user
 function addToTheList(type) {
   // type can be game, movie, series or book
   var ul = $("#" + type + "-list");
@@ -240,6 +231,7 @@ function addToTheList(type) {
   }
 }
 
+// Remove entertainment elements from lists
 function removeFromTheList(liId) {
   // Remove element from the list
   $("li").remove("#" + liId);
@@ -254,57 +246,6 @@ function getEntertainmentNames(type) {
   if (request) {
     request.abort();
   }
-  /*
-  $.post(
-    "write.php",
-    { type: type },
-    function (data) {
-      sectionDisplay(type);
-      console.log(data + data.length);
-      var sel = $("#" + type + "-select");
-      //sel.empty();
-      for (var i = 0; i < data.length; i++) {
-        sel.append(
-          '<option value="' + data[i].id + '">' + data[i].desc + "</option>"
-        );
-      }
-    },
-    "json"
-  );
-  */
-  /*
-  $.getJSON("write.php", { type: type }, function (e) {
-    alert("Result from PHP: " + e.result);
-  });
-  */
-  /*
-  $.ajax({
-    type: "POST",
-    data: { type: type },
-    dataType: "json",
-    success: function (data) {
-      sectionDisplay(type);
-      //console.log(data + data.length);
-      var sel = $("#" + type + "-select");
-      //sel.empty();
-      for (var i = 0; i < data.length; i++) {
-        sel.append(
-          '<option value="' + data[i].id + '">' + data[i].desc + "</option>"
-        );
-      }
-    },
-    error: function (data) {
-      $("#" + type + "-select").append(
-        '<option value="ERR" class="error">AJAX ERROR</option>'
-      );
-    },
-    timeout: function (data) {
-      $("#" + type + "-select").append(
-        '<option value="TO" class="error">AJAX TIMEOUT</option>'
-      );
-    },
-  });
-  */
 
   // Send request to server
   request = $.ajax({
@@ -351,4 +292,49 @@ function getEntertainmentNames(type) {
 
   // Always promise --> success or fail
   request.always(function () {});
+}
+
+// Convert entertainment list to input for PHP handler
+function convertEntertainmentListToInput() {
+  var gameListSize = $("#game-list li").length;
+  var seriesListSize = $("#series-list li").length;
+  var movieListSize = $("#movie-list li").length;
+  var bookListSize = $("#book-list li").length;
+
+  // Check game list size
+  if (gameListSize > 0) {
+    // Loop over every game element in the list
+    $("#game-list li").each(function (n, v) {
+      //listArray.push($(this).text());
+      $("#write-form").append(
+        '<input type="hidden" name="myfieldname" value="' +
+          $(this).attr("id") +
+          '" />' +
+          '<input type="hidden" name="myfieldname" value="' +
+          $(this).text() +
+          '" />'
+      );
+    });
+  }
+}
+
+// Add new entertainment elements in to DB
+function addNewEntertainmentToDB(type) {
+  // Get name value from the select
+  var selectedItemValue = $("#" + type + "-select")
+    .find("option:selected")
+    .attr("value");
+  //$("select[name=games]").change(function () {
+  //if ($(this).val() == "") {
+  if (selectedItemValue === "") {
+    $("#add-" + type + "-modal").modal();
+    /*var newThing = prompt("Enter a name for the new thing:");
+    var newValue = $("option", this).length;
+    $("<option>")
+      .text(newThing)
+      .attr("value", newValue)
+      .insertBefore($("option[value=]", this));
+    $(this).val(newValue);*/
+  }
+  //});
 }
