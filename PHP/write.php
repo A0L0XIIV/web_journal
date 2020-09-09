@@ -3,6 +3,9 @@
 
     // Database connection
     require "./mysqli_connect.php";
+
+    // Variables
+    $entertainment_name = $entertainment_nid = "";
     
     if ($_SERVER["REQUEST_METHOD"] === "POST"
         && isset($_POST['type'])) {
@@ -13,22 +16,22 @@
         // Get game names
         if($type === "game"){
             // Check DB for picked date
-            $sql = "SELECT name FROM user";
+            $sql = "SELECT name, id FROM game";
         }
         // Series SQL
         else if($type === "series"){
             // Check DB for picked date
-            $sql = "SELECT id FROM user";
+            $sql = "SELECT name, id FROM series";
         }
         // Series SQL
         else if($type === "movie"){
             // Check DB for picked date
-            $sql = "SELECT name FROM user ORDER BY name DESC";
+            $sql = "SELECT name, id FROM movie";
         }
         // Series SQL
         else if($type === "book"){
             // Check DB for picked date
-            $sql = "SELECT id FROM user ORDER BY id DESC";
+            $sql = "SELECT name, id FROM book";
         }
 
         // Start SQL query
@@ -42,7 +45,7 @@
             // Execute sql statement
             mysqli_stmt_execute($stmt);
             // Bind result variables
-            mysqli_stmt_bind_result($stmt, $work_happiness);
+            mysqli_stmt_bind_result($stmt, $entertainment_name, $entertainment_id);
             // Results fetched below...
             if(mysqli_stmt_store_result($stmt)){
                 // Check if DB returned any result
@@ -52,8 +55,8 @@
                     while (mysqli_stmt_fetch($stmt)) {
                         //array_push($gameArray, array('value' => htmlspecialchars($work_happiness), 'name' => $work_happiness));
                         $gameArray[] = array(
-                            'id' =>htmlspecialchars($work_happiness),
-                            'desc' => $work_happiness,
+                            'id' =>htmlspecialchars($entertainment_id),
+                            'desc' => $entertainment_name,
                             );
                     }
                     exit(json_encode($gameArray));
@@ -189,7 +192,7 @@
         id="write-form"
         action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
         method="post"
-        onsubmit="return getDate()"
+        onsubmit="return beforeFormSubmit()"
       >
     
         <h1>Günlüğe hoşgeldin
