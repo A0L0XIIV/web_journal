@@ -1,5 +1,10 @@
 <?php 
     require "header.php";
+    // Check if the session variable name is empty or not and redirect
+    if ($_SERVER["REQUEST_METHOD"] === "GET"
+        && !isset($_SESSION['name'])) {
+        exit("<script>location.href = './index.php';</script>"); 
+    }
 ?>
 
 <?php 
