@@ -8,8 +8,9 @@
     $entertainment_name = $entertainment_id = "";
     
     if ($_SERVER["REQUEST_METHOD"] === "POST"
-        && isset($_POST['type'])
-        && !isset($_POST["write-submit"])) {
+        && !isset($_POST["write-submit"])
+        && !isset($_POST['name'])
+        && isset($_POST['type'])) {
         // Get entertainment type
         $type = $_POST['type'];
 
@@ -71,10 +72,134 @@
 
 <?php
     // AJAX request handler for adding new entertainments to DB
+
+    // define variables and set to empty values
+    $new_entertainment_name = "";
+    $addEntertainmentErrorText = "";
+    $id = -1;
+
+    // Check request type and sumbitted form
+    if ($_SERVER["REQUEST_METHOD"] === "POST"
+        && !isset($_POST["write-submit"])
+        && isset($_POST["name"])
+        && isset($_POST["type"])) {
+
+        // Get entertainment type
+        $entertainment_type = $_POST["type"];
+        // Security operations on text
+        $new_entertainment_name = test_input($_POST["name"]);
+        // Encoding change
+        $new_entertainment_name = mb_convert_encoding($new_entertainment_name, "UTF-8");
+
+        // Save entertainment into DB by types
+        switch($entertainment_type){
+            case "game":
+                $sql = "INSERT INTO game (name) VALUES (?)";
+                break;
+            case "series":
+                $sql = "INSERT INTO series (name) VALUES (?)";
+                break;
+            case "movie":
+                $sql = "INSERT INTO movie (name) VALUES (?)";
+                break;
+            case "book":
+                $sql = "INSERT INTO book (name) VALUES (?)";
+                break;
+            default:
+                $addEntertainmentErrorText = "Undefined entertainment type!";
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+                break;
+        }
+
+        $stmt = mysqli_stmt_init($conn);
+        // DB error check
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $addEntertainmentErrorText = mysqli_error($conn);
+            http_response_code(400);
+            exit($addEntertainmentErrorText);
+        }
+        else{
+            // Bind inputs to query parameters
+            mysqli_stmt_bind_param($stmt, "s", $new_entertainment_name);
+            // Execute sql statement
+            if(mysqli_stmt_execute($stmt)){
+                // Get new entertainment's id
+                switch($entertainment_type){
+                    case "game":
+                        $sql = "SELECT id FROM game WHERE name=?";
+                        break;
+                    case "series":
+                        $sql = "SELECT id FROM series WHERE name=?";
+                        break;
+                    case "movie":
+                        $sql = "SELECT id FROM movie WHERE name=?";
+                        break;
+                    case "book":
+                        $sql = "SELECT id FROM book WHERE name=?";
+                        break;
+                    default:
+                        $addEntertainmentErrorText = "Undefined entertainment type!";
+                        http_response_code(400);
+                        exit($addEntertainmentErrorText);
+                        break;
+                }
+                $stmt = mysqli_stmt_init($conn);
+                // Prepare SQL
+                if(!mysqli_stmt_prepare($stmt, $sql)){
+                    $addEntertainmentErrorText = mysqli_error($conn);
+                    http_response_code(400);
+                    exit($addEntertainmentErrorText);
+                }
+                else{
+                    // Bind inputs to query parameters
+                    mysqli_stmt_bind_param($stmt, "s", $new_entertainment_name);
+                    // Execute sql statement
+                    if(!mysqli_stmt_execute($stmt)){
+                        $addEntertainmentErrorText = mysqli_error($conn);
+                        http_response_code(400);
+                        exit($addEntertainmentErrorText);
+                    }
+                    // Bind result variables
+                    mysqli_stmt_bind_result($stmt, $id);
+                    // Results fetched
+                    if(mysqli_stmt_store_result($stmt)){
+                        // Check if DB returned any result - Same day entry check
+                        if(mysqli_stmt_num_rows($stmt) > 0){
+                            // Fetch values
+                            while (mysqli_stmt_fetch($stmt)) {
+                                $response = array(
+                                    'id' => $id,
+                                    'desc' => $new_entertainment_name,
+                                );
+                                // Return id and name in JSON
+                                exit(json_encode($response));
+                            }
+                        }
+                        else{
+                            $addEntertainmentErrorText = mysqli_error($conn);
+                            http_response_code(400);
+                            exit($addEntertainmentErrorText);
+                        }
+                    }
+                }
+            }
+            else{
+                $addEntertainmentErrorText = mysqli_error($conn);
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+            }
+        }
+    }
 ?>
 
 <?php 
     require "header.php";
+    // Check if the session variable name is empty or not and redirect
+    if ($_SERVER["REQUEST_METHOD"] === "GET"
+        && !isset($_SESSION['name'])) {
+        exit("<script>location.href = './index.php';</script>"); 
+    }
 ?>
 
 <?php
@@ -87,10 +212,7 @@
     $error = false;
     $success = false;
     $errorText = "";
-    $id = 0;
-
-    // Database connection
-    //require "./mysqli_connect.php";
+    $id = -1;
 
     // Check request method for post
     if ($_SERVER["REQUEST_METHOD"] === "POST"
@@ -157,7 +279,7 @@
                         // Execute sql statement
                         if(mysqli_stmt_execute($stmt)){
                             $success = true;
-/*
+
                             // Add entertainment (daily game, series, movie and book in DB)
                             // Get today's gunluk id
                             $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
@@ -196,7 +318,7 @@
                                         $errorText = "Günlük oyun, dizi, film ve kitap ekleme başarısız.";
                                     }
                                 }
-                            }*/
+                            }
                         }
                         else{
                             $error = true;
@@ -309,7 +431,7 @@
             cols="30" 
             rows="10" 
             maxlength="1000" 
-            placeholder="max 1000 harf"
+            placeholder="En fazla 1000 harf"
         ></textarea>
 
         <hr>
@@ -330,7 +452,7 @@
                         <select name="game-select"
                                 id="game-select" 
                                 class="custom-select"
-                                onchange="addNewEntertainmentToDB('game')">
+                                onchange="openNewEntertainmentModal('game')">
                             <option value="0" hidden selected>Hangi oyunu oynadın?</option>
                             <option value="">YENi OYUN EKLE</option>
                         </select>
@@ -374,32 +496,6 @@
             <div id="get-game-names-error" style="display: none;">
                 <p class="error">ERROR (AJAX): Couldn't get game names from server.</p>
             </div>
-
-            <!-- Modal: Add new game into database -->
-            <div class="modal fade" id="add-game-modal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Yeni oyun ekle</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form name="add-game-form"
-                                id="add-game-form"
-                                action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-                                method="post">
-                                <input type="text" name="add-new-game-name" id="add-new-game-name">
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                            <button type="submit" class="btn btn-success">Ekle</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <hr>
@@ -418,7 +514,7 @@
                 <select name="series-select"
                         id="series-select" 
                         class="custom-select" 
-                        onchange="addNewEntertainmentToDB('series')">
+                        onchange="openNewEntertainmentModal('series')">
                     <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
                     <option value="">YENi DİZİ EKLE</option>
                 </select>
@@ -519,7 +615,7 @@
                         <select name="movie-select"
                                 id="movie-select" 
                                 class="custom-select" 
-                                onchange="addNewEntertainmentToDB('movie')">
+                                onchange="openNewEntertainmentModal('movie')">
                             <option value="0" hidden selected>Hangi filmi seyrettin?</option>
                             <option value="">YENI FILM EKLE</option>
                         </select>
@@ -583,7 +679,7 @@
                         <select name="book-select"
                                 id="book-select" 
                                 class="custom-select" 
-                                onchange="addNewEntertainmentToDB('book')">
+                                onchange="openNewEntertainmentModal('book')">
                             <option value="0" hidden selected>Hangi kitabi okudun?</option>
                             <option value="">YENI KITAP EKLE</option>
                         </select>
@@ -647,6 +743,42 @@
 
         <br>
     </form>
+
+    <!-- Modal: Add new entertainment into database -->
+    <div class="modal fade" id="add-entertainment-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Yeni <span class="entertaintment-type"></span> Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" 
+                            name="new-entertainment-name" 
+                            id="new-entertainment-name" 
+                            placeholder="Ad (En fazla 50 harf)" 
+                            maxlength="50" 
+                            required>
+                    
+                    <!--Success-->
+                    <div id="add-entertainment-success" style="display: none;">
+                        <p class="success"><span class="entertaintment-type"></span> başarılı bir şekilde eklendi. Lütfen bekleyin...</p>
+                    </div>
+
+                    <!--Error-->
+                    <div id="add-entertainment-error" style="display: none;">
+                        <p class="error">Hata meydana geldi. <span id="add-entertainment-error-text"></span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-success" id="add-entertainment-btn" onclick="addNewEntertainment('game');">Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 
