@@ -84,16 +84,6 @@ function getCookie(cname) {
   return "";
 }
 
-// Before submitting form to PHP, handle those
-function beforeFormSubmit() {
-  // Get the current date
-  getDate();
-  // Convert games, series, moveies and books into input in form
-  convertEntertainmentListToInput();
-  // Return true
-  return true;
-}
-
 // Get current date and set it to input
 function getDate() {
   var currentdate = new Date();
@@ -127,6 +117,9 @@ function getDate() {
     currentdate.getSeconds();
   //console.log(datetime);
   $("#date-input").val(datetime);
+  console.log(datetime);
+  // Return true
+  return true;
 }
 
 /*Game, movie, book section functions*/
@@ -225,6 +218,28 @@ function addToTheList(type) {
       // Append button to li element
       li.append(removeBtn);
 
+      // Hidden input for entertainment name (form request)
+      var hiddenInputName = $('<input type="hidden" />');
+      var listSize = $("#" + type + "-list li").length;
+
+      hiddenInputName.attr("name", type + "[name][" + listSize + "]"); // Set name
+      hiddenInputName.attr("value", selectedItemValue); // Set value
+
+      // Append input to li element
+      li.append(hiddenInputName);
+
+      // Hidden input for entertainment duration (form request)
+      var hiddenInputDuration = $('<input type="hidden" />');
+
+      hiddenInputDuration.attr(
+        "name",
+        type + "Duration[name][" + listSize + "]"
+      ); // Set name
+      hiddenInputDuration.attr("value", duration); // Set value
+
+      // Append input to li element
+      li.append(hiddenInputDuration);
+
       // Append li element to list
       ul.append(li);
     }
@@ -292,30 +307,6 @@ function getEntertainmentNames(type) {
 
   // Always promise --> success or fail
   request.always(function () {});
-}
-
-// Convert entertainment list to input for PHP handler
-function convertEntertainmentListToInput() {
-  var gameListSize = $("#game-list li").length;
-  var seriesListSize = $("#series-list li").length;
-  var movieListSize = $("#movie-list li").length;
-  var bookListSize = $("#book-list li").length;
-
-  // Check game list size
-  if (gameListSize > 0) {
-    // Loop over every game element in the list
-    $("#game-list li").each(function (n, v) {
-      //listArray.push($(this).text());
-      $("#write-form").append(
-        '<input type="hidden" name="myfieldname" value="' +
-          $(this).attr("id") +
-          '" />' +
-          '<input type="hidden" name="myfieldname" value="' +
-          $(this).text() +
-          '" />'
-      );
-    });
-  }
 }
 
 // Add new entertainment elements in to DB
