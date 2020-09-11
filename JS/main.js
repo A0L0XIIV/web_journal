@@ -309,23 +309,95 @@ function getEntertainmentNames(type) {
   request.always(function () {});
 }
 
-// Add new entertainment elements in to DB
-function addNewEntertainmentToDB(type) {
+// Open new entertainment modal
+function openNewEntertainmentModal(type) {
   // Get name value from the select
   var selectedItemValue = $("#" + type + "-select")
     .find("option:selected")
     .attr("value");
-  //$("select[name=games]").change(function () {
-  //if ($(this).val() == "") {
+  // Option's value is empty, open modal
   if (selectedItemValue === "") {
-    $("#add-" + type + "-modal").modal();
-    /*var newThing = prompt("Enter a name for the new thing:");
-    var newValue = $("option", this).length;
-    $("<option>")
-      .text(newThing)
-      .attr("value", newValue)
-      .insertBefore($("option[value=]", this));
-    $(this).val(newValue);*/
+    // Change text based on type
+    switch (type) {
+      case "game":
+        $(".entertaintment-type").text("Oyun");
+        break;
+      case "series":
+        $(".entertaintment-type").text("Dizi");
+        break;
+      case "movie":
+        $(".entertaintment-type").text("Film");
+        break;
+      case "book":
+        $(".entertaintment-type").text("Kitap");
+        break;
+      default:
+        $(".entertaintment-type").text("Eğlence ürünü");
+        break;
+    }
+    // Change onclick function variable
+    $("#add-entertainment-btn").attr(
+      "onclick",
+      "addNewEntertainment('" + type + "')"
+    );
+    // Open modal
+    $("#add-entertainment-modal").modal();
   }
-  //});
+}
+
+// Add new entertainment elements in to DB
+function addNewEntertainment(type) {
+  // jQuery request variable
+  var request;
+  var newEntertainmentName = $("#new-entertainment-name").val();
+
+  // Abort any pending request
+  if (request) {
+    request.abort();
+  }
+
+  // Send request to server
+  request = $.ajax({
+    type: "POST",
+    data: { type: type, name: newEntertainmentName },
+    dataType: "json",
+  });
+
+  // Get server's response and handle it
+  request.done(function (response, textStatus, jqXHR) {
+    // Success response
+    if (textStatus == "success") {
+      //console.log(response + response.length);
+      var sel = $("#" + type + "-select");
+      sel.append(
+        '<option value="' + response.id + '">' + response.desc + "</option>"
+      );
+
+      // If AJAX error is displayed, hide it
+      $("#add-entertainment-error").css({ display: "none" });
+      // Display success message
+      $("#add-entertainment-success").css({ display: "inline" });
+      // Close the modal after successful operation (1s delay)
+      setTimeout(function () {
+        $("#add-entertainment-modal").modal("hide");
+      }, 1000);
+    }
+    // Error response
+    else {
+      $("#add-entertainment-error").css({ display: "inline" });
+      $("#add-entertainment-error-text").text("AJAX error! " + response.errMsg);
+    }
+  });
+
+  // Server failure response
+  request.fail(function (jqXHR, textStatus, errorThrown) {
+    console.error("AJAX error: " + textStatus, errorThrown);
+    $("#add-entertainment-error").css({ display: "inline" });
+    $("#add-entertainment-error-text").text(
+      "AJAX error, request failed! " + jqXHR.responseText
+    );
+  });
+
+  // Always promise --> success or fail
+  request.always(function () {});
 }
