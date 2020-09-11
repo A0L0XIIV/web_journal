@@ -5,10 +5,11 @@
     require "./mysqli_connect.php";
 
     // Variables
-    $entertainment_name = $entertainment_nid = "";
+    $entertainment_name = $entertainment_id = "";
     
     if ($_SERVER["REQUEST_METHOD"] === "POST"
-        && isset($_POST['type'])) {
+        && isset($_POST['type'])
+        && !isset($_POST["write-submit"])) {
         // Get entertainment type
         $type = $_POST['type'];
 
@@ -68,36 +69,38 @@
     }
 ?>
 
+<?php
+    // AJAX request handler for adding new entertainments to DB
+?>
+
 <?php 
     require "header.php";
 ?>
 
 <?php
-  // New Journal Entry POST Request Handler
-
-  // define variables and set to empty values
-  $work_happiness = $daily_happiness = $total_happiness = $content = "";
-  $error = false;
-  $success = false;
-  $errorText = "";
-  $id = 0;
-
-  // Database connection
-  //require "./mysqli_connect.php";
-
-  // Check request method for post
-  if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Get name from session
-    $name = $_SESSION['name'];
-    // Check if name is empty or not and redirect
-    if($name == "" || $name == NULL)      
-        echo("<script>location.href = './index.php';</script>"); 
-
-    // Add new game into Oyun Table
-    if(isset($_POST['add-new-game-name'])){}
-
     // New Journal Entry POST Request Handler
-    else{
+
+    // define variables and set to empty values
+    $work_happiness = $daily_happiness = $total_happiness = $content = "";
+    $daily_game_id = $daily_series_id = $daily_movie_id = $daily_book_id = "";
+    $daily_game_duration = $daily_series_duration = $daily_movie_duration = $daily_book_duration = "";
+    $error = false;
+    $success = false;
+    $errorText = "";
+    $id = 0;
+
+    // Database connection
+    //require "./mysqli_connect.php";
+
+    // Check request method for post
+    if ($_SERVER["REQUEST_METHOD"] === "POST"
+        && isset($_POST["write-submit"])) {
+        // Get name from session
+        $name = $_SESSION['name'];
+        // Check if name is empty or not and redirect
+        if($name == "" || $name == NULL)      
+            echo("<script>location.href = './index.php';</script>"); 
+
         // Check DB for same date entry
         $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
         $stmt = mysqli_stmt_init($conn);
@@ -152,8 +155,49 @@
                         mysqli_stmt_bind_param($stmt, "siiiss", $name, $work_happiness, $daily_happiness, 
                                                 $total_happiness, $content, $date);
                         // Execute sql statement
-                        if(mysqli_stmt_execute($stmt))
+                        if(mysqli_stmt_execute($stmt)){
                             $success = true;
+/*
+                            // Add entertainment (daily game, series, movie and book in DB)
+                            // Get today's gunluk id
+                            $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
+                            $stmt = mysqli_stmt_init($conn);
+                            if(!mysqli_stmt_prepare($stmt, $sql)){
+                                $error = true;
+                            }
+                            else{
+                                // Set timezone as GMT and get current date
+                                date_default_timezone_set('GMT');
+                                $date = date('Y-m-d');
+                                // Preparing the date for LIKE query 
+                                $param = $date.'%';
+                                // Bind inputs to query parameters
+                                mysqli_stmt_bind_param($stmt, "ss", $name, $param);
+                                // Execute sql statement
+                                if(!mysqli_stmt_execute($stmt)){
+                                    $error = true;
+                                    $errorText = mysqli_error($conn);
+                                }
+                                // Bind result variables
+                                mysqli_stmt_bind_result($stmt, $id);
+                                // Results fetched
+                                if(mysqli_stmt_store_result($stmt)){
+                                    // Check if DB returned any result - Got today's id
+                                    if(mysqli_stmt_num_rows($stmt) > 0){
+                                        echo $_POST["game"];
+                                        $daily_game_length = sizeof($_POST["game"]);
+                                        echo $daily_game_length;
+                                        // Get daily game id and duration
+                                        $daily_game_id = $_POST["game"];
+                                    }
+                                    // Not found any same day entry - Error
+                                    else{
+                                        $error = true;
+                                        $errorText = "Günlük oyun, dizi, film ve kitap ekleme başarısız.";
+                                    }
+                                }
+                            }*/
+                        }
                         else{
                             $error = true;
                             $errorText = mysqli_error($conn);
@@ -163,7 +207,6 @@
             }
         }
     }
-  }
 
 
   function test_input($data) {
@@ -192,7 +235,7 @@
         id="write-form"
         action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
         method="post"
-        onsubmit="return beforeFormSubmit()"
+        onsubmit="return getDate()"
       >
     
         <h1>Günlüğe hoşgeldin
