@@ -278,51 +278,60 @@
                                                 $total_happiness, $content, $date);
                         // Execute sql statement
                         if(mysqli_stmt_execute($stmt)){
+                            // Gunluk successfully added
                             $success = true;
 
                             // Add entertainment (daily game, series, movie and book in DB)
-                            // Get today's gunluk id
-                            $sql = "SELECT id FROM gunluk WHERE name=? AND date LIKE ?";
-                            $stmt = mysqli_stmt_init($conn);
-                            if(!mysqli_stmt_prepare($stmt, $sql)){
-                                $error = true;
-                            }
-                            else{
-                                // Set timezone as GMT and get current date
-                                date_default_timezone_set('GMT');
-                                $date = date('Y-m-d');
-                                // Preparing the date for LIKE query 
-                                $param = $date.'%';
-                                // Bind inputs to query parameters
-                                mysqli_stmt_bind_param($stmt, "ss", $name, $param);
-                                // Execute sql statement
-                                if(!mysqli_stmt_execute($stmt)){
-                                    $error = true;
-                                    $errorText = mysqli_error($conn);
-                                }
-                                // Bind result variables
-                                mysqli_stmt_bind_result($stmt, $id);
-                                // Results fetched
-                                if(mysqli_stmt_store_result($stmt)){
-                                    // Check if DB returned any result - Got today's id
-                                    if(mysqli_stmt_num_rows($stmt) > 0){
-                                        echo $_POST["game"];
-                                        $daily_game_length = sizeof($_POST["game"]);
-                                        echo $daily_game_length;
-                                        // Get daily game id and duration
-                                        $daily_game_id = $_POST["game"];
+
+                            // Get last inserted element's id
+                            $last_gunluk_id = mysqli_insert_id($conn);
+                            // Check if it return, zero means error
+                            if($last_gunluk_id != '0'){
+                                // Add new game into daily_game
+                                if(isset($_POST["game"])){
+                                    if(daily_entertainment("game", $last_gunluk_id, $conn)){
+                                        $success = true;
                                     }
-                                    // Not found any same day entry - Error
-                                    else{
+                                    else{    
                                         $error = true;
-                                        $errorText = "Günlük oyun, dizi, film ve kitap ekleme başarısız.";
+                                        $errorText .= "Günlük film ekleme başarısız.\n";
+                                    }
+                                }
+                                // Add new series into daily_series
+                                if(isset($_POST["series"])){
+                                    if(daily_entertainment("series", $last_gunluk_id, $conn)){
+                                        $success = true;
+                                    }
+                                    else{    
+                                        $error = true;
+                                        $errorText .= "Günlük dizi ekleme başarısız.\n";
+                                    }
+                                }
+                                // Add new movie into daily_movie
+                                if(isset($_POST["movie"])){
+                                    if(daily_entertainment("movie", $last_gunluk_id, $conn)){
+                                        $success = true;
+                                    }
+                                    else{    
+                                        $error = true;
+                                        $errorText .= "Günlük film ekleme başarısız.\n";
+                                    }
+                                }
+                                // Add new book into daily_book
+                                if(isset($_POST["book"])){
+                                    if(daily_entertainment("book", $last_gunluk_id, $conn)){
+                                        $success = true;
+                                    }
+                                    else{    
+                                        $error = true;
+                                        $errorText .= "Günlük kitap ekleme başarısız.\n";
                                     }
                                 }
                             }
                         }
                         else{
                             $error = true;
-                            $errorText = mysqli_error($conn);
+                            $errorText = "Günlük ekleme başarısız.\n" . mysqli_error($conn);
                         }
                     }
                 }
@@ -336,6 +345,84 @@
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
+  }
+
+  function daily_entertainment($type, $last_gunluk_id, $conn){
+    // Get entertainment list from POST request 
+    $entertainment_list = $_POST[$type];
+    $error = false;
+    // Loop over array
+    foreach ($entertainment_list as $entertainment)  {
+        switch($type){
+            case "game":
+                $sql = "INSERT INTO daily_game (gunluk_id, game_id, duration) 
+                        VALUES (?, ?, ?)";
+                break;
+            case "series":
+                $sql = "INSERT INTO daily_series (gunluk_id, series_id, begin_season, begin_episode, end_season, end_episode) 
+                        VALUES (?, ?, ?, ?, ?, ?)";
+                break;
+            case "movie":
+                $sql = "INSERT INTO daily_movie (gunluk_id, movie_id, duration) 
+                        VALUES (?, ?, ?)";
+                break;
+            case "book":
+                $sql = "INSERT INTO daily_book (gunluk_id, book_id, duration) 
+                        VALUES (?, ?, ?)";
+                break;
+            default:
+                $error = true;
+                break;
+
+        }
+        // If type is not correct, break the loop
+        if($error === true){
+            break;
+        }
+        // SQL statement initialization
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $error = true;
+        }
+        else{
+            // Extract int from id
+            $entertainment_id = (int) filter_var($entertainment['id'], FILTER_SANITIZE_NUMBER_INT);
+            // Series has different columns than other 3 entertainment types
+            if($type === 'series'){
+                // Split the beginning and end season and episode, e.g. S2E3-S2E5
+                $begEnd = explode("-",$entertainment['duration']);
+                // Remove S from strings
+                $begEnd[0] = str_ireplace("S", "", $begEnd[0]);
+                $begEnd[1] = str_ireplace("S", "", $begEnd[1]);
+                // Split 2 strings from E, season and episode number will be array's elements
+                $begin = explode("E", $begEnd[0]);
+                $begin_season = $begin[0];      // Season number is the first element
+                $begin_episode = $begin[1];     // Episode number is the second element
+                $end = explode("E", $begEnd[1]);
+                $end_season = $end[0];
+                $end_episode = $end[1];
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "iiiiii", $last_gunluk_id, $entertainment_id, $begin_season,
+                                        $begin_episode, $end_season, $end_episode);
+            }
+            // game, movie and book duration
+            else{
+                // Extract int from duration
+                $entertainment_duration = rtrim($entertainment['duration'],'S');
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "iid", $last_gunluk_id, $entertainment_id, $entertainment_duration);
+            }
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt)){
+                $error = true;
+            }
+        }
+    }
+    // Return true or false
+    if($error)
+        return false;
+    else
+        return true;
   }
 ?>
 
@@ -581,7 +668,8 @@
                 <p id="series-add-error" 
                         class="error mx-auto" 
                         style="display:none;">
-                        Dizi adı ya da bölümleri uygun değil.
+                        Dizi adı ya da bölümleri uygun değil. <br>
+                        Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
                 </p>
                 <p id="series-exist-error" 
                         class="error mx-auto" 
