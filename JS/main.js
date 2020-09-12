@@ -146,17 +146,39 @@ function addToTheList(type) {
 
   // Get duration value
   var duration;
+  var seriesError = false;
   if (type === "series") {
-    // Series have episodes
-    duration =
-      "S" +
-      $("#series-season-begin").val() +
-      "E" +
-      $("#series-episode-begin").val() +
-      "-S" +
-      $("#series-season-end").val() +
-      "E" +
-      $("#series-episode-end").val();
+    // Get begin and end episode number
+    var beginSeason = $("#series-season-begin").val();
+    var beginEpisode = $("#series-episode-begin").val();
+    var endSeason = $("#series-season-end").val();
+    var endEpisode = $("#series-episode-end").val();
+    // Check season and episode errors
+    if (
+      beginSeason == null ||
+      beginSeason == 0 ||
+      beginEpisode == null ||
+      beginEpisode == 0 ||
+      endSeason == null ||
+      endSeason == 0 ||
+      endEpisode == null ||
+      endEpisode == 0 ||
+      beginSeason > endSeason ||
+      beginEpisode > endEpisode
+    ) {
+      seriesError = true;
+    } else {
+      // Series have episodes
+      duration =
+        "S" +
+        beginSeason +
+        "E" +
+        beginEpisode +
+        "-S" +
+        endSeason +
+        "E" +
+        endEpisode;
+    }
   } else {
     // Game, movie and books have duration (hour)
     duration = $("#" + type + "-duration").val() + "S";
@@ -168,7 +190,7 @@ function addToTheList(type) {
     selectedItemValue == null ||
     duration == "0S" ||
     duration == "S" ||
-    duration == "SE-SE"
+    seriesError
   ) {
     $("#" + type + "-add-error").css({ display: "inline-block" });
   } else {
@@ -222,7 +244,7 @@ function addToTheList(type) {
       var hiddenInputName = $('<input type="hidden" />');
       var listSize = $("#" + type + "-list li").length;
 
-      hiddenInputName.attr("name", type + "[name][" + listSize + "]"); // Set name
+      hiddenInputName.attr("name", type + "[" + listSize + "][id]"); // Set name
       hiddenInputName.attr("value", selectedItemValue); // Set value
 
       // Append input to li element
@@ -231,10 +253,7 @@ function addToTheList(type) {
       // Hidden input for entertainment duration (form request)
       var hiddenInputDuration = $('<input type="hidden" />');
 
-      hiddenInputDuration.attr(
-        "name",
-        type + "Duration[name][" + listSize + "]"
-      ); // Set name
+      hiddenInputDuration.attr("name", type + "[" + listSize + "][duration]"); // Set name
       hiddenInputDuration.attr("value", duration); // Set value
 
       // Append input to li element
