@@ -214,17 +214,30 @@ function addToTheList(type) {
       var elementId = type + "-" + selectedItemValue;
       li.attr("id", elementId); // Set ID
       li.text(selectedItemName + " | " + duration); // Set text
+      li.attr("style", "width: fit-content;"); // Set width
       // Set classes - Every type has different color
       if (type === "game") {
-        li.attr("class", type + "-element card bg-info mt-2");
+        li.attr("class", type + "-element card bg-info mt-2 px-3 py-2 mx-auto");
       } else if (type === "series") {
-        li.attr("class", type + "-element card bg-primary mt-2");
+        li.attr(
+          "class",
+          type + "-element card bg-primary mt-2 px-3 py-2 mx-auto"
+        );
       } else if (type === "movie") {
-        li.attr("class", type + "-element card bg-secondary mt-2");
+        li.attr(
+          "class",
+          type + "-element card bg-secondary mt-2 px-3 py-2 mx-auto"
+        );
       } else if (type === "book") {
-        li.attr("class", type + "-element card bg-warning mt-2");
+        li.attr(
+          "class",
+          type + "-element card bg-warning mt-2 px-3 py-2 mx-auto"
+        );
       } else {
-        li.attr("class", type + "-element card bg-danger mt-2");
+        li.attr(
+          "class",
+          type + "-element card bg-danger mt-2 px-3 py-2 mx-auto"
+        );
       }
 
       // Create remove button for li element
@@ -234,7 +247,8 @@ function addToTheList(type) {
           "</button>"
       );
       removeBtn.attr("type", "button"); // Set type
-      removeBtn.attr("class", "btn btn-danger"); // Set class
+      removeBtn.attr("class", "btn btn-danger mx-auto"); // Set class
+      removeBtn.attr("style", "width: fit-content;"); // Set width
       removeBtn.attr("onclick", "removeFromTheList('" + elementId + "')"); // Set function
 
       // Append button to li element
