@@ -8,6 +8,8 @@ $styles = [
 ];
 // Individual script files
 $scripts = [
+    'write.php' => 'writeEdit.js',
+    'edit.php' => 'writeEdit.js',
     'graph.php' => 'graph.js',
 ];
 // Individual page titles
