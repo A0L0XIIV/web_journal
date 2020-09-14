@@ -9,11 +9,17 @@
 
 <?php 
     // define variables and set to empty values
+    $journal_id = "";
     $work_happiness = $daily_happiness = $total_happiness = $content = "";
     $date = "";
+    $game_name = $game_duration = "";
+    $series_name = $series_begin_season = $series_begin_episode = $series_end_season = $series_end_episode = "";
+    $movie_name = $movie_duration = "";
+    $book_name = $book_duration = "";
     $error = false;
     $errorText = "";
     $isDatePicked = false;
+
     // Get name from session
     $name = $_SESSION['name'];
     // Check if name is empty or not and redirect
@@ -42,7 +48,7 @@
         if(!empty($date)){
             $isDatePicked = true;
             // Check DB for picked date
-            $sql = "SELECT work_happiness, daily_happiness, total_happiness, content, date 
+            $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
                     FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC";
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -59,8 +65,8 @@
                     $errorText = mysqli_error($conn);
                 }
                 // Bind result variables
-                mysqli_stmt_bind_result($stmt, $work_happiness, $daily_happiness, $total_happiness, $content, $journal_date);
-                // Results fetched below...
+                mysqli_stmt_bind_result($stmt, $journal_id, $work_happiness, $daily_happiness, $total_happiness, $content, $journal_date);
+                // Journal Results fetched below...
             }
         }
         else{
@@ -280,7 +286,98 @@
                         <div class="text-center">
                             <p class="mb-0 pb-3">'.(!empty($content) ? $content : "").'</p>
                         </div>
-                    ';}
+                    ';
+
+                    // Get daily game data from DB
+                    $sql_game = "SELECT name, duration
+                                FROM daily_game
+                                INNER JOIN game ON daily_game.game_id=game.id 
+                                WHERE gunluk_id=? ORDER BY name DESC";
+                    $stmt_game = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt_game, "i", $journal_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt_game)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt_game, $game_name, $game_duration);
+                        // Game Results fetched below...
+                        if(mysqli_stmt_store_result($stmt_game)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt_game) > 0){
+                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                echo '<tr class="table-info"><th>Oyun</th><th>Süre</th></tr>';
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt_game)) {
+                                    echo '<tr><td>'.$game_name.'</td><td>'.$game_duration.' Saat</td></tr>';
+                                }
+                                echo '</table>';
+                            }
+                        }
+                        else{
+                            echo'<!--Error-->
+                            <div>
+                            <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
+                            </div>';
+                        }
+                    }
+
+                    // Get daily series data from DB
+                    $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
+                                FROM daily_series
+                                INNER JOIN series ON daily_series.series_id=series.id 
+                                WHERE gunluk_id=? ORDER BY name DESC";
+                    $stmt_series = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt_series, "i", $journal_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt_series)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt_series, $series_name, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
+                        // Series Results fetched below...
+                        if(mysqli_stmt_store_result($stmt_series)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt_series) > 0){
+                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                echo '<tr class="table-primary">
+                                        <th>Dizi</th>
+                                        <th>İlk sezon</th>
+                                        <th>İlk bölüm</th>
+                                        <th>Son sezon</th>
+                                        <th>Son bölüm</th></tr>';
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt_series)) {
+                                    echo '<tr><td>'.$series_name.'</td>
+                                            <td>'.$series_begin_season.'</td>
+                                            <td>'.$series_begin_episode.'</td>
+                                            <td>'.$series_end_season.'</td>
+                                            <td>'.$series_end_episode.'</td></tr>';
+                                }
+                                echo '</table>';
+                            }
+                        }
+                        else{
+                            echo'<!--Error-->
+                            <div>
+                            <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
+                            </div>';
+                        }
+                    }
+
+                }
             }
             else{
                 echo'<!--Error-->
