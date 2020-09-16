@@ -327,6 +327,10 @@ function addNewEntertainment(type) {
       // Close the modal after successful operation (1s delay)
       setTimeout(function () {
         $("#add-entertainment-modal").modal("hide");
+        // Clear input value for next submission
+        $("#new-entertainment-name").val("");
+        // Hide success message for next submission
+        $("#add-entertainment-success").css({ display: "none" });
       }, 1000);
     }
     // Error response
