@@ -323,7 +323,7 @@
                         else{
                             echo'<!--Error-->
                             <div>
-                            <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
+                            <p id="dbError" class="error">Oyunlar için veritabanı \'store\' hatası.</p>
                             </div>';
                         }
                     }
@@ -372,7 +372,87 @@
                         else{
                             echo'<!--Error-->
                             <div>
-                            <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
+                            <p id="dbError" class="error">Diziler için veritabanı \'store\' hatası.</p>
+                            </div>';
+                        }
+                    }
+
+                    // Get daily movie data from DB
+                    $sql_movie = "SELECT name, duration
+                                FROM daily_movie
+                                INNER JOIN movie ON daily_movie.movie_id=movie.id 
+                                WHERE gunluk_id=? ORDER BY name DESC";
+                    $stmt_movie = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt_movie, "i", $journal_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt_movie)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt_movie, $movie_name, $movie_duration);
+                        // Movie Results fetched below...
+                        if(mysqli_stmt_store_result($stmt_movie)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt_movie) > 0){
+                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                echo '<tr class="table-success"><th>Film</th><th>Süre</th></tr>';
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt_movie)) {
+                                    echo '<tr><td>'.$movie_name.'</td><td>'.$movie_duration.' Saat</td></tr>';
+                                }
+                                echo '</table>';
+                            }
+                        }
+                        else{
+                            echo'<!--Error-->
+                            <div>
+                            <p id="dbError" class="error">Filmler için veritabanı \'store\' hatası.</p>
+                            </div>';
+                        }
+                    }
+
+                    // Get daily book data from DB
+                    $sql_book = "SELECT name, duration
+                                FROM daily_book
+                                INNER JOIN book ON daily_book.book_id=book.id 
+                                WHERE gunluk_id=? ORDER BY name DESC";
+                    $stmt_book = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt_book, "i", $journal_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt_book)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt_book, $book_name, $book_duration);
+                        // Book Results fetched below...
+                        if(mysqli_stmt_store_result($stmt_book)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt_book) > 0){
+                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                echo '<tr class="table-warning"><th>Kitap</th><th>Süre</th></tr>';
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt_book)) {
+                                    echo '<tr><td>'.$book_name.'</td><td>'.$book_duration.' Saat</td></tr>';
+                                }
+                                echo '</table>';
+                            }
+                        }
+                        else{
+                            echo'<!--Error-->
+                            <div>
+                            <p id="dbError" class="error">Kitaplar için veritabanı \'store\' hatası.</p>
                             </div>';
                         }
                     }
