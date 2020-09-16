@@ -541,7 +541,7 @@
                                 class="custom-select"
                                 onchange="openNewEntertainmentModal('game')">
                             <option value="0" hidden selected>Hangi oyunu oynadın?</option>
-                            <option value="">YENi OYUN EKLE</option>
+                            <option value="" class="opt10">YENi OYUN EKLE</option>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
@@ -603,7 +603,7 @@
                         class="custom-select" 
                         onchange="openNewEntertainmentModal('series')">
                     <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
-                    <option value="">YENi DİZİ EKLE</option>
+                    <option value="" class="opt10">YENi DİZİ EKLE</option>
                 </select>
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -705,7 +705,7 @@
                                 class="custom-select" 
                                 onchange="openNewEntertainmentModal('movie')">
                             <option value="0" hidden selected>Hangi filmi seyrettin?</option>
-                            <option value="">YENI FILM EKLE</option>
+                            <option value="" class="opt10">YENI FILM EKLE</option>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
@@ -769,7 +769,7 @@
                                 class="custom-select" 
                                 onchange="openNewEntertainmentModal('book')">
                             <option value="0" hidden selected>Hangi kitabi okudun?</option>
-                            <option value="">YENI KITAP EKLE</option>
+                            <option value="" class="opt10">YENI KITAP EKLE</option>
                         </select>
                     </div>
                     <div class="col-xs-3 col-sm-6">
