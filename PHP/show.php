@@ -129,7 +129,7 @@
             type="submit"
             value="Gönder"
             name="date-picker-submit"
-            class="btn btn-primary"
+            class="btn btn-primary bg-primary"
             aria-pressed="false"
           />
         </div>
@@ -156,7 +156,7 @@
                     echo '
                         <div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
                             <div class="col-xs-6 col-sm-2 px-0">
-                                <button class="btn btn-primary btn-sm p-0">
+                                <button class="btn btn-primary bg-warning btn-sm p-0">
                                     <a href="edit.php?date='.explode(" ",$journal_date)[0].'" class="btn text-white">Güncelle</a>
                                 </button>
                             </div>
@@ -168,37 +168,38 @@
                                 <p class="orangeText">İş/Okul:</p>';
                                 switch($work_happiness){
                                     case 10:
-                                        echo '<p>Muhteşem</p>';
+                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        echo '<p>Şahane</p>';
+                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        echo '<p>Baya iyi</p>';
+                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        echo '<p>Gayet iyi</p>';
+                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        echo '<p>Fena değil</p>';
+                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        echo '<p>Normal</p>';
+                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        echo '<p>Biraz kötü</p>';
+                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        echo '<p>Kötü</p>';
+                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        echo '<p>Berbat</p>';
+                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        echo '<p>Berbat ötesi</p>';
+                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
-                                        echo '<p>Yorum Yok</p>';
+                                    default:
+                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
                                         break;
                                 }
                             echo
@@ -207,37 +208,38 @@
                                 <p class="orangeText">İş/Okul dışı:</p>';
                                 switch($daily_happiness){
                                     case 10:
-                                        echo '<p>Muhteşem</p>';
+                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        echo '<p>Şahane</p>';
+                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        echo '<p>Baya iyi</p>';
+                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        echo '<p>Gayet iyi</p>';
+                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        echo '<p>Fena değil</p>';
+                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        echo '<p>Normal</p>';
+                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        echo '<p>Biraz kötü</p>';
+                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        echo '<p>Kötü</p>';
+                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        echo '<p>Berbat</p>';
+                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        echo '<p>Berbat ötesi</p>';
+                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
-                                        echo '<p>Yorum Yok</p>';
+                                    default:
+                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
                                         break;
                                 }
                             echo
@@ -246,37 +248,38 @@
                                 <p class="orangeText">Genel:</p>';
                                 switch($total_happiness){
                                     case 10:
-                                        echo '<p>Muhteşem</p>';
+                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        echo '<p>Şahane</p>';
+                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        echo '<p>Baya iyi</p>';
+                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        echo '<p>Gayet iyi</p>';
+                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        echo '<p>Fena değil</p>';
+                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        echo '<p>Normal</p>';
+                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        echo '<p>Biraz kötü</p>';
+                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        echo '<p>Kötü</p>';
+                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        echo '<p>Berbat</p>';
+                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        echo '<p>Berbat ötesi</p>';
+                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
-                                        echo '<p>Yorum Yok</p>';
+                                    default:
+                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
                                         break;
                                 }
                             echo
@@ -292,7 +295,7 @@
                     $sql_game = "SELECT name, duration
                                 FROM daily_game
                                 INNER JOIN game ON daily_game.game_id=game.id 
-                                WHERE gunluk_id=? ORDER BY name DESC";
+                                WHERE gunluk_id=? ORDER BY daily_game.id ASC";
                     $stmt_game = mysqli_stmt_init($conn);
                     if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
                         $error = true;
@@ -332,7 +335,7 @@
                     $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
                                 FROM daily_series
                                 INNER JOIN series ON daily_series.series_id=series.id 
-                                WHERE gunluk_id=? ORDER BY name DESC";
+                                WHERE gunluk_id=? ORDER BY name daily_series.id ASC";
                     $stmt_series = mysqli_stmt_init($conn);
                     if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
                         $error = true;
@@ -381,7 +384,7 @@
                     $sql_movie = "SELECT name, duration
                                 FROM daily_movie
                                 INNER JOIN movie ON daily_movie.movie_id=movie.id 
-                                WHERE gunluk_id=? ORDER BY name DESC";
+                                WHERE gunluk_id=? ORDER BY daily_movie.id ASC";
                     $stmt_movie = mysqli_stmt_init($conn);
                     if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
                         $error = true;
@@ -421,7 +424,7 @@
                     $sql_book = "SELECT name, duration
                                 FROM daily_book
                                 INNER JOIN book ON daily_book.book_id=book.id 
-                                WHERE gunluk_id=? ORDER BY name DESC";
+                                WHERE gunluk_id=? ORDER BY daily_book.id ASC";
                     $stmt_book = mysqli_stmt_init($conn);
                     if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
                         $error = true;
