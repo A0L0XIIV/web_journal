@@ -25,22 +25,22 @@
                     <?php
                         if(isset($_SESSION['name'])){
                             echo '<li class="nav-item mx-auto active">
-                                <button class="btn btn-primary p-0">
+                                <button class="btn btn-success p-0">
                                     <a href="write.php" class="btn text-white">Yeni Yaz</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto">
-                                <button class="btn btn-warning p-0">
+                                <button class="btn btn-info p-0">
                                     <a href="edit.php" class="btn text-white">Güncelle</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto">
-                                <button class="btn btn-info p-0">
+                                <button class="btn btn-primary p-0">
                                     <a href="show.php" class="btn text-white">Görüntüle</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto">
-                                <button class="btn btn-success p-0">
+                                <button class="btn btn-warning p-0">
                                     <a href="graph.php" class="btn text-white">Grafik</a>
                                 </button>
                             </li>

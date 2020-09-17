@@ -110,7 +110,7 @@
             type="submit"
             value="Gönder"
             name="pw-update-submit"
-            class="btn btn-primary"
+            class="btn btn-primary bg-secondary"
             aria-pressed="false"
           />
         </div>
