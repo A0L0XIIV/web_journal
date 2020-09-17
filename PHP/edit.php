@@ -10,6 +10,7 @@
     if ($_SERVER["REQUEST_METHOD"] === "POST"
         && !isset($_POST["write-submit"])
         && !isset($_POST['name'])
+        && !isset($_POST['id'])
         && isset($_POST['type'])) {
         // Get entertainment type
         $type = $_POST['type'];
@@ -193,6 +194,69 @@
     }
 ?>
 
+<?php
+    // AJAX request handler for deleting entertainments from DB
+
+    // define variables and set to empty values
+    $addEntertainmentErrorText = "";
+
+    // Check request type and sumbitted form
+    if ($_SERVER["REQUEST_METHOD"] === "POST"
+        && !isset($_POST["write-submit"])
+        && isset($_POST["id"])
+        && isset($_POST["type"])) {
+
+        // Get entertainment type
+        $entertainment_type = $_POST["type"];
+        // Security operations on text
+        $daily_entertainment_id = test_input($_POST["id"]);
+
+        // Save entertainment into DB by types
+        switch($entertainment_type){
+            case "game":
+                $sql = "DELETE FROM daily_game WHERE id=(?)";
+                break;
+            case "series":
+                $sql = "DELETE FROM daily_series WHERE id=(?)";
+                break;
+            case "movie":
+                $sql = "DELETE FROM daily_movie WHERE id=(?)";
+                break;
+            case "book":
+                $sql = "DELETE FROM daily_book WHERE id=(?)";
+                break;
+            default:
+                $addEntertainmentErrorText = "Undefined entertainment type!";
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+                break;
+        }
+
+        $stmt = mysqli_stmt_init($conn);
+        // DB error check
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $addEntertainmentErrorText = mysqli_error($conn);
+            http_response_code(400);
+            exit($addEntertainmentErrorText);
+        }
+        else{
+            // Bind inputs to query parameters
+            mysqli_stmt_bind_param($stmt, "i", $daily_entertainment_id);
+            // Execute sql statement
+            if(mysqli_stmt_execute($stmt)){
+                // Return success
+                http_response_code(200);
+                exit("success"); 
+            }
+            else{
+                $addEntertainmentErrorText = mysqli_error($conn);
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+            }
+        }
+    }
+?>
+
 <?php 
     require "header.php";
     // Check if the session variable name is empty or not and redirect
@@ -206,8 +270,13 @@
     // GET selected date data & UPDATE gunluk database with new data
 
     // define variables and set to empty values
+    $journal_id = "";
     $work_happiness = $daily_happiness = $total_happiness = $content = "";
     $date = "";
+    $game_id = $game_name = $game_duration = "";
+    $series_id = $series_name = $series_begin_season = $series_begin_episode = $series_end_season = $series_end_episode = "";
+    $movie_id = $movie_name = $movie_duration = "";
+    $book_id = $book_name = $book_duration = "";
     $error = false;
     $success = false;
     $isDatePicked = false;
@@ -217,9 +286,7 @@
     // Check if name is empty or not and redirect
     if($name == "" || $name == NULL)      
         echo("<script>location.href = './index.php';</script>"); 
-  
-    // Database connection
-    require "./mysqli_connect.php";
+
 
     // Check request method for post
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -230,7 +297,7 @@
                 $isDatePicked = true;
 
                 // Check DB for picked date
-                $sql = "SELECT work_happiness, daily_happiness, total_happiness, content 
+                $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content 
                         FROM gunluk WHERE name=? AND date LIKE ?";
                 $stmt = mysqli_stmt_init($conn);
                 if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -244,7 +311,7 @@
                     // Execute sql statement
                     mysqli_stmt_execute($stmt);
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $work_happiness, $daily_happiness, $total_happiness, $content);
+                    mysqli_stmt_bind_result($stmt, $journal_id, $work_happiness, $daily_happiness, $total_happiness, $content);
                     // Results fetched below...
                 }
             }
@@ -292,7 +359,7 @@
                 $isDatePicked = true;
 
                 // Check DB for picked date
-                $sql = "SELECT work_happiness, daily_happiness, total_happiness, content 
+                $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content 
                         FROM gunluk WHERE name=? AND date LIKE ?";
                 $stmt = mysqli_stmt_init($conn);
                 if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -306,7 +373,7 @@
                     // Execute sql statement
                     mysqli_stmt_execute($stmt);
                     // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $work_happiness, $daily_happiness, $total_happiness, $content);
+                    mysqli_stmt_bind_result($stmt, $journal_id, $work_happiness, $daily_happiness, $total_happiness, $content);
                     // Results fetched below...
                 }
             }
@@ -352,7 +419,7 @@
             type="submit"
             value="Gönder"
             name="date-picker-submit"
-            class="btn btn-primary"
+            class="btn btn-primary bg-info"
             aria-pressed="false"
           />
         </div>
@@ -449,8 +516,266 @@
                         maxlength="1000" 
                         placeholder="max 1000 harf"
                     >'.(!empty($content) ? $content : "").'</textarea>
-                    <input type="text" name="date" value="'.$date.'" hidden/>
-            ';}
+                    <input type="text" name="date" value="'.$date.'" hidden/>';
+            }
+
+            // Get daily game data from DB
+            $sql_game = "SELECT daily_game.id, name, duration
+                        FROM daily_game
+                        INNER JOIN game ON daily_game.game_id=game.id 
+                        WHERE gunluk_id=? ORDER BY daily_game.id ASC";
+            $stmt_game = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt_game, "i", $journal_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt_game)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt_game, $game_id, $game_name, $game_duration);
+                // Game Results fetched below...
+                if(mysqli_stmt_store_result($stmt_game)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt_game) > 0){
+                        echo '<table id="game-table" class="table table-bordered table-hover table-sm table-striped">';
+                        echo '<tr class="table-info"><th>Oyun</th><th>Süre</th><th>Sil</th></tr>';
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt_game)) {
+                            echo '<tr id="game-row-'.$game_id.'">
+                                    <td>'.$game_name.'</td>
+                                    <td>'.$game_duration.' Saat</td>
+                                    <td style="width: fit-content;">
+                                        <div class="remove-button">
+                                            <button onclick="deleteEntertaimmentFromDB(\'game\', '.$game_id.')" 
+                                                    type="button" 
+                                                    class="btn btn-danger mx-auto" 
+                                                    style="width: fit-content;">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="success" style="display:none;">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <span>Silindi</span>
+                                        </div>
+                                        <div class="error" style="display:none;">
+                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <span>Silinemedi!</span>
+                                            <p class="error-msg"></p>
+                                        </div>
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</table>';
+                    }
+                }
+                else{
+                    echo'<!--Error-->
+                    <div>
+                    <p id="dbError" class="error">Oyunlar için veritabanı \'store\' hatası.</p>
+                    </div>';
+                }
+            }
+
+            // Get daily series data from DB
+            $sql_series = "SELECT daily_series.id, name, begin_season, begin_episode, end_season, end_episode
+                        FROM daily_series
+                        INNER JOIN series ON daily_series.series_id=series.id 
+                        WHERE gunluk_id=? ORDER BY daily_series.id ASC";
+            $stmt_series = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt_series, "i", $journal_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt_series)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt_series, $series_id, $series_name, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
+                // Series Results fetched below...
+                if(mysqli_stmt_store_result($stmt_series)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt_series) > 0){
+                        echo '<table id="series-table" class="table table-bordered table-hover table-sm table-striped">';
+                        echo '<tr class="table-primary">
+                                <th>Dizi</th>
+                                <th>İlk sezon</th>
+                                <th>İlk bölüm</th>
+                                <th>Son sezon</th>
+                                <th>Son bölüm</th>
+                                <th>Sil</th></tr>';
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt_series)) {
+                            echo '<tr id="series-row-'.$series_id.'">
+                                    <td>'.$series_name.'</td>
+                                    <td>'.$series_begin_season.'</td>
+                                    <td>'.$series_begin_episode.'</td>
+                                    <td>'.$series_end_season.'</td>
+                                    <td>'.$series_end_episode.'</td>
+                                    <td style="width: fit-content;">
+                                        <div class="remove-button">
+                                            <button onclick="deleteEntertaimmentFromDB(\'series\', '.$series_id.')" 
+                                                    type="button" 
+                                                    class="btn btn-danger mx-auto" 
+                                                    style="width: fit-content;">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="success" style="display:none;">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <span>Silindi</span>
+                                        </div>
+                                        <div class="error" style="display:none;">
+                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <span>Silinemedi!</span>
+                                            <p class="error-msg"></p>
+                                        </div>
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</table>';
+                    }
+                }
+                else{
+                    echo'<!--Error-->
+                    <div>
+                    <p id="dbError" class="error">Diziler için veritabanı \'store\' hatası.</p>
+                    </div>';
+                }
+            }
+
+            // Get daily movie data from DB
+            $sql_movie = "SELECT daily_movie.id, name, duration
+                        FROM daily_movie
+                        INNER JOIN movie ON daily_movie.movie_id=movie.id 
+                        WHERE gunluk_id=? ORDER BY daily_movie.id ASC";
+            $stmt_movie = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt_movie, "i", $journal_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt_movie)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt_movie, $movie_id, $movie_name, $movie_duration);
+                // Movie Results fetched below...
+                if(mysqli_stmt_store_result($stmt_movie)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt_movie) > 0){
+                        echo '<table id="movie-table" class="table table-bordered table-hover table-sm table-striped">';
+                        echo '<tr class="table-success"><th>Film</th><th>Süre</th><th>Sil</th></tr>';
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt_movie)) {
+                            echo '<tr id="movie-row-'.$movie_id.'">
+                                    <td>'.$movie_name.'</td>
+                                    <td>'.$movie_duration.' Saat</td>
+                                    <td style="width: fit-content;">
+                                        <div class="remove-button">
+                                            <button onclick="deleteEntertaimmentFromDB(\'movie\', '.$movie_id.')" 
+                                                    type="button" 
+                                                    class="btn btn-danger mx-auto" 
+                                                    style="width: fit-content;">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="success" style="display:none;">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <span>Silindi</span>
+                                        </div>
+                                        <div class="error" style="display:none;">
+                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <span>Silinemedi!</span>
+                                            <p class="error-msg"></p>
+                                        </div>
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</table>';
+                    }
+                }
+                else{
+                    echo'<!--Error-->
+                    <div>
+                    <p id="dbError" class="error">Filmler için veritabanı \'store\' hatası.</p>
+                    </div>';
+                }
+            }
+
+            // Get daily book data from DB
+            $sql_book = "SELECT daily_book.id, name, duration
+                        FROM daily_book
+                        INNER JOIN book ON daily_book.book_id=book.id 
+                        WHERE gunluk_id=? ORDER BY daily_book.id ASC";
+            $stmt_book = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt_book, "i", $journal_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt_book)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt_book, $book_id, $book_name, $book_duration);
+                // Book Results fetched below...
+                if(mysqli_stmt_store_result($stmt_book)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt_book) > 0){
+                        echo '<table id="book-table" class="table table-bordered table-hover table-sm table-striped">';
+                        echo '<tr class="table-warning"><th>Kitap</th><th>Süre</th><th>Sil</th></tr>';
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt_book)) {
+                            echo '<tr id="book-row-'.$book_id.'">
+                                    <td>'.$book_name.'</td>
+                                    <td>'.$book_duration.' Saat</td>
+                                    <td style="width: fit-content;">
+                                        <div class="remove-button">
+                                            <button onclick="deleteEntertaimmentFromDB(\'book\', '.$book_id.')" 
+                                                    type="button" 
+                                                    class="btn btn-danger mx-auto" 
+                                                    style="width: fit-content;">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                        <div class="success" style="display:none;">
+                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <span>Silindi</span>
+                                        </div>
+                                        <div class="error" style="display:none;">
+                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <span>Silinemedi!</span>
+                                            <p class="error-msg"></p>
+                                        </div>
+                                    </td>
+                                </tr>';
+                        }
+                        echo '</table>';
+                    }
+                }
+                else{
+                    echo'<!--Error-->
+                    <div>
+                    <p id="dbError" class="error">Kitaplar için veritabanı \'store\' hatası.</p>
+                    </div>';
+                }
+            }
+
         }
         else{
             echo'<!--Error-->
@@ -474,7 +799,7 @@
             type="submit"
             value="Gönder"
             name="edit-submit"
-            class="btn btn-primary"
+            class="btn btn-primary bg-info"
             aria-pressed="false"
           />
         </div>
