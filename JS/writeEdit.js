@@ -352,3 +352,72 @@ function addNewEntertainment(type) {
   // Always promise --> success or fail
   request.always(function () {});
 }
+
+// Remove entertainment elements from DB
+function deleteEntertaimmentFromDB(type, daily_id) {
+  // jQuery request variable
+  var request;
+
+  // Abort any pending request
+  if (request) {
+    request.abort();
+  }
+
+  // Send request to server
+  request = $.ajax({
+    type: "POST",
+    data: { type: type, id: daily_id },
+  });
+
+  // Get row id
+  var rowId = type + "-row-" + daily_id;
+
+  // Get server's response and handle it
+  request.done(function (response, textStatus, jqXHR) {
+    // Success response
+    if (textStatus == "success") {
+      // Hide delete button
+      $("#" + rowId + " .remove-button").css({ display: "none" });
+      // If AJAX error is displayed, hide it
+      $("#" + rowId + " .error").css({ display: "none" });
+      // Show successfully deleted message
+      $("#" + rowId + " .success").css({ display: "inline" });
+
+      // After a second, delete the entire row or table (1s delay)
+      setTimeout(function () {
+        var rowCount = $("#" + type + "-table tr").length;
+        // Check table row count and remove either row or table (1 row)
+        if (rowCount === 1) {
+          $("#" + type + "-table").remove();
+        } else {
+          $("#" + rowId).remove();
+        }
+      }, 1000);
+    }
+    // Error response
+    else {
+      // Hide delete button
+      $("#" + rowId + " .remove-button").css({ display: "none" });
+      // If AJAX there is an error, display it
+      $("#" + rowId + " .error").css({ display: "inline" });
+      // Error message
+      $("#" + rowId + " .error-msg").text("AJAX error! " + response.errMsg);
+    }
+  });
+
+  // Server failure response
+  request.fail(function (jqXHR, textStatus, errorThrown) {
+    console.error("AJAX error: " + textStatus, errorThrown);
+    // Hide delete button
+    $("#" + rowId + " .remove-button").css({ display: "none" });
+    // If AJAX there is an error, display it
+    $("#" + rowId + " .error").css({ display: "inline" });
+    // Error message
+    $("#" + rowId + " .error-msg").text(
+      "AJAX error, request failed! " + jqXHR.responseText
+    );
+  });
+
+  // Always promise --> success or fail
+  request.always(function () {});
+}
