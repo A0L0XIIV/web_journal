@@ -28,6 +28,8 @@ function switchDarkTheme(isUserChangeTheme) {
   $("select").toggleClass("dark-select");
   /* Swicht modal theme*/
   $(".modal-content").toggleClass("dark-main");
+  /* Swicht modal theme*/
+  $(".table").toggleClass("table-dark");
 
   if (isUserChangeTheme) {
     // Change isDarkTheme in cookie.
