@@ -79,12 +79,12 @@
 ?>
 
 <!-- Main center div-->
-<main class="main">  
+<main class="main" style="min-height: 89vh;">  
     
     <!--Error-->
-    <div>
-        <p id="dateError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
-    </div>  
+    <div <?php if(!$error) {echo 'style="display: none;"';}?>>
+        <p id="dateError" class="error">Hata meydana geldi. <?php echo $errorText;?></p>
+    </div>    
 
     <form
         name="date-form"
@@ -95,14 +95,14 @@
     >
         <h1>Görüntüleme tarihi seçiniz:</h1>
         <!--Input for month, type=month-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="month-label">Ay</span>
             </div>
             <input type="month" name="show-month">
         </div>
         <!--Input for year, type=text-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="year-label">Yıl</span>
             </div>
@@ -341,7 +341,7 @@
                 </div>';
         }
     ?> 
-        <div class="row" id="chart-container">
+        <div class="row p-3" id="chart-container">
             <canvas id="lineGraphCanvas"></canvas>
             <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pl-sm-2 my-3">
                 <canvas id="workPieGraphCanvas"></canvas>

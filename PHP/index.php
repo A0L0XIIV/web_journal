@@ -84,68 +84,68 @@
   }
 ?>
 
-   <!-- Centered main-->
-   <main class="main">
-
-      <form
-        name="login-form"
-        id="login-form"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-        method="post"
-      >
-        <!--Input for name, type=text-->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="name-label">İsim</span>
-          </div>
-          <input
-            type="text"
-            name="name"
-            id="name-input"
-            title="Max uzunluk 50."
-            maxlength="50"
-            placeholder="..."
-            required
-          />
-          <p id="usernameError" class="error"><?php if($nameError) {echo "İsim boş olamaz!";}?></p>
+<!-- Centered main-->
+<main class="main" style="height: 90vh;">
+  <div class="mx-auto py-3">
+    <form
+      name="login-form"
+      id="login-form"
+      action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
+      method="post"
+    >
+      <!--Input for name, type=text-->
+      <div class="input-group mb-3 justify-content-center">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="name-label">İsim</span>
         </div>
+        <input
+          type="text"
+          name="name"
+          id="name-input"
+          title="Max uzunluk 50."
+          maxlength="50"
+          placeholder="..."
+          required
+        />
+        <p id="usernameError" class="error"><?php if($nameError) {echo "İsim boş olamaz!";}?></p>
+      </div>
 
-        <!--Input for user password, type=password-->
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="pw-label">Şifre</span>
-          </div>
-          <input
-            type="password"
-            name="password"
-            id="password-input"
-            title="Max uzunluk 50."
-            maxlength="50"
-            placeholder="..."
-            required
-          />
-          <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
+      <!--Input for user password, type=password-->
+      <div class="input-group mb-3 justify-content-center">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="pw-label">Şifre</span>
         </div>
+        <input
+          type="password"
+          name="password"
+          id="password-input"
+          title="Max uzunluk 50."
+          maxlength="50"
+          placeholder="..."
+          required
+        />
+        <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
+      </div>
 
-        <!--Login error-->
-        <div>
-            <p id="authError" class="error"><?php if($authError) {echo "Hatalı giriş!";}?></p>
-            <p id="successAuth" class="success"><?php if($successAuth) {echo "Giriş başarılı!";}?></p>
-        </div>
+      <!--Login error-->
+      <div>
+          <p id="authError" class="error"><?php if($authError) {echo "Hatalı giriş!";}?></p>
+          <p id="successAuth" class="success"><?php if($successAuth) {echo "Giriş başarılı!";}?></p>
+      </div>
 
-        <!--Input for submitting the form, type=submit-->
-        <div>
-          <input
-            type="submit"
-            value="Gönder"
-            name="login-submit"
-            class="btn btn-primary"
-            aria-pressed="false"
-          />
-        </div>
-      </form>
-      <br /><br />
-    </main>
+      <!--Input for submitting the form, type=submit-->
+      <div>
+        <input
+          type="submit"
+          value="Gönder"
+          name="login-submit"
+          class="btn btn-primary bg-dark"
+          aria-pressed="false"
+        />
+      </div>
+    </form>
+  </div>
+</main>
 
 <?php
     require "footer.php";

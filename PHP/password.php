@@ -62,7 +62,7 @@
 ?>
 
    <!-- Centered main-->
-   <main class="main">
+   <main class="main" style="min-height: 90vh;">
 
       <form
         name="login-form"
@@ -81,7 +81,7 @@
         </h1>
 
         <!--Input for user password, type=password-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
           <div class="input-group-prepend">
             <span class="input-group-text" id="pw-label">Şifre</span>
           </div>

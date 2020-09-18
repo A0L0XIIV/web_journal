@@ -389,7 +389,7 @@
 ?>
 
 <!-- Main center div-->
-<main class="main">    
+<main class="main" style="min-height: 91vh;">    
 
     <!--Success-->
     <div <?php if(!$success) echo 'style="display: none;"';?>>

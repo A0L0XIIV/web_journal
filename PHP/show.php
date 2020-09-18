@@ -3,7 +3,7 @@
     // Check if the session variable name is empty or not and redirect
     if ($_SERVER["REQUEST_METHOD"] === "GET"
         && !isset($_SESSION['name'])) {
-        exit("<script>location.href = './index.php';</script>"); 
+        exit("<script>location.href = './index.php';</script>");
     }
 ?>
 
@@ -84,11 +84,11 @@
 ?>
 
 <!-- Main center div-->
-<main class="main">  
+<main class="main" style="min-height: 89vh;">
     
     <!--Error-->
-    <div>
-        <p id="dateError" class="error"><?php if($error) {echo "Hata meydana geldi. ".$errorText;}?></p>
+    <div <?php if(!$error) {echo 'style="display: none;"';}?>>
+        <p id="dateError" class="error">Hata meydana geldi. <?php echo $errorText;?></p>
     </div>  
 
     <form
@@ -100,21 +100,21 @@
     >
         <h1>Görüntüleme tarihi seçiniz:</h1>
         <!--Input for date, type=date-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="day-label">Gün</span>
             </div>
             <input type="date" name="show-date">
         </div>
         <!--Input for month, type=month-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="month-label">Ay</span>
             </div>
             <input type="month" name="show-month">
         </div>
         <!--Input for year, type=text-->
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 justify-content-center">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="year-label">Yıl</span>
             </div>
