@@ -211,7 +211,8 @@ select:hover {
   }
 
   main,
-  .modal-content {
+  .modal-content,
+  .table {
     background: #444444 !important;
     color: #ffffff;
   }
