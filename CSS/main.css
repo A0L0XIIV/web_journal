@@ -1,5 +1,9 @@
 /* --- HTML tags --- */
 /*Body sizes, font decorations, background image*/
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-size: 1.5rem;
@@ -225,7 +229,7 @@ select:hover {
   }
 
   #dark-theme-selection {
-    display: none;
+    visibility: hidden;
   }
 }
 /* --- Dark Theme  --- */
