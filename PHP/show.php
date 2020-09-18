@@ -156,7 +156,7 @@
                     echo '
                         <div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
                             <div class="col-xs-6 col-sm-2 px-0">
-                                <button class="btn btn-primary bg-warning btn-sm p-0">
+                                <button class="btn btn-primary bg-primary btn-sm p-0">
                                     <a href="edit.php?date='.explode(" ",$journal_date)[0].'" class="btn text-white">Güncelle</a>
                                 </button>
                             </div>
@@ -335,7 +335,7 @@
                     $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
                                 FROM daily_series
                                 INNER JOIN series ON daily_series.series_id=series.id 
-                                WHERE gunluk_id=? ORDER BY name daily_series.id ASC";
+                                WHERE gunluk_id=? ORDER BY daily_series.id ASC";
                     $stmt_series = mysqli_stmt_init($conn);
                     if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
                         $error = true;
