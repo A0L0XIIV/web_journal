@@ -519,6 +519,312 @@
                     <input type="text" name="date" value="'.$date.'" hidden/>';
             }
 
+            ?>
+            <hr>
+            <button 
+                type="button" 
+                class="btn btn-success"
+                id="newEntertainmentMenuButton"
+                onclick="$('#newEntertainmentMenu').css({ display: 'inline' });
+                $('#newEntertainmentMenuButton').css({ display: 'none' });">
+                Yeni Eğlence Ekle
+            </button>
+            <div id="newEntertainmentMenu" style="display: none;">
+
+                <!--Daily Entertainment: Playing Games-->
+                <div class="daily-game">
+                    <button type="button"
+                            class="btn btn-info"
+                            id="add-game-btn"
+                            onclick="getEntertainmentNames('game');">
+                            Oyun Ekle
+                    </button>
+                    
+                    <div id="add-game" style="display:none;">
+                        <!--Add a game, name & duration-->
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-6">
+                                <select name="game-select"
+                                        id="game-select" 
+                                        class="custom-select"
+                                        onchange="openNewEntertainmentModal('game')">
+                                    <option value="0" hidden selected>Hangi oyunu oynadın?</option>
+                                    <option value="" class="opt10">YENi OYUN EKLE</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-3 col-sm-6">
+                                <input 
+                                    type="number" 
+                                    name="game-duration" 
+                                    placeholder="Süre (Saat)"
+                                    id="game-duration"
+                                    min="0"
+                                    max="24"
+                                    step="0.5"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                            </div>
+                        </div>
+                        <!--Add a game to list & error messages-->
+                        <div class="mx-auto" style="width:100%">
+                            <button type="button"
+                                    class="btn btn-info mt-2 mx-auto"
+                                    onclick="addToTheList('game')">
+                                    Ekle
+                            </button>
+                        </div>
+                        <p id="game-add-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Oyun adı ya da süresi uygun değil.
+                        </p>
+                        <p id="game-exist-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Oyun zaten var, silip tekrar ekleyebilirsin.
+                        </p>
+                        <!--Game list-->
+                        <ul id="game-list" class="mb-0 px-3"></ul>
+                    </div>
+
+                    <div id="get-game-names-error" style="display: none;">
+                        <p class="error">ERROR (AJAX): Couldn't get game names from server.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Daily Entertainment: Watching Series-->
+                <div class="daily-series">
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="add-series-btn"
+                            onclick="getEntertainmentNames('series');">
+                            Dizi Ekle
+                    </button>
+                    
+                    <div id="add-series" style="display:none;">
+                        <!--Add a series, name & episodes-->
+                        <select name="series-select"
+                                id="series-select" 
+                                class="custom-select" 
+                                onchange="openNewEntertainmentModal('series')">
+                            <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
+                            <option value="" class="opt10">YENi DİZİ EKLE</option>
+                        </select>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-6">
+                                <p>Başlangıç:</p>
+                                <input 
+                                    type="number" 
+                                    name="series-season-begin" 
+                                    placeholder="Sezon (İlk izlenen)"
+                                    id="series-season-begin"
+                                    min="0"
+                                    max="50"
+                                    step="1"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                                <input 
+                                    type="number" 
+                                    name="series-episode-begin" 
+                                    placeholder="Bölüm (İlk izlenen)"
+                                    id="series-episode-begin"
+                                    min="0"
+                                    max="50"
+                                    step="1"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                            </div>
+                            <div class="col-xs-3 col-sm-6">
+                                <p>Bitiş:</p>
+                                <input 
+                                    type="number" 
+                                    name="series-season-end" 
+                                    placeholder="Sezon (Son izlenen)"
+                                    id="series-season-end"
+                                    min="0"
+                                    max="50"
+                                    step="1"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                                <input 
+                                    type="number" 
+                                    name="series-episode-end" 
+                                    placeholder="Bölüm (Son izlenen)"
+                                    id="series-episode-end"
+                                    min="0"
+                                    max="50"
+                                    step="1"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                            </div>
+                        </div>
+                        <!--Add a series to list & error messages-->
+                        <div class="mx-auto" style="width:100%">
+                            <button type="button"
+                                    class="btn btn-primary mt-2 mx-auto"
+                                    onclick="addToTheList('series')">
+                                    Ekle
+                            </button>
+                        </div>
+                        <p id="series-add-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Dizi adı ya da bölümleri uygun değil. <br>
+                                Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
+                        </p>
+                        <p id="series-exist-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Dizi zaten var, silip tekrar ekleyebilirsin.
+                        </p>
+                        <!--Series list-->
+                        <ul id="series-list" class="mb-0 px-3"></ul>
+                    </div>
+
+                    <div id="get-series-names-error" style="display: none;">
+                        <p class="error">ERROR (AJAX): Couldn't get series names from server.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Daily Entertainment: Watching movies-->
+                <div class="daily-movie">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            id="add-movie-btn"
+                            onclick="getEntertainmentNames('movie');">
+                            Film Ekle
+                    </button>
+                    
+                    <div id="add-movie" style="display:none;">
+                        <!--Add a movie, name & duration-->
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-6">
+                                <select name="movie-select"
+                                        id="movie-select" 
+                                        class="custom-select" 
+                                        onchange="openNewEntertainmentModal('movie')">
+                                    <option value="0" hidden selected>Hangi filmi seyrettin?</option>
+                                    <option value="" class="opt10">YENI FILM EKLE</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-3 col-sm-6">
+                                <input 
+                                    type="number" 
+                                    name="movie-duration" 
+                                    placeholder="Süre (Saat)"
+                                    id="movie-duration"
+                                    min="0"
+                                    max="24"
+                                    step="0.5"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                            </div>
+                        </div>
+                        <!--Add a movie to list & error messages-->
+                        <div class="mx-auto" style="width:100%">
+                            <button type="button"
+                                    class="btn btn-secondary mt-2 mx-auto"
+                                    onclick="addToTheList('movie')">
+                                    Ekle
+                            </button>
+                        </div>
+                        <p id="movie-add-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Film adı ya da süresi uygun değil.
+                        </p>
+                        <p id="movie-exist-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Film zaten var, silip tekrar ekleyebilirsin.
+                        </p>
+                        <!--Movie list-->
+                        <ul id="movie-list" class="mb-0 px-3"></ul>
+                    </div>
+
+                    <div id="get-movie-names-error" style="display: none;">
+                        <p class="error">ERROR (AJAX): Couldn't get movie names from server.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!--Daily Entertainment: Book Reading-->
+                <div class="daily-book">
+                    <button type="button"
+                            class="btn btn-warning"
+                            id="add-book-btn"
+                            onclick="getEntertainmentNames('book');">
+                            Kitap Ekle
+                    </button>
+                    
+                    <div id="add-book" style="display:none;">
+                        <!--Add a book, name & duration-->
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-6">
+                                <select name="book-select"
+                                        id="book-select" 
+                                        class="custom-select" 
+                                        onchange="openNewEntertainmentModal('book')">
+                                    <option value="0" hidden selected>Hangi kitabi okudun?</option>
+                                    <option value="" class="opt10">YENI KITAP EKLE</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-3 col-sm-6">
+                                <input 
+                                    type="number" 
+                                    name="book-duration" 
+                                    placeholder="Süre (Saat)"
+                                    id="book-duration"
+                                    min="0"
+                                    max="24"
+                                    step="0.5"
+                                    minlength="0"
+                                    maxlength="2"
+                                    style="width:45%;">
+                            </div>
+                        </div>
+                        <!--Add a book to list & error messages-->
+                        <div class="mx-auto" style="width:100%">
+                            <button type="button"
+                                    class="btn btn-warning mt-2 mx-auto"
+                                    onclick="addToTheList('book')">
+                                    Ekle
+                            </button>
+                        </div>
+                        <p id="book-add-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Kitap adı ya da süresi uygun değil.
+                        </p>
+                        <p id="book-exist-error" 
+                                class="error mx-auto" 
+                                style="display:none;">
+                                Kitap zaten var, silip tekrar ekleyebilirsin.
+                        </p>
+                        <!--Book list-->
+                        <ul id="book-list" class="mb-0 px-3"></ul>
+                    </div>
+
+                    <div id="get-book-names-error" style="display: none;">
+                        <p class="error">ERROR (AJAX): Couldn't get book names from server.</p>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+            <?php
+
             // Get daily game data from DB
             $sql_game = "SELECT daily_game.id, name, duration
                         FROM daily_game
