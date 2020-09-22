@@ -63,10 +63,10 @@ function addToTheList(type) {
   var seriesError = false;
   if (type === "series") {
     // Get begin and end episode number
-    var beginSeason = $("#series-season-begin").val();
-    var beginEpisode = $("#series-episode-begin").val();
-    var endSeason = $("#series-season-end").val();
-    var endEpisode = $("#series-episode-end").val();
+    var beginSeason = Number($("#series-season-begin").val());
+    var beginEpisode = Number($("#series-episode-begin").val());
+    var endSeason = Number($("#series-season-end").val());
+    var endEpisode = Number($("#series-episode-end").val());
     // Check season and episode errors
     if (
       beginSeason == null ||
