@@ -10,6 +10,7 @@ $styles = [
 $scripts = [
     'write.php' => 'writeEdit.js',
     'edit.php' => 'writeEdit.js',
+    'show.php' => 'show.js',
     'graph.php' => 'graph.js',
 ];
 // Individual page titles

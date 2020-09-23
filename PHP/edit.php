@@ -1,5 +1,5 @@
 <?php
-    // Entertainment AJAX request handler
+    // Get entertainments AJAX request handler
 
     // Database connection
     require "./mysqli_connect.php";

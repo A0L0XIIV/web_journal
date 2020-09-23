@@ -18,7 +18,7 @@
     $book_name = $book_duration = "";
     $error = false;
     $errorText = "";
-    $isDatePicked = false;
+    $isSubmitted = false;
 
     // Get name from session
     $name = $_SESSION['name'];
@@ -30,15 +30,19 @@
     require "./mysqli_connect.php";
 
     // Check request method for post
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if(!empty($_POST["show-date"])){
-            $date = test_input($_POST["show-date"]);
+    if ($_SERVER["REQUEST_METHOD"] == "GET" 
+        && (isset($_GET["journal-date"])
+        || isset($_GET["journal-month"])
+        || isset($_GET["journal-year"]))) {
+
+        if(!empty($_GET["journal-date"])){
+            $date = test_input($_GET["journal-date"]);
         }
-        else if(!empty($_POST["show-month"])){
-            $date = test_input($_POST["show-month"]);
+        else if(!empty($_GET["journal-month"])){
+            $date = test_input($_GET["journal-month"]);
         }
-        else if(!empty($_POST["show-year"])){
-            $date = test_input($_POST["show-year"]);
+        else if(!empty($_GET["journal-year"])){
+            $date = test_input($_GET["journal-year"]);
         }
         else{
             $error = true;
@@ -46,7 +50,7 @@
         }
 
         if(!empty($date)){
-            $isDatePicked = true;
+            $isSubmitted = true;
             // Check DB for picked date
             $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
                     FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC";
@@ -83,6 +87,24 @@
       }
 ?>
 
+<?php/*
+    // define variables and set to empty values
+    $journal_id = "";
+    $work_happiness = $daily_happiness = $total_happiness = $content = "";
+    $date = "";
+    $game_name = $game_duration = "";
+    $series_name = $series_begin_season = $series_begin_episode = $series_end_season = $series_end_episode = "";
+    $movie_name = $movie_duration = "";
+    $book_name = $book_duration = "";
+    $error = false;
+    $errorText = "";
+    $isSubmitted = false;
+
+    // Check request method for post
+    if ($_SERVER["REQUEST_METHOD"] == "POST" 
+        && isset($_POST["date-picker-submit"])) {*/
+?>
+
 <!-- Main center div-->
 <main class="main" style="min-height: 89vh;">
     
@@ -91,55 +113,189 @@
         <p id="dateError" class="error">Hata meydana geldi. <?php echo $errorText;?></p>
     </div>  
 
-    <form
-        name="date-form"
-        id="date-form"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-        method="post"
-        <?php if($isDatePicked) echo 'style="display: none;"';?>
-    >
-        <h1>Görüntüleme tarihi seçiniz:</h1>
-        <!--Input for date, type=date-->
-        <div class="input-group mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="day-label">Gün</span>
-            </div>
-            <input type="date" name="show-date">
-        </div>
-        <!--Input for month, type=month-->
-        <div class="input-group mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="month-label">Ay</span>
-            </div>
-            <input type="month" name="show-month">
-        </div>
-        <!--Input for year, type=text-->
-        <div class="input-group mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="year-label">Yıl</span>
-            </div>
-            <input type="number" name="show-year" min="1000" max="9999" title="Sadece 4 rakam">
-        </div>
+    <div <?php if($isSubmitted) echo 'style="display: none;"';?>>
 
-        <hr>
+        <!-- Get journal by date  -->
+        <form
+            name="date-form"
+            id="date-form"
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
+            method="get"
+            onsubmit="return journalDateSubmit()"
+        >
+            <h1>Günlük görüntüleme tarihi seçiniz:</h1>
+            <!--Input for date, type=date-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="day-label">Gün</span>
+                </div>
+                <input type="date" name="journal-date" id="journal-date-input">
+            </div>
+            <!--Input for month, type=month-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="month-label">Ay</span>
+                </div>
+                <input type="month" name="journal-month" id="journal-month-input">
+            </div>
+            <!--Input for year, type=text-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="year-label">Yıl</span>
+                </div>
+                <input type="number" name="journal-year" id="journal-year-input" min="1000" max="9999" title="Sadece 4 rakam">
+            </div>
 
-        <!--Input for submitting the form, type=submit-->
-        <div>
-          <input
-            type="submit"
-            value="Gönder"
-            name="date-picker-submit"
-            class="btn btn-primary bg-primary"
-            aria-pressed="false"
-          />
-        </div>
+            <br>
 
-        <br>
-    </form> 
+            <!--Input for submitting the form, type=submit-->
+            <div>
+            <input
+                type="submit"
+                value="Göster"
+                name="date-picker-submit"
+                id="date-picker-submit"
+                class="btn btn-success bg-primary"
+                aria-pressed="false"
+            />
+            </div>
+
+            <hr>
+        </form> 
+
+        <!-- Get game by name -->
+        <form 
+            name="game-form"
+            id="game-form"
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" 
+            method="get">
+            <h3>Oyun seçiniz:</h3>
+
+            <!--Input for date, type=date-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="game-label">Oyun ismi</span>
+                </div>
+                <select name="game-select"
+                        id="game-select" 
+                        class="custom-select"
+                        onclick="getEntertainmentNames('game')">
+                    <option value="0" hidden selected>Oyun seç</option>
+                </select>
+                <input type="hidden" name="game-name" id="game-name-input">
+            </div>
+
+            <!--Input for submitting the form, type=submit-->
+            <div>
+                <input
+                    type="submit"
+                    value="Göster"
+                    name="game-submit"
+                    id="game-submit"
+                    class="btn btn-info bg-primary"
+                    aria-pressed="false"
+                />
+            </div>
+
+            <hr>
+        </form>
+
+        <!-- Get series by name -->
+        <form 
+            name="series-form"
+            id="series-form"
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" 
+            method="get">
+            <h3>Dizi seçiniz:</h3>
+
+            <!--Input for date, type=date-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="day-label">Gün</span>
+                </div>
+                <input type="date" name="journal-date" id="journal-date-input">
+            </div>
+
+            <!--Input for submitting the form, type=submit-->
+            <div>
+                <input
+                    type="submit"
+                    value="Göster"
+                    name="series-submit"
+                    id="series-submit"
+                    class="btn btn-primary bg-primary"
+                    aria-pressed="false"
+                />
+            </div>
+
+            <hr>
+        </form>
+
+        <!-- Get movie by name -->
+        <form 
+            name="movie-form"
+            id="movie-form"
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" 
+            method="get">
+            <h3>Film seçiniz:</h3>
+
+            <!--Input for date, type=date-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="day-label">Gün</span>
+                </div>
+                <input type="date" name="journal-date" id="journal-date-input">
+            </div>
+
+            <!--Input for submitting the form, type=submit-->
+            <div>
+                <input
+                    type="submit"
+                    value="Göster"
+                    name="movie-submit"
+                    id="movie-submit"
+                    class="btn btn-secondary bg-primary"
+                    aria-pressed="false"
+                />
+            </div>
+
+            <hr>
+        </form>
+
+        <!-- Get book by name -->
+        <form 
+            name="book-form"
+            id="book-form"
+            action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" 
+            method="get">
+            <h3>Kitap seçiniz:</h3>
+
+            <!--Input for date, type=date-->
+            <div class="input-group mb-3 justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="day-label">Gün</span>
+                </div>
+                <input type="date" name="journal-date" id="journal-date-input">
+            </div>
+
+            <!--Input for submitting the form, type=submit-->
+            <div>
+                <input
+                    type="submit"
+                    value="Göster"
+                    name="book-submit"
+                    id="book-submit"
+                    class="btn btn-warning bg-primary"
+                    aria-pressed="false"
+                />
+            </div>
+        </form>
+
+    </div>
 
     <!-- 2 parts, 1 of them hidden -->
 
-    <div <?php if(!$isDatePicked) echo 'style="display: none;"';?>>
+    <div <?php if(!$isSubmitted) echo 'style="display: none;"';?>>
         <h1><?php
             if(isset($_SESSION['name'])){
                 echo $_SESSION['name'].', ';
