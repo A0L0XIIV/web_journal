@@ -65,6 +65,7 @@ input:required {
 
 textarea {
   text-align: justify;
+  width: 80%;
 }
 /* --- Inputs --- */
 
@@ -264,7 +265,7 @@ select:hover {
   input[type="search"],
   select {
     width: 20rem !important;
-    height: 2rem !important;
+    height: 2.4rem !important;
     font-size: 1.2rem !important;
   }
 
