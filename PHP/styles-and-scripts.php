@@ -8,8 +8,8 @@ $styles = [
 ];
 // Individual script files
 $scripts = [
-    'write.php' => 'writeEdit.js',
-    'edit.php' => 'writeEdit.js',
+    'write.php' => 'write-edit.js',
+    'edit.php' => 'write-edit.js',
     'show.php' => 'show.js',
     'graph.php' => 'graph.js',
 ];

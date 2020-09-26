@@ -29,32 +29,32 @@
                     echo '<ul class="navbar-nav mx-auto row" style="width:75%;">     
                             <li class="nav-item mx-auto mt-3 mt-sm-0 col-xs-0 col-sm-2 active">
                                 <button class="btn btn-success btn-block p-0">
-                                    <a href="write.php" class="btn text-white">Yeni Yaz</a>
+                                    <a href="write.php" class="btn text-white" style="width: 100%;">Yeni Yaz</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
                                 <button class="btn btn-info btn-block p-0">
-                                    <a href="edit.php" class="btn text-white">Güncelle</a>
+                                    <a href="edit.php" class="btn text-white" style="width: 100%;">Güncelle</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
                                 <button class="btn btn-primary btn-block p-0">
-                                    <a href="show.php" class="btn text-white">Görüntüle</a>
+                                    <a href="show.php" class="btn text-white" style="width: 100%;">Görüntüle</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
                                 <button class="btn btn-warning btn-block p-0">
-                                    <a href="graph.php" class="btn text-white">Grafik</a>
+                                    <a href="graph.php" class="btn text-white" style="width: 100%;">Grafik</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
                                 <button class="btn btn-secondary btn-block p-0">
-                                    <a href="password.php" class="btn text-white">Şifre</a>
+                                    <a href="password.php" class="btn text-white" style="width: 100%;">Şifre</a>
                                 </button>
                             </li>
                             <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
                                 <button class="btn btn-danger btn-block p-0">
-                                    <a href="header.php?action=logout" class="btn text-white">Çıkış yap</a>
+                                    <a href="header.php?action=logout" class="btn text-white" style="width: 100%;">Çıkış yap</a>
                                 </button>
                             </li>';
                 }
@@ -62,7 +62,7 @@
                     echo '<ul class="navbar-nav mr-auto">
                             <li class="nav-item mx-auto">
                                 <button class="btn btn-dark btn-block p-0">
-                                    <a href="index.php" class="btn btn-dark">Giriş yap</a>
+                                    <a href="index.php" class="btn btn-dark" style="width: 100%;">Giriş yap</a>
                                 </button>
                             </li>';
                 }
