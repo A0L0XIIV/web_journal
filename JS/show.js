@@ -5,17 +5,14 @@ function journalDateSubmit(){
     // Journal date
     if(!$("#journal-date-input").val()){
         $("#journal-date-input").prop('disabled', true);
-        console.log("1");
     }
     // Journal month
     if(!$("#journal-month-input").val()){
         $("#journal-month-input").prop('disabled', true);
-        console.log("21");
     }
     // Journal year
     if(!$("#journal-year-input").val()){
         $("#journal-year-input").prop('disabled', true);
-        console.log("31");
     }
 
     return true;
