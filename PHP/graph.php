@@ -17,31 +17,36 @@
     $date = "";
     $error = false;
     $errorText = "";
-    $isDatePicked = false;
+    $showSection = 0;
+
     // Get name from session
     $name = $_SESSION['name'];
     // Check if name is empty or not and redirect
-    if($name == "" || $name == NULL)      
+    if($name == "" || $name == NULL || $_SERVER["REQUEST_METHOD"] !== "GET")      
         echo("<script>location.href = './index.php';</script>"); 
   
     // Database connection
     require "./mysqli_connect.php";
 
-    // Check request method for post
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if(!empty($_POST["show-month"])){
-            $date = test_input($_POST["show-month"]);
+    // Journal graph request handler
+    if (isset($_GET["month"])
+        || isset($_GET["year"])) {
+
+        if(!empty($_GET["month"])){
+            $date = test_input($_GET["month"]);
         }
-        else if(!empty($_POST["show-year"])){
-            $date = test_input($_POST["show-year"]);
+        else if(!empty($_GET["year"])){
+            $date = test_input($_GET["year"]);
         }
         else{
             $error = true;
-            $errorText = "Üç tarihte boş!";
+            $errorText = "İki tarihte boş!";
         }
 
         if(!empty($date)){
-            $isDatePicked = true;
+            // Show section update
+            $showSection = 1;
+
             // Check DB for picked date
             $sql = "SELECT work_happiness, daily_happiness, total_happiness, date 
                     FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date ASC";
@@ -66,76 +71,322 @@
         }
         else{
             $error = true;
-            $errorText = "Gün, ay ya da yıl seçip gönderin.";
+            $errorText = "Ay ya da yıl seçin.";
         }
     }
 
+    // Game name form handler for showing game data
+    else if(isset($_GET["game-id"])){
+        $sql = 'SELECT DATE(date), duration FROM daily_game
+                RIGHT JOIN gunluk ON gunluk_id=gunluk.id
+                WHERE name=?
+                AND game_id=?
+                ORDER BY date'
+        $sql = 'SELECT date, duration FROM (SELECT * FROM daily_game WHERE game_id=?) AS g
+                RIGHT JOIN gunluk ON g.gunluk_id=gunluk.id
+                WHERE name=?
+                AND DATE(date) >= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created ASC LIMIT 1)) - 1
+                AND DATE(date) <= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created DESC LIMIT 1)) + 1
+                ORDER BY date';
+    }
+
+    // Initial GET request to load page: load select-options from DB
+    else {
+        // Show section update
+        $showSection = 0;
+
+        // Get game names
+        $sql_game = "SELECT name, id FROM game";
+        $stmt_game = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
+            $error = true;
+            $errorText = "Hata: ".mysqli_error($conn);
+        }
+        else{
+            // Execute sql statement
+            mysqli_stmt_execute($stmt_game);
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt_game)){
+                $error = true;
+                $errorText = "Oyunları yükleme hatası ".mysqli_error($conn);
+            }
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt_game, $game_name, $game_id);
+            // Game name results fetched below...
+            if(mysqli_stmt_store_result($stmt_game)){
+                // Check if DB returned any result
+                if(mysqli_stmt_num_rows($stmt_game) > 0){
+                    // Fetch values
+                    while (mysqli_stmt_fetch($stmt_game)) {
+                        $gameArray [htmlspecialchars($game_id)] =  $game_name;
+                    }
+                }
+            }
+        }
+
+        // Get series names
+        $sql_series = "SELECT name, id FROM series";
+        $stmt_series = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
+            $error = true;
+            $errorText = "Hata: ".mysqli_error($conn);
+        }
+        else{
+            // Execute sql statement
+            mysqli_stmt_execute($stmt_series);
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt_series)){
+                $error = true;
+                $errorText = "Dizileri yükleme hatası ".mysqli_error($conn);
+            }
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt_series, $series_name, $series_id);
+            // Series name results fetched below...
+            if(mysqli_stmt_store_result($stmt_series)){
+                // Check if DB returned any result
+                if(mysqli_stmt_num_rows($stmt_series) > 0){
+                    // Fetch values
+                    while (mysqli_stmt_fetch($stmt_series)) {
+                        $seriesArray [htmlspecialchars($series_id)] =  $series_name;
+                    }
+                }
+            }
+        }
+
+        // Get book names
+        $sql_book = "SELECT name, id FROM book";
+        $stmt_book = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
+            $error = true;
+            $errorText = "Hata: ".mysqli_error($conn);
+        }
+        else{
+            // Execute sql statement
+            mysqli_stmt_execute($stmt_book);
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt_book)){
+                $error = true;
+                $errorText = "Kitapları yükleme hatası ".mysqli_error($conn);
+            }
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt_book, $book_name, $book_id);
+            // Book name results fetched below...
+            if(mysqli_stmt_store_result($stmt_book)){
+                // Check if DB returned any result
+                if(mysqli_stmt_num_rows($stmt_book) > 0){
+                    // Fetch values
+                    while (mysqli_stmt_fetch($stmt_book)) {
+                        $bookArray [htmlspecialchars($book_id)] =  $book_name;
+                    }
+                }
+            }
+        }
+    }
+
+    
     function test_input($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
-      }
+    }
+
 ?>
 
 <!-- Main center div-->
 <main class="main" style="min-height: 89vh;">  
     
-    <!--Error-->
-    <div <?php if(!$error) {echo 'style="display: none;"';}?>>
-        <p id="dateError" class="error">Hata meydana geldi. <?php echo $errorText;?></p>
-    </div>    
+    <!--Error--> 
+    <?php
+    if($error) {
+        echo '<div>
+                <p id="dateError" class="error">Hata meydana geldi. '.$errorText.'</p>
+            </div>';
+    }
 
-    <form
-        name="date-form"
-        id="date-form"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-        method="post"
-        <?php if($isDatePicked) echo 'style="display: none;"';?>
-    >
-        <h1>Görüntüleme tarihi seçiniz:</h1>
-        <!--Input for month, type=month-->
-        <div class="input-group mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="month-label">Ay</span>
-            </div>
-            <input type="month" name="show-month">
-        </div>
-        <!--Input for year, type=text-->
-        <div class="input-group mb-3 justify-content-center">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="year-label">Yıl</span>
-            </div>
-            <input type="number" name="show-year" min="1000" max="9999" title="Sadece 4 rakam">
-        </div>
-
-        <hr>
-
-        <!--Input for submitting the form, type=submit-->
+    // Section 0 of 5, submit forms
+    if($showSection === 0){
+        echo'
         <div>
-          <input
-            type="submit"
-            value="Gönder"
-            name="date-picker-submit"
-            class="btn btn-primary bg-warning"
-            aria-pressed="false"
-          />
-        </div>
 
-        <br>
-    </form> 
+            <!-- Get journal by date  -->
+            <form
+                name="date-form"
+                id="date-form"
+                action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
+                method="get"
+                onsubmit="return journalDateSubmit()">
 
-    <!-- 2 parts, 1 of them hidden -->
+                <h1>Günlük grafiği görüntüleme tarihi seçiniz:</h1>
 
-    <div <?php if(!$isDatePicked) echo 'style="display: none;"';?>>
-        <h1><?php
-            if(isset($_SESSION['name'])){
-                echo $_SESSION['name'].', ';
-            }
-            echo $date.' tarihili mutluluk grafiğin';
-        ?></h1>
+                <!--Input for month, type=month-->
+                <div class="input-group mb-3 justify-content-center">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="month-label">Ay</span>
+                    </div>
+                    <input type="month" name="month" id="journal-month-input">
+                </div>
 
-    <?php 
+                <!--Input for year, type=text-->
+                <div class="input-group mb-3 justify-content-center">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="year-label">Yıl</span>
+                    </div>
+                    <input type="number" name="year" id="journal-year-input" min="1000" max="9999" title="Sadece 4 rakam">
+                </div>
+
+                <br>
+
+                <!--Button for submitting the form-->
+                <div>
+                    <button
+                        type="submit"
+                        id="date-picker-submit"
+                        class="btn btn-success bg-warning"
+                        aria-pressed="false"
+                    >
+                    Göster
+                    </button>
+                </div>
+
+                <hr>
+            </form> 
+
+            <!-- Get game by name -->
+            <form 
+                name="game-form"
+                id="game-form"
+                action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" 
+                method="get">
+                <h3>Oyun seçiniz:</h3>
+
+                <!--Select for game, hidden input for request-->
+                <div class="mb-3 justify-content-center">
+                    <select name="game-id"
+                            id="game-select" 
+                            class="custom-select">
+                        <option value="" hidden selected>Oyun seç</option>';
+                        
+                        if(empty($gameArray)){
+                            echo '<option value="" class="error">Oyun bulunamadı</option>';
+                        }
+                        else{
+                            foreach($gameArray as $key => $value)
+                                echo '<option value="'.$key.'">'.$value.'</option>';
+                        }
+                    echo '
+                    </select>
+                </div>
+
+                <!--Button for submitting the form-->
+                <div>
+                    <button
+                        type="submit"
+                        id="game-submit"
+                        class="btn btn-info bg-warning"
+                        aria-pressed="false"
+                    >
+                    Göster
+                    </button>
+                </div>
+
+                <hr>
+            </form>
+
+            <!-- Get series by name -->
+            <form 
+                name="series-form"
+                id="series-form"
+                action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" 
+                method="get">
+                <h3>Dizi seçiniz:</h3>
+
+                <!--Select for series, hidden input for request-->
+                <div class="mb-3 justify-content-center">
+                    <select name="series-id"
+                            id="series-select" 
+                            class="custom-select">
+                        <option value="" hidden selected>Dizi seç</option>';
+                        
+                        if(empty($seriesArray)){
+                            echo '<option value="" class="error">Dizi bulunamadı</option>';
+                        }
+                        else{
+                            foreach($seriesArray as $key => $value)
+                                echo '<option value="'.$key.'">'.$value.'</option>';
+                        }
+                    echo '
+                    </select>
+                </div>
+
+                <!--Button for submitting the form-->
+                <div>
+                    <button
+                        type="submit"
+                        id="series-submit"
+                        class="btn btn-primary bg-warning"
+                        aria-pressed="false"
+                    >
+                    Göster
+                    </button>
+                </div>
+
+                <hr>
+            </form>
+
+            <!-- Get book by name -->
+            <form 
+                name="book-form"
+                id="book-form"
+                action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'" 
+                method="get">
+                <h3>Kitap seçiniz:</h3>
+
+                <!--Select for book, hidden input for request-->
+                <div class="mb-3 justify-content-center">
+                    <select name="book-id"
+                            id="book-select" 
+                            class="custom-select">
+                        <option value="" hidden selected>Kitap seç</option>';
+                        
+                        if(empty($bookArray)){
+                            echo '<option value="" class="error">Kitap bulunamadı</option>';
+                        }
+                        else{
+                            foreach($bookArray as $key => $value)
+                                echo '<option value="'.$key.'">'.$value.'</option>';
+                        }
+                    echo '
+                    </select>
+                </div>
+
+                <!--Button for submitting the form-->
+                <div>
+                    <button
+                        type="submit"
+                        id="book-submit"
+                        class="btn btn-warning bg-warning"
+                        aria-pressed="false"
+                    >
+                    Göster
+                    </button>
+                </div>
+            </form>
+
+            <br>
+        </div>';
+    }
+
+    // Section 1 of 5, show journal graph
+    else if($showSection === 1){
+        echo'<div>
+            <h1>';
+                if(isset($_SESSION['name'])){
+                    echo $_SESSION['name'].', ';
+                }
+                echo $date.' tarihili mutluluk grafiğin';
+        echo '</h1>';
+
         // Store SQL results
         if(mysqli_stmt_store_result($stmt)){
             // Check if DB returned any result
@@ -340,20 +591,62 @@
                     <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
                 </div>';
         }
-    ?> 
-        <div class="row p-3" id="chart-container">
-            <canvas id="lineGraphCanvas"></canvas>
-            <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pl-sm-2 my-3">
-                <canvas id="workPieGraphCanvas"></canvas>
+
+        echo '
+            <div class="row p-3" id="chart-container">
+                <canvas id="lineGraphCanvas"></canvas>
+
+                <br>
+
+                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pl-sm-2 my-3">
+                    <canvas id="workPieGraphCanvas"></canvas>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 my-3">
+                    <canvas id="dailyPieGraphCanvas"></canvas>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pr-sm-2 my-3">
+                    <canvas id="totalPieGraphCanvas"></canvas>
+                </div>
             </div>
-            <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 my-3">
-                <canvas id="dailyPieGraphCanvas"></canvas>
-            </div>
-            <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pr-sm-2 my-3">
-                <canvas id="totalPieGraphCanvas"></canvas>
-            </div>
-        </div>
-    </div>
+
+            <br>
+        </div>';
+    }
+
+    // Section 2 of 5, show game graph
+    else if($showSection === 2){
+        echo '
+        <div>
+        </div>';
+    }
+
+    // Section 3 of 5, show game graph
+    else if($showSection === 3){
+        echo '
+        <div>
+        </div>';
+    }
+
+    // Section 4 of 5, show game graph
+    else if($showSection === 4){
+        echo '
+        <div>
+        </div>';
+    }
+
+    // Error V2
+    else{
+        echo '<div>
+            <p id="dateError" class="error">Hata meydana geldi.</p>
+            <p id="dateError" class="error">Burada olmaman gerek!.</p>
+            <br/>
+            <p id="dateError" class="error">There is an error about something.</p>
+            <p id="dateError" class="error">You were not suppose to be here!</p>
+        </div>';
+    }
+    ?>
 
 </main>
 
