@@ -14,7 +14,8 @@
     $daily_happiness_array = array();
     $total_happiness_array = array();
     $date_array = array();
-    $date = "";
+    $duration_array = array();
+    $date = $duration = "";
     $error = false;
     $errorText = "";
     $showSection = 0;
@@ -77,21 +78,192 @@
 
     // Game name form handler for showing game data
     else if(isset($_GET["game-id"])){
-        $sql = 'SELECT DATE(date), duration FROM daily_game
-                RIGHT JOIN gunluk ON gunluk_id=gunluk.id
-                WHERE name=?
-                AND game_id=?
-                ORDER BY date'
-        $sql = 'SELECT date, duration FROM (SELECT * FROM daily_game WHERE game_id=?) AS g
-                RIGHT JOIN gunluk ON g.gunluk_id=gunluk.id
-                WHERE name=?
-                AND DATE(date) >= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created ASC LIMIT 1)) - 1
-                AND DATE(date) <= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created DESC LIMIT 1)) + 1
-                ORDER BY date';
+        // Get game id from request
+        $game_id = test_input($_GET["game-id"]);
+
+        // Check id for emptiness
+        if(empty($game_id)){
+            $error = true;
+            $errorText = "Oyun seçimi boş!";
+        }
+        // ID is not empty
+        else{
+            // Show section update
+            $showSection = 2;
+
+            // DB query
+            /*$sql = 'SELECT date, duration FROM (SELECT * FROM daily_game WHERE game_id=?) AS g
+                        RIGHT JOIN gunluk ON g.gunluk_id=gunluk.id
+                        WHERE name=?
+                        AND DATE(date) >= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created ASC LIMIT 1)) - 1
+                        AND DATE(date) <= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created DESC LIMIT 1)) + 1
+                        ORDER BY date';*/
+            $sql = "SELECT DATE(date), duration FROM daily_game
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE name=? AND game_id=?
+                    ORDER BY date";
+
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $game_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt, $date, $duration);
+                // Store SQL results
+                if(mysqli_stmt_store_result($stmt)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            $date_array[] = $date;
+                            $duration_array[] = $duration;
+                        }
+                        $duration_JSON = json_encode($duration_array);
+                        $date_JSON = json_encode($date_array);
+                    }
+                    else{
+                        $error = true;
+                        $errorText = "Bu oyun bulunamadı.";
+                    }
+                }
+                else{
+                    $error = true;
+                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                }
+            }
+        }
+    }
+
+    // Series name form handler for showing series data
+    else if(isset($_GET["series-id"])){
+        // Get series id from request
+        $series_id = test_input($_GET["series-id"]);
+        // Check id for emptiness
+        if(empty($series_id)){
+            $error = true;
+            $errorText = "Dizi seçimi boş!";
+        }
+        // ID is not empty
+        else{
+            // Show section update
+            $showSection = 3;
+
+            // DB query
+            $sql = "SELECT DATE(date), (end_episode-begin_episode) FROM daily_series
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE name=? AND series_id=?
+                    AND begin_season=end_season
+                    ORDER BY date";
+
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $series_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt, $date, $duration);
+                // Store SQL results
+                if(mysqli_stmt_store_result($stmt)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            $date_array[] = $date;
+                            $duration_array[] = $duration;
+                        }
+                        $duration_JSON = json_encode($duration_array);
+                        $date_JSON = json_encode($date_array);
+                    }
+                    else{
+                        $error = true;
+                        $errorText = "Bu dizi bulunamadı.";
+                    }
+                }
+                else{
+                    $error = true;
+                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                }
+            }
+        }
+    }
+
+    // Book name form handler for showing book data
+    else if(isset($_GET["book-id"])){
+        // Get book id from request
+        $book_id = test_input($_GET["book-id"]);
+        // Check id for emptiness
+        if(empty($book_id)){
+            $error = true;
+            $errorText = "Kitap seçimi boş!";
+        }
+        // ID is not empty
+        else{
+            // Show section update
+            $showSection = 4;
+
+            // DB query
+            $sql = "SELECT DATE(date), duration FROM daily_book
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE name=? AND book_id=?
+                    ORDER BY date";
+
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $book_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt, $date, $duration);
+                // Store SQL results
+                if(mysqli_stmt_store_result($stmt)){
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            $date_array[] = $date;
+                            $duration_array[] = $duration;
+                        }
+                        $duration_JSON = json_encode($duration_array);
+                        $date_JSON = json_encode($date_array);
+                    }
+                    else{
+                        $error = true;
+                        $errorText = "Bu kitap bulunamadı.";
+                    }
+                }
+                else{
+                    $error = true;
+                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                }
+            }
+        }
     }
 
     // Initial GET request to load page: load select-options from DB
-    else {
+    if($_SERVER["REQUEST_METHOD"] === "GET"
+        && $showSection === 0) {
         // Show section update
         $showSection = 0;
 
@@ -200,7 +372,7 @@
     <?php
     if($error) {
         echo '<div>
-                <p id="dateError" class="error">Hata meydana geldi. '.$errorText.'</p>
+                <p class="error">Hata meydana geldi. '.$errorText.'</p>
             </div>';
     }
 
@@ -423,79 +595,40 @@
                     var total_happiness = JSON.stringify(total_happiness_array);
                     var total_happiness = JSON.parse(total_happiness);
 
-                    var linechartdata = {
-                        labels: date_array,
-                        datasets: [
-                            {
-                                label: 'İşte/okulda',
-                                borderColor: '#ff0000',
-                                backgroundColor: 'rgba(255,0,0,0.2)',
-                                hoverBackgroundColor: '#ff0000',
-                                data: work_happiness
-                            },
-                            {
-                                label: 'İş/okul dışında',
-                                borderColor: '#00ff00',
-                                backgroundColor: 'rgba(0,255,0,0.2)',
-                                hoverBackgroundColor: '#00ff00',
-                                data: daily_happiness
-                            },
-                            {
-                                label: 'Genelde',
-                                borderColor: '#0000ff',
-                                backgroundColor: 'rgba(0,0,255,0.2)',
-                                hoverBackgroundColor: '#0000ff',
-                                data: total_happiness
-                            }
-                        ]
-                    };
-
+                    // Pie charts' data
                     var work_happiness_count = count(work_happiness_array);
                     var daily_happiness_count = count(daily_happiness_array);
                     var total_happiness_count = count(total_happiness_array);
 
-                    var workpiechartdata = {
-                        labels: happiness_labels,
-                        datasets: [
-                            {
-                                hoverBorderColor: '#ff00ff',
-                                hoverBackgroundColor: '#CCCCCC',
-                                data: work_happiness_count,
-                                backgroundColor: happiness_label_colors
-                            }
-                        ]
-                    };
-
-                    var dailypiechartdata = {
-                        labels: happiness_labels,
-                        datasets: [
-                            {
-                                hoverBorderColor: '#ff00ff',
-                                data: daily_happiness_count,
-                                backgroundColor: happiness_label_colors
-                            }
-                        ]
-                    };
-
-                    var totalpiechartdata = {
-                        labels: happiness_labels,
-                        datasets: [
-                            {
-                                hoverBorderColor: '#ff00ff',
-                                data: total_happiness_count,
-                                backgroundColor: happiness_label_colors
-                            }
-                        ]
-                    };
-
-                    var lineGraphTarget = $(\"#lineGraphCanvas\");
-                    var workPieGraphTarget = $(\"#workPieGraphCanvas\");
-                    var dailyPieGraphTarget = $(\"#dailyPieGraphCanvas\");
-                    var totalPieGraphTarget = $(\"#totalPieGraphCanvas\");
-
-                    var lineGraph = new Chart(lineGraphTarget, {
+                    // Line Chart
+                    var lineGraph = new Chart($('#lineGraphCanvas'), {
                         type: 'line',
-                        data: linechartdata,
+                        data: {
+                            labels: date_array,
+                            datasets: [
+                                {
+                                    label: 'İşte/okulda',
+                                    borderColor: '#ff0000',
+                                    backgroundColor: 'rgba(255,0,0,0.2)',
+                                    hoverBackgroundColor: '#ff0000',
+                                    data: work_happiness
+                                },
+                                {
+                                    label: 'İş/okul dışında',
+                                    borderColor: '#00ff00',
+                                    backgroundColor: 'rgba(0,255,0,0.2)',
+                                    hoverBackgroundColor: '#00ff00',
+                                    data: daily_happiness
+                                },
+                                {
+                                    label: 'Genelde',
+                                    borderColor: '#0000ff',
+                                    backgroundColor: 'rgba(0,0,255,0.2)',
+                                    hoverBackgroundColor: '#0000ff',
+                                    data: total_happiness
+                                }
+                            ]
+                        },
                         options: {
                             scales: {
                                 yAxes: [{
@@ -517,17 +650,29 @@
                                 fontColor: fontColor
                             }
                         }
-                    });
+                    }); 
 
-                    var workPieGraph = new Chart(workPieGraphTarget, {
+                    // First Pie Chart for work happiness
+                    var workPieGraph = new Chart($('#workPieGraphCanvas'), {
                         type: 'pie',
-                        data: workpiechartdata,
+                        data: {
+                            labels: happiness_labels,
+                            datasets: [
+                                {
+                                    hoverBorderColor: '#ff00ff',
+                                    hoverBackgroundColor: '#CCCCCC',
+                                    data: work_happiness_count,
+                                    backgroundColor: happiness_label_colors
+                                }
+                            ]
+                        },
                         options: {
                             legend: {
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor
+                                    fontColor: fontColor,
+                                    usePointStyle: true
                                 }
                             },
                             title: {
@@ -538,15 +683,26 @@
                         }
                     });
                     
-                    var dailyPieGraph = new Chart(dailyPieGraphTarget, {
+                    // Second Doughnut Chart for daily happiness
+                    var dailyPieGraph = new Chart($('#dailyPieGraphCanvas'), {
                         type: 'doughnut',
-                        data: dailypiechartdata,
+                        data: {
+                            labels: happiness_labels,
+                            datasets: [
+                                {
+                                    hoverBorderColor: '#ff00ff',
+                                    data: daily_happiness_count,
+                                    backgroundColor: happiness_label_colors
+                                }
+                            ]
+                        },
                         options: {
                             legend: {
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor
+                                    fontColor: fontColor,
+                                    usePointStyle: true
                                 }
                             },
                             title: {
@@ -557,15 +713,26 @@
                         }
                     });
 
-                    var totalPieGraph = new Chart(totalPieGraphTarget, {
+                    // Third Polar Chart for total happiness
+                    var totalPieGraph = new Chart($('#totalPieGraphCanvas'), {
                         type: 'polarArea',
-                        data: totalpiechartdata,
+                        data: {
+                            labels: happiness_labels,
+                            datasets: [
+                                {
+                                    hoverBorderColor: '#ff00ff',
+                                    data: total_happiness_count,
+                                    backgroundColor: happiness_label_colors
+                                }
+                            ]
+                        },
                         options: {
                             legend: {
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor
+                                    fontColor: fontColor,
+                                    usePointStyle: true
                                 }
                             },
                             title: {
@@ -598,15 +765,17 @@
 
                 <br>
 
-                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pl-sm-2 my-3">
+                <div id="pie-chart-legend" style="width: 100%;"></div>
+                
+                <div class="col-12 col-xl-4 px-xs-3 px-xl-0 pl-xl-2 my-3">
                     <canvas id="workPieGraphCanvas"></canvas>
                 </div>
 
-                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 my-3">
+                <div class="col-12 col-xl-4 px-xs-3 px-xl-0 my-3">
                     <canvas id="dailyPieGraphCanvas"></canvas>
                 </div>
 
-                <div class="col-xs-12 col-sm-4 px-xs-3 px-sm-0 pr-sm-2 my-3">
+                <div class="col-12 col-xl-4 px-xs-3 px-xl-0 pr-xl-2 my-3">
                     <canvas id="totalPieGraphCanvas"></canvas>
                 </div>
             </div>
@@ -617,23 +786,254 @@
 
     // Section 2 of 5, show game graph
     else if($showSection === 2){
+        echo'<div>
+            <h1>';
+                if(isset($_SESSION['name'])){
+                    echo $_SESSION['name'].', ';
+                }
+                echo ' oyun oynama süre grafiğin';
+        echo '</h1>';
+
+        echo "<script>
+        $(document).ready(function () {
+            showGraph();
+        });
+
+
+        function showGraph()
+        {
+            var duration_array = ".$duration_JSON.";
+            var date_array = ".$date_JSON.";
+            
+            // This is necessary. With out this php JSON array would be sorted.
+            var duration = JSON.stringify(duration_array);
+            var duration = JSON.parse(duration);
+
+            var linechartdata = {
+                labels: date_array,
+                datasets: [
+                    {
+                        label: 'Süre (Saat)',
+                        borderColor: '#17a2b8',
+                        backgroundColor: 'rgba(23, 162, 184,0.2)',
+                        hoverBackgroundColor: '#17a2b8',
+                        data: duration
+                    }
+                ]
+            };
+
+            var maxDuruation = Math.max(...duration_array) + 1;
+
+            
+            var lineGraphTarget = $(\"#lineGraphCanvas\");
+
+            var lineGraph = new Chart(lineGraphTarget, {
+                type: 'line',
+                data: linechartdata,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: maxDuruation
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: fontColor
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Zamana bağlı oyun oynanma süre grafiği',
+                        fontColor: fontColor
+                    }
+                }
+            });
+        
+        }
+        </script>";
+
         echo '
-        <div>
-        </div>';
+        <div class="p-3" id="chart-container">
+            <canvas id="lineGraphCanvas"></canvas>
+
+            <br>
+
+        </div>
+
+        <br>
+    </div>';
     }
 
-    // Section 3 of 5, show game graph
+    // Section 3 of 5, show series graph
     else if($showSection === 3){
+        echo'<div>
+            <h1>';
+                if(isset($_SESSION['name'])){
+                    echo $_SESSION['name'].', ';
+                }
+                echo ' dizi izleme süre grafiğin';
+        echo '</h1>';
+
+        echo "<script>
+        $(document).ready(function () {
+            showGraph();
+        });
+
+
+        function showGraph()
+        {
+            var duration_array = ".$duration_JSON.";
+            var date_array = ".$date_JSON.";
+            
+            // This is necessary. With out this php JSON array would be sorted.
+            var duration = JSON.stringify(duration_array);
+            var duration = JSON.parse(duration);
+
+            var linechartdata = {
+                labels: date_array,
+                datasets: [
+                    {
+                        label: 'Süre (Bölüm)',
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255,0.2)',
+                        hoverBackgroundColor: '#007bff',
+                        data: duration
+                    }
+                ]
+            };
+
+            var maxDuruation = Math.max(...duration_array) + 1;
+
+            
+            var lineGraphTarget = $(\"#lineGraphCanvas\");
+
+            var lineGraph = new Chart(lineGraphTarget, {
+                type: 'line',
+                data: linechartdata,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: maxDuruation
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: fontColor
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Zamana bağlı dizi izleme süre grafiği',
+                        fontColor: fontColor
+                    }
+                }
+            });
+        
+        }
+        </script>";
+
         echo '
-        <div>
-        </div>';
+        <div class="p-3" id="chart-container">
+            <canvas id="lineGraphCanvas"></canvas>
+
+            <br>
+
+        </div>
+
+        <br>
+    </div>';
     }
 
     // Section 4 of 5, show game graph
     else if($showSection === 4){
+        echo'<div>
+            <h1>';
+                if(isset($_SESSION['name'])){
+                    echo $_SESSION['name'].', ';
+                }
+                echo ' kitap okuma süre grafiğin';
+        echo '</h1>';
+
+        echo "<script>
+        $(document).ready(function () {
+            showGraph();
+        });
+
+
+        function showGraph()
+        {
+            var duration_array = ".$duration_JSON.";
+            var date_array = ".$date_JSON.";
+            
+            // This is necessary. With out this php JSON array would be sorted.
+            var duration = JSON.stringify(duration_array);
+            var duration = JSON.parse(duration);
+
+            var linechartdata = {
+                labels: date_array,
+                datasets: [
+                    {
+                        label: 'Süre (Saat)',
+                        borderColor: '#ffc107',
+                        backgroundColor: 'rgba(255, 193, 7,0.2)',
+                        hoverBackgroundColor: '#ffc107',
+                        data: duration
+                    }
+                ]
+            };
+
+            var maxDuruation = Math.max(...duration_array) + 1;
+
+            
+            var lineGraphTarget = $(\"#lineGraphCanvas\");
+
+            var lineGraph = new Chart(lineGraphTarget, {
+                type: 'line',
+                data: linechartdata,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                suggestedMin: 0,
+                                suggestedMax: maxDuruation
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: fontColor
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Zamana bağlı kitap okuma süre grafiği',
+                        fontColor: fontColor
+                    }
+                }
+            });
+        
+        }
+        </script>";
+
         echo '
-        <div>
-        </div>';
+        <div class="p-3" id="chart-container">
+            <canvas id="lineGraphCanvas"></canvas>
+
+            <br>
+
+        </div>
+
+        <br>
+    </div>';
     }
 
     // Error V2
