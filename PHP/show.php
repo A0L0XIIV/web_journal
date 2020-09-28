@@ -88,8 +88,6 @@
 
     // Game name form handler for showing game data
     else if(isset($_GET["game-id"])){
-        // Show section update
-        $showSection = 2;
         // Get game id from request
         $game_id = test_input($_GET["game-id"]);
         // Check id for emptiness
@@ -99,6 +97,9 @@
         }
         // ID is not empty
         else{
+            // Show section update
+            $showSection = 2;
+
             // Query name, total and average game duration
             $sql = "SELECT game.name, SUM(duration), AVG(duration) FROM daily_game 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
@@ -145,8 +146,6 @@
     
     // Series name form handler for showing series data
     else if(isset($_GET["series-id"])){
-        // Show section update
-        $showSection = 3;
         // Get series id from request
         $series_id = test_input($_GET["series-id"]);
         // Check id for emptiness
@@ -156,8 +155,11 @@
         }
         // ID is not empty
         else{
+            // Show section update
+            $showSection = 3;
+
             // Query name, total and average series duration
-            $sql = "SELECT series.name, SUM(end_episode - begin_episode), AVG(end_episode - begin_episode) FROM daily_series 
+            $sql = "SELECT series.name, SUM(end_episode - begin_episode), AVG(end_episode - begin_episode + 1) FROM daily_series 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
                     INNER JOIN series ON series_id=series.id
                     WHERE series_id=".$series_id.
@@ -224,8 +226,6 @@
 
     // Movie name form handler for showing movie data
     else if(isset($_GET["movie-id"])){
-        // Show section update
-        $showSection = 4;
         // Get movie id from request
         $movie_id = test_input($_GET["movie-id"]);
         // Check id for emptiness
@@ -235,6 +235,9 @@
         }
         // ID is not empty
         else{
+            // Show section update
+            $showSection = 4;
+
             // Query name, total and average movie duration
             $sql = "SELECT movie.name, SUM(duration) FROM daily_movie 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
@@ -279,8 +282,6 @@
 
     // Book name form handler for showing book data
     else if(isset($_GET["book-id"])){
-        // Show section update
-        $showSection = 5;
         // Get book id from request
         $book_id = test_input($_GET["book-id"]);
         // Check id for emptiness
@@ -290,6 +291,9 @@
         }
         // ID is not empty
         else{
+            // Show section update
+            $showSection = 5;
+
             // Query name, total and average book duration
             $sql = "SELECT book.name, SUM(duration), AVG(duration) FROM daily_book 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
@@ -334,7 +338,8 @@
     }
 
     // Initial GET request to load page: load select-options from DB
-    else {
+    if($_SERVER["REQUEST_METHOD"] === "GET"
+        && $showSection === 0) {
         // Show section update
         $showSection = 0;
 
@@ -1059,8 +1064,8 @@
     else if($showSection === 3){
         echo '<div id="section3">
                 <h2>'.$series_name.'</h2>
-                <p>Toplam dizi izleme süresi: '.$total_duration.' Saat</p>
-                <p>Ortalama dizi izleme süresi: '.$average_duration.' Saat</p>
+                <p>Toplam dizi izleme süresi: '.$total_duration.' Bölüm</p>
+                <p>Ortalama dizi izleme süresi: '.$average_duration.' Bölüm</p>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
                     <tr class="table-primary">
                         <th>Tarih</th>
