@@ -88,24 +88,15 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 2;
-
-            // DB query
-            /*$sql = 'SELECT date, duration FROM (SELECT * FROM daily_game WHERE game_id=?) AS g
-                        RIGHT JOIN gunluk ON g.gunluk_id=gunluk.id
-                        WHERE name=?
-                        AND DATE(date) >= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created ASC LIMIT 1)) - 1
-                        AND DATE(date) <= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created DESC LIMIT 1)) + 1
-                        ORDER BY date';*/
-            $sql = "SELECT DATE(date), duration FROM daily_game
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE name=? AND game_id=?
-                    ORDER BY date";
-
+            // Check DB for user play
+            $sql = "SELECT * FROM daily_game 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND game_id LIKE ?";
             $stmt = mysqli_stmt_init($conn);
+
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
+                $errorText = mysqli_error($conn);
             }
             else{
                 // Bind inputs to query parameters
@@ -115,28 +106,65 @@
                     $error = true;
                     $errorText = mysqli_error($conn);
                 }
-                // Bind result variables
-                mysqli_stmt_bind_result($stmt, $date, $duration);
-                // Store SQL results
-                if(mysqli_stmt_store_result($stmt)){
-                    // Check if DB returned any result
-                    if(mysqli_stmt_num_rows($stmt) > 0){
-                        // Fetch values
-                        while (mysqli_stmt_fetch($stmt)) {
-                            $date_array[] = $date;
-                            $duration_array[] = $duration;
-                        }
-                        $duration_JSON = json_encode($duration_array);
-                        $date_JSON = json_encode($date_array);
-                    }
-                    else{
+                // Check if DB returned any result - Did player play this game?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                        $errorText = "Bu oyun bulunamadı.";
-                    }
+                        $errorText = "Bu oyunu hiç oynamamışsın.";
                 }
                 else{
-                    $error = true;
-                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                    // Show section update
+                    $showSection = 2;
+
+                    // DB query
+                    /*// Query for getting all dates including empty game dates.
+                    $sql = 'SELECT date, duration FROM (SELECT * FROM daily_game WHERE game_id=?) AS g
+                                RIGHT JOIN gunluk ON g.gunluk_id=gunluk.id
+                                WHERE name=?
+                                AND DATE(date) >= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created ASC LIMIT 1)) - 1
+                                AND DATE(date) <= DATE((SELECT date_created FROM daily_game WHERE game_id=? ORDER BY date_created DESC LIMIT 1)) + 1
+                                ORDER BY date';*/
+                    $sql = "SELECT DATE(date), duration FROM daily_game
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE name=? AND game_id=?
+                            ORDER BY date";
+
+                    $stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt, "si", $name, $game_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt, $date, $duration);
+                        // Store SQL results
+                        if(mysqli_stmt_store_result($stmt)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt) > 0){
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt)) {
+                                    $date_array[] = $date;
+                                    $duration_array[] = $duration;
+                                }
+                                $duration_JSON = json_encode($duration_array);
+                                $date_JSON = json_encode($date_array);
+                            }
+                            else{
+                                $error = true;
+                                $errorText = "Bu oyun bulunamadı.";
+                            }
+                        }
+                        else{
+                            $error = true;
+                            $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                        }
+                    }
                 }
             }
         }
@@ -153,19 +181,15 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 3;
-
-            // DB query
-            $sql = "SELECT DATE(date), (end_episode-begin_episode) FROM daily_series
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE name=? AND series_id=?
-                    AND begin_season=end_season
-                    ORDER BY date";
-
+            // Check DB for user watch
+            $sql = "SELECT * FROM daily_series 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND series_id LIKE ?";
             $stmt = mysqli_stmt_init($conn);
+
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
+                $errorText = mysqli_error($conn);
             }
             else{
                 // Bind inputs to query parameters
@@ -175,28 +199,59 @@
                     $error = true;
                     $errorText = mysqli_error($conn);
                 }
-                // Bind result variables
-                mysqli_stmt_bind_result($stmt, $date, $duration);
-                // Store SQL results
-                if(mysqli_stmt_store_result($stmt)){
-                    // Check if DB returned any result
-                    if(mysqli_stmt_num_rows($stmt) > 0){
-                        // Fetch values
-                        while (mysqli_stmt_fetch($stmt)) {
-                            $date_array[] = $date;
-                            $duration_array[] = $duration;
-                        }
-                        $duration_JSON = json_encode($duration_array);
-                        $date_JSON = json_encode($date_array);
-                    }
-                    else{
+                // Check if DB returned any result - Did player watch this series?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                        $errorText = "Bu dizi bulunamadı.";
-                    }
+                        $errorText = "Bu diziyi hiç izlememişsin.";
                 }
                 else{
-                    $error = true;
-                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                    // Show section update
+                    $showSection = 3;
+
+                    // DB query
+                    $sql = "SELECT DATE(date), (end_episode-begin_episode) FROM daily_series
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE name=? AND series_id=?
+                            AND begin_season=end_season
+                            ORDER BY date";
+
+                    $stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt, "si", $name, $series_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt, $date, $duration);
+                        // Store SQL results
+                        if(mysqli_stmt_store_result($stmt)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt) > 0){
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt)) {
+                                    $date_array[] = $date;
+                                    $duration_array[] = $duration;
+                                }
+                                $duration_JSON = json_encode($duration_array);
+                                $date_JSON = json_encode($date_array);
+                            }
+                            else{
+                                $error = true;
+                                $errorText = "Bu dizi bulunamadı.";
+                            }
+                        }
+                        else{
+                            $error = true;
+                            $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                        }
+                    }
                 }
             }
         }
@@ -213,18 +268,15 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 4;
-
-            // DB query
-            $sql = "SELECT DATE(date), duration FROM daily_book
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE name=? AND book_id=?
-                    ORDER BY date";
-
+            // Check DB for user read
+            $sql = "SELECT * FROM daily_book 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND book_id LIKE ?";
             $stmt = mysqli_stmt_init($conn);
+
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
+                $errorText = mysqli_error($conn);
             }
             else{
                 // Bind inputs to query parameters
@@ -234,28 +286,58 @@
                     $error = true;
                     $errorText = mysqli_error($conn);
                 }
-                // Bind result variables
-                mysqli_stmt_bind_result($stmt, $date, $duration);
-                // Store SQL results
-                if(mysqli_stmt_store_result($stmt)){
-                    // Check if DB returned any result
-                    if(mysqli_stmt_num_rows($stmt) > 0){
-                        // Fetch values
-                        while (mysqli_stmt_fetch($stmt)) {
-                            $date_array[] = $date;
-                            $duration_array[] = $duration;
-                        }
-                        $duration_JSON = json_encode($duration_array);
-                        $date_JSON = json_encode($date_array);
-                    }
-                    else{
+                // Check if DB returned any result - Did player read this book?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                        $errorText = "Bu kitap bulunamadı.";
-                    }
+                        $errorText = "Bu kitabı hiç okumamışsın.";
                 }
                 else{
-                    $error = true;
-                    $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                    // Show section update
+                    $showSection = 4;
+
+                    // DB query
+                    $sql = "SELECT DATE(date), duration FROM daily_book
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE name=? AND book_id=?
+                            ORDER BY date";
+
+                    $stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_stmt_prepare($stmt, $sql)){
+                        $error = true;
+                    }
+                    else{
+                        // Bind inputs to query parameters
+                        mysqli_stmt_bind_param($stmt, "si", $name, $book_id);
+                        // Execute sql statement
+                        if(!mysqli_stmt_execute($stmt)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        // Bind result variables
+                        mysqli_stmt_bind_result($stmt, $date, $duration);
+                        // Store SQL results
+                        if(mysqli_stmt_store_result($stmt)){
+                            // Check if DB returned any result
+                            if(mysqli_stmt_num_rows($stmt) > 0){
+                                // Fetch values
+                                while (mysqli_stmt_fetch($stmt)) {
+                                    $date_array[] = $date;
+                                    $duration_array[] = $duration;
+                                }
+                                $duration_JSON = json_encode($duration_array);
+                                $date_JSON = json_encode($date_array);
+                            }
+                            else{
+                                $error = true;
+                                $errorText = "Bu kitap bulunamadı.";
+                            }
+                        }
+                        else{
+                            $error = true;
+                            $errorText = "Veritabanı saklama hatası. ".mysqli_error($conn);
+                        }
+                    }
                 }
             }
         }
