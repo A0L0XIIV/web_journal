@@ -97,49 +97,76 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 2;
+            // Check DB for user play
+            $sql = "SELECT * FROM daily_game 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND game_id LIKE ?";
+            $stmt = mysqli_stmt_init($conn);
 
-            // Query name, total and average game duration
-            $sql = "SELECT game.name, SUM(duration), AVG(duration) FROM daily_game 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    INNER JOIN game ON game_id=game.id
-                    WHERE game_id=".$game_id.
-                    " AND gunluk.name='".$name."';";
-            // Get all dates and their duration
-            $sql .= "SELECT DATE(gunluk.date), daily_game.duration FROM daily_game 
-                    INNER JOIN game ON game_id=game.id 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE game_id=".$game_id.
-                    " AND gunluk.name='".$name."';";
-            //$stmt = mysqli_stmt_init($conn);
-            if(!mysqli_multi_query($conn, $sql)){
+            if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
             }
             else{
-                // Handle both queries results
-                do {
-                    // Store result set
-                    if ($result = mysqli_store_result($conn)) {
-                        while ($row = mysqli_fetch_row($result)) {
-                            //echo print_r($row);
-                            // First query's result, assign them
-                            if (mysqli_more_results($conn)) {
-                                $game_name = $row[0];
-                                $total_duration = $row[1];
-                                $average_duration = $row[2];
-                            }
-                            // Second query's results, put into array
-                            else{
-                                array_push($gameArray, array('date' => $row[0], 'duration' => $row[1]));
-                            }
-                        }
-                        mysqli_free_result($result);
-                    }
-                    else
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $game_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Check if DB returned any result - Did player play this game?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                } while (mysqli_next_result($conn));
+                        $errorText = "Bu oyunu hiç oynamamışsın.";
+                }
+                else{
+                    // Show section update
+                    $showSection = 2;
+
+                    // Query name, total and average game duration
+                    $sql = "SELECT game.name, SUM(duration), AVG(duration) FROM daily_game 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            INNER JOIN game ON game_id=game.id
+                            WHERE game_id=".$game_id.
+                            " AND gunluk.name='".$name."';";
+                    // Get all dates and their duration
+                    $sql .= "SELECT DATE(gunluk.date), daily_game.duration FROM daily_game 
+                            INNER JOIN game ON game_id=game.id 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE game_id=".$game_id.
+                            " AND gunluk.name='".$name."';";
+                    //$stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_multi_query($conn, $sql)){
+                        $error = true;
+                        $errorText = mysqli_error($conn);
+                    }
+                    else{
+                        // Handle both queries results
+                        do {
+                            // Store result set
+                            if ($result = mysqli_store_result($conn)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                    //echo print_r($row);
+                                    // First query's result, assign them
+                                    if (mysqli_more_results($conn)) {
+                                        $game_name = $row[0];
+                                        $total_duration = $row[1];
+                                        $average_duration = $row[2];
+                                    }
+                                    // Second query's results, put into array
+                                    else{
+                                        array_push($gameArray, array('date' => $row[0], 'duration' => $row[1]));
+                                    }
+                                }
+                                mysqli_free_result($result);
+                            }
+                            else
+                                $error = true;
+                        } while (mysqli_next_result($conn));
+                    }
+                }
             }
         }
     }
@@ -155,71 +182,98 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 3;
+            // Check DB for user watch
+            $sql = "SELECT * FROM daily_series 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND series_id LIKE ?";
+            $stmt = mysqli_stmt_init($conn);
 
-            // Query name, total and average series duration
-            $sql = "SELECT series.name, SUM(end_episode - begin_episode), AVG(end_episode - begin_episode + 1) FROM daily_series 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    INNER JOIN series ON series_id=series.id
-                    WHERE series_id=".$series_id.
-                    " AND gunluk.name='".$name.
-                    "' AND (end_season - begin_season)=0;";
-            // Get all dates and their duration
-            $sql .= "SELECT DATE(gunluk.date), begin_season, begin_episode, end_season, end_episode
-                    FROM daily_series 
-                    INNER JOIN series ON series_id=series.id 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE series_id=".$series_id.
-                    " AND gunluk.name='".$name."';";
-            //$stmt = mysqli_stmt_init($conn);
-            if(!mysqli_multi_query($conn, $sql)){
+            if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
             }
             else{
-                // Handle both queries results
-                do {
-                    // Store result set
-                    if ($result = mysqli_store_result($conn)) {
-                        while ($row = mysqli_fetch_row($result)) {
-                            //echo print_r($row);
-                            // First query's result, assign them
-                            if (mysqli_more_results($conn)) {
-                                $series_name = $row[0];
-                                $total_duration = $row[1];
-                                $average_duration = $row[2];
-                            }
-                            // Second query's results, put into array
-                            else{
-                                $series_begin_season = $row[1];
-                                $series_begin_episode = $row[2];
-                                $series_end_season = $row[3];
-                                $series_end_episode = $row[4];
-                                // If begin and end is in the same season, calculate the watched episode number
-                                if ($series_begin_season === $series_end_season){
-                                    array_push($seriesArray, array('date' => $row[0], 
-                                                                    'season' => $series_begin_season,
-                                                                    // If only one episode print it, if not print "begin - end"
-                                                                    'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
-                                                                    // Substract end - begin and add one
-                                                                    'duration' => ($series_end_episode-$series_begin_episode + 1)));
-                                }
-                                // Begin and end seasons different, push both of them
-                                else {
-                                    array_push($seriesArray, array('date' => $row[0], 
-                                                                    'season' => $series_begin_season.' - '.$series_end_season,
-                                                                    // If only one episode print it, if not print "begin - end"
-                                                                    'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
-                                                                    'duration' => 'S'.$series_begin_season.'E'.$series_begin_episode.' - S'.$series_end_season.'E'.$series_end_episode));
-                                }
-                            }
-                        }
-                        mysqli_free_result($result);
-                    }
-                    else
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $series_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Check if DB returned any result - Did player watch this series?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                } while (mysqli_next_result($conn));
+                        $errorText = "Bu diziyi hiç izlememişsin.";
+                }
+                else{
+                    // Show section update
+                    $showSection = 3;
+
+                    // Query name, total and average series duration
+                    $sql = "SELECT series.name, SUM(end_episode - begin_episode), AVG(end_episode - begin_episode + 1) FROM daily_series 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            INNER JOIN series ON series_id=series.id
+                            WHERE series_id=".$series_id.
+                            " AND gunluk.name='".$name.
+                            "' AND (end_season - begin_season)=0;";
+                    // Get all dates and their duration
+                    $sql .= "SELECT DATE(gunluk.date), begin_season, begin_episode, end_season, end_episode
+                            FROM daily_series 
+                            INNER JOIN series ON series_id=series.id 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE series_id=".$series_id.
+                            " AND gunluk.name='".$name."';";
+                    //$stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_multi_query($conn, $sql)){
+                        $error = true;
+                        $errorText = mysqli_error($conn);
+                    }
+                    else{
+                        // Handle both queries results
+                        do {
+                            // Store result set
+                            if ($result = mysqli_store_result($conn)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                    //echo print_r($row);
+                                    // First query's result, assign them
+                                    if (mysqli_more_results($conn)) {
+                                        $series_name = $row[0];
+                                        $total_duration = $row[1];
+                                        $average_duration = $row[2];
+                                    }
+                                    // Second query's results, put into array
+                                    else{
+                                        $series_begin_season = $row[1];
+                                        $series_begin_episode = $row[2];
+                                        $series_end_season = $row[3];
+                                        $series_end_episode = $row[4];
+                                        // If begin and end is in the same season, calculate the watched episode number
+                                        if ($series_begin_season === $series_end_season){
+                                            array_push($seriesArray, array('date' => $row[0], 
+                                                                            'season' => $series_begin_season,
+                                                                            // If only one episode print it, if not print "begin - end"
+                                                                            'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
+                                                                            // Substract end - begin and add one
+                                                                            'duration' => ($series_end_episode-$series_begin_episode + 1)));
+                                        }
+                                        // Begin and end seasons different, push both of them
+                                        else {
+                                            array_push($seriesArray, array('date' => $row[0], 
+                                                                            'season' => $series_begin_season.' - '.$series_end_season,
+                                                                            // If only one episode print it, if not print "begin - end"
+                                                                            'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
+                                                                            'duration' => 'S'.$series_begin_season.'E'.$series_begin_episode.' - S'.$series_end_season.'E'.$series_end_episode));
+                                        }
+                                    }
+                                }
+                                mysqli_free_result($result);
+                            }
+                            else
+                                $error = true;
+                        } while (mysqli_next_result($conn));
+                    }
+                }
             }
         }
     }
@@ -235,47 +289,74 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 4;
+            // Check DB for user watch
+            $sql = "SELECT * FROM daily_movie 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND movie_id LIKE ?";
+            $stmt = mysqli_stmt_init($conn);
 
-            // Query name, total and average movie duration
-            $sql = "SELECT movie.name, SUM(duration) FROM daily_movie 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    INNER JOIN movie ON movie_id=movie.id
-                    WHERE movie_id=".$movie_id.
-                    " AND gunluk.name='".$name."';";
-            // Get all dates and their duration
-            $sql .= "SELECT DATE(gunluk.date), daily_movie.duration FROM daily_movie 
-                    INNER JOIN movie ON movie_id=movie.id 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE movie_id=".$movie_id.
-                    " AND gunluk.name='".$name."';";
-            //$stmt = mysqli_stmt_init($conn);
-            if(!mysqli_multi_query($conn, $sql)){
+            if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
             }
             else{
-                // Handle both queries results
-                do {
-                    // Store result set
-                    if ($result = mysqli_store_result($conn)) {
-                        while ($row = mysqli_fetch_row($result)) {
-                            // First query's result, assign them
-                            if (mysqli_more_results($conn)) {
-                                $movie_name = $row[0];
-                                $total_duration = $row[1];
-                            }
-                            // Second query's results, put into array
-                            else{
-                                array_push($movieArray, array('date' => $row[0], 'duration' => $row[1]));
-                            }
-                        }
-                        mysqli_free_result($result);
-                    }
-                    else
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $movie_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Check if DB returned any result - Did player watch this movie?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                } while (mysqli_next_result($conn));
+                        $errorText = "Bu filmi hiç izlememişsin.";
+                }
+                else{
+                    // Show section update
+                    $showSection = 4;
+
+                    // Query name, total and average movie duration
+                    $sql = "SELECT movie.name, SUM(duration) FROM daily_movie 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            INNER JOIN movie ON movie_id=movie.id
+                            WHERE movie_id=".$movie_id.
+                            " AND gunluk.name='".$name."';";
+                    // Get all dates and their duration
+                    $sql .= "SELECT DATE(gunluk.date), daily_movie.duration FROM daily_movie 
+                            INNER JOIN movie ON movie_id=movie.id 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE movie_id=".$movie_id.
+                            " AND gunluk.name='".$name."';";
+                    //$stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_multi_query($conn, $sql)){
+                        $error = true;
+                        $errorText = mysqli_error($conn);
+                    }
+                    else{
+                        // Handle both queries results
+                        do {
+                            // Store result set
+                            if ($result = mysqli_store_result($conn)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                    // First query's result, assign them
+                                    if (mysqli_more_results($conn)) {
+                                        $movie_name = $row[0];
+                                        $total_duration = $row[1];
+                                    }
+                                    // Second query's results, put into array
+                                    else{
+                                        array_push($movieArray, array('date' => $row[0], 'duration' => $row[1]));
+                                    }
+                                }
+                                mysqli_free_result($result);
+                            }
+                            else
+                                $error = true;
+                        } while (mysqli_next_result($conn));
+                    }
+                }
             }
         }
     }
@@ -291,48 +372,75 @@
         }
         // ID is not empty
         else{
-            // Show section update
-            $showSection = 5;
+            // Check DB for user read
+            $sql = "SELECT * FROM daily_book 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
+                    WHERE name=? AND book_id LIKE ?";
+            $stmt = mysqli_stmt_init($conn);
 
-            // Query name, total and average book duration
-            $sql = "SELECT book.name, SUM(duration), AVG(duration) FROM daily_book 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    INNER JOIN book ON book_id=book.id
-                    WHERE book_id=".$book_id.
-                    " AND gunluk.name='".$name."';";
-            // Get all dates and their duration
-            $sql .= "SELECT DATE(gunluk.date), daily_book.duration FROM daily_book 
-                    INNER JOIN book ON book_id=book.id 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE book_id=".$book_id.
-                    " AND gunluk.name='".$name."';";
-            //$stmt = mysqli_stmt_init($conn);
-            if(!mysqli_multi_query($conn, $sql)){
+            if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
             }
             else{
-                // Handle both queries results
-                do {
-                    // Store result set
-                    if ($result = mysqli_store_result($conn)) {
-                        while ($row = mysqli_fetch_row($result)) {
-                            // First query's result, assign them
-                            if (mysqli_more_results($conn)) {
-                                $book_name = $row[0];
-                                $total_duration = $row[1];
-                                $average_duration = $row[2];
-                            }
-                            // Second query's results, put into array
-                            else{
-                                array_push($bookArray, array('date' => $row[0], 'duration' => $row[1]));
-                            }
-                        }
-                        mysqli_free_result($result);
-                    }
-                    else
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "si", $name, $book_id);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Check if DB returned any result - Did player read this book?
+                if(mysqli_stmt_store_result($stmt) 
+                    && !(mysqli_stmt_num_rows($stmt) > 0)){
                         $error = true;
-                } while (mysqli_next_result($conn));
+                        $errorText = "Bu kitabı hiç okumamışsın.";
+                }
+                else{
+                    // Show section update
+                    $showSection = 5;
+
+                    // Query name, total and average book duration
+                    $sql = "SELECT book.name, SUM(duration), AVG(duration) FROM daily_book 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            INNER JOIN book ON book_id=book.id
+                            WHERE book_id=".$book_id.
+                            " AND gunluk.name='".$name."';";
+                    // Get all dates and their duration
+                    $sql .= "SELECT DATE(gunluk.date), daily_book.duration FROM daily_book 
+                            INNER JOIN book ON book_id=book.id 
+                            INNER JOIN gunluk ON gunluk_id=gunluk.id
+                            WHERE book_id=".$book_id.
+                            " AND gunluk.name='".$name."';";
+                    //$stmt = mysqli_stmt_init($conn);
+                    if(!mysqli_multi_query($conn, $sql)){
+                        $error = true;
+                        $errorText = mysqli_error($conn);
+                    }
+                    else{
+                        // Handle both queries results
+                        do {
+                            // Store result set
+                            if ($result = mysqli_store_result($conn)) {
+                                while ($row = mysqli_fetch_row($result)) {
+                                    // First query's result, assign them
+                                    if (mysqli_more_results($conn)) {
+                                        $book_name = $row[0];
+                                        $total_duration = $row[1];
+                                        $average_duration = $row[2];
+                                    }
+                                    // Second query's results, put into array
+                                    else{
+                                        array_push($bookArray, array('date' => $row[0], 'duration' => $row[1]));
+                                    }
+                                }
+                                mysqli_free_result($result);
+                            }
+                            else
+                                $error = true;
+                        } while (mysqli_next_result($conn));
+                    }
+                }
             }
         }
     }
