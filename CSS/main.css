@@ -160,18 +160,27 @@ select:hover {
 
 /* --- Error and success styles  --- */
 .error,
-.notFound {
-  font-size: 0.8em;
+.notFound,
+.success {
+  font-size: 1em;
   color: red;
-  margin: 1em;
+  margin: auto;
+  margin-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  width: fit-content;
   text-align: center;
+  background-color: #ff7b00;
+  border-radius: 0.5em;
+  text-shadow: -1px 1px 0 #000,
+               1px 1px 0 #000,
+               1px -1px 0 #000,
+               -1px -1px 0 #000;
 }
 
 .success {
   font-size: 0.8em;
   color: green;
-  margin: 1em;
-  text-align: center;
 }
 
 .notFound {
@@ -216,9 +225,13 @@ select:hover {
   }
 
   main,
-  .modal-content,
-  .table {
+  .modal-content {
     background: #444444 !important;
+    color: #ffffff;
+  }
+
+  .table {
+    background-color: #343a40;
     color: #ffffff;
   }
 
