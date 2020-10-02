@@ -21,7 +21,7 @@
     $movie_id = $movie_name = $movie_duration = "";
     $book_id = $book_name = $book_duration = "";
     $gameArray = $seriesArray = $movieArray = $bookArray = [];
-    $total_duration = $average_duration = 0;
+    $total_duration = $average_duration = $min_duration = $max_duration = 0;
     $error = false;
     $errorText = "";
     $showSection = 0;
@@ -98,11 +98,12 @@
         // ID is not empty
         else{
             // Check DB for user play
-            $sql = "SELECT * FROM daily_game 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
-                    WHERE name=? AND game_id LIKE ?";
+            $sql = "SELECT DATE(gunluk.date), daily_game.duration FROM daily_game 
+                    INNER JOIN game ON game_id=game.id 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE gunluk.name=? AND game_id=?";
             $stmt = mysqli_stmt_init($conn);
-
+            // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
@@ -111,62 +112,54 @@
                 // Bind inputs to query parameters
                 mysqli_stmt_bind_param($stmt, "si", $name, $game_id);
                 // Execute sql statement
-                if(!mysqli_stmt_execute($stmt)){
-                    $error = true;
-                    $errorText = mysqli_error($conn);
-                }
-                // Check if DB returned any result - Did player play this game?
-                if(mysqli_stmt_store_result($stmt) 
-                    && !(mysqli_stmt_num_rows($stmt) > 0)){
-                        $error = true;
-                        $errorText = "Bu oyunu hiç oynamamışsın.";
-                }
-                else{
-                    // Show section update
-                    $showSection = 2;
-
-                    // Query name, total and average game duration
-                    $sql = "SELECT game.name, SUM(duration), AVG(duration) FROM daily_game 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            INNER JOIN game ON game_id=game.id
-                            WHERE game_id=".$game_id.
-                            " AND gunluk.name='".$name."';";
-                    // Get all dates and their duration
-                    $sql .= "SELECT DATE(gunluk.date), daily_game.duration FROM daily_game 
-                            INNER JOIN game ON game_id=game.id 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            WHERE game_id=".$game_id.
-                            " AND gunluk.name='".$name."';";
-                    //$stmt = mysqli_stmt_init($conn);
-                    if(!mysqli_multi_query($conn, $sql)){
-                        $error = true;
-                        $errorText = mysqli_error($conn);
+                mysqli_stmt_execute($stmt);
+                // Bind results
+                mysqli_stmt_bind_result($stmt, $date, $game_duration);
+                // Store results
+                if(mysqli_stmt_store_result($stmt)){ 
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Show section update
+                        $showSection = 2;
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            // Push query results into array
+                            array_push($gameArray, array('date' => $date, 'duration' => $game_duration));
+                        }
+                        // Query name, total, average, min and max game duration
+                        $sql = "SELECT game.name, SUM(duration), AVG(duration), MIN(duration), MAX(duration) 
+                                FROM daily_game 
+                                INNER JOIN gunluk ON gunluk_id=gunluk.id
+                                INNER JOIN game ON game_id=game.id
+                                WHERE gunluk.name=? AND game_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "si", $name, $game_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $game_name, $total_duration, $average_duration, $min_duration, $max_duration);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
-                        // Handle both queries results
-                        do {
-                            // Store result set
-                            if ($result = mysqli_store_result($conn)) {
-                                while ($row = mysqli_fetch_row($result)) {
-                                    //echo print_r($row);
-                                    // First query's result, assign them
-                                    if (mysqli_more_results($conn)) {
-                                        $game_name = $row[0];
-                                        $total_duration = $row[1];
-                                        $average_duration = $row[2];
-                                    }
-                                    // Second query's results, put into array
-                                    else{
-                                        array_push($gameArray, array('date' => $row[0], 'duration' => $row[1]));
-                                    }
-                                }
-                                mysqli_free_result($result);
-                            }
-                            else
-                                $error = true;
-                        } while (mysqli_next_result($conn));
+                        $error = true;
+                        $errorText = "Bu oyunu hiç oynamamışsın.";
                     }
                 }
+                else{
+                    $error = true;
+                    $errorText = mysqli_error($conn); 
+                }   
             }
         }
     }
@@ -183,11 +176,13 @@
         // ID is not empty
         else{
             // Check DB for user watch
-            $sql = "SELECT * FROM daily_series 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
-                    WHERE name=? AND series_id LIKE ?";
+            $sql = "SELECT DATE(gunluk.date), begin_season, begin_episode, end_season, end_episode
+                    FROM daily_series 
+                    INNER JOIN series ON series_id=series.id 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE gunluk.name=? AND series_id=?";
             $stmt = mysqli_stmt_init($conn);
-
+            // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
@@ -196,84 +191,74 @@
                 // Bind inputs to query parameters
                 mysqli_stmt_bind_param($stmt, "si", $name, $series_id);
                 // Execute sql statement
-                if(!mysqli_stmt_execute($stmt)){
-                    $error = true;
-                    $errorText = mysqli_error($conn);
-                }
-                // Check if DB returned any result - Did player watch this series?
-                if(mysqli_stmt_store_result($stmt) 
-                    && !(mysqli_stmt_num_rows($stmt) > 0)){
-                        $error = true;
-                        $errorText = "Bu diziyi hiç izlememişsin.";
-                }
-                else{
-                    // Show section update
-                    $showSection = 3;
-
-                    // Query name, total and average series duration
-                    $sql = "SELECT series.name, SUM(end_episode - begin_episode), AVG(end_episode - begin_episode + 1) FROM daily_series 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            INNER JOIN series ON series_id=series.id
-                            WHERE series_id=".$series_id.
-                            " AND gunluk.name='".$name.
-                            "' AND (end_season - begin_season)=0;";
-                    // Get all dates and their duration
-                    $sql .= "SELECT DATE(gunluk.date), begin_season, begin_episode, end_season, end_episode
-                            FROM daily_series 
-                            INNER JOIN series ON series_id=series.id 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            WHERE series_id=".$series_id.
-                            " AND gunluk.name='".$name."';";
-                    //$stmt = mysqli_stmt_init($conn);
-                    if(!mysqli_multi_query($conn, $sql)){
-                        $error = true;
-                        $errorText = mysqli_error($conn);
+                mysqli_stmt_execute($stmt);
+                // Bind results
+                mysqli_stmt_bind_result($stmt, $date, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
+                // Store results
+                if(mysqli_stmt_store_result($stmt)){ 
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Show section update
+                        $showSection = 3;
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            // Push query results into array
+                            // If begin and end is in the same season, calculate the watched episode number
+                            if ($series_begin_season === $series_end_season){
+                                array_push($seriesArray, array('date' => $date, 
+                                                                'season' => $series_begin_season,
+                                                                // If only one episode print it, if not print "begin - end"
+                                                                'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
+                                                                // Substract end - begin and add one
+                                                                'duration' => ($series_end_episode-$series_begin_episode + 1)));
+                            }
+                            // Begin and end seasons different, push both of them
+                            else {
+                                array_push($seriesArray, array('date' => $date, 
+                                                                'season' => $series_begin_season.' - '.$series_end_season,
+                                                                // If only one episode print it, if not print "begin - end"
+                                                                'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
+                                                                'duration' => 'S'.$series_begin_season.'E'.$series_begin_episode.' - S'.$series_end_season.'E'.$series_end_episode));
+                            }
+                        }
+                        // Query name, total, average, min and max series duration
+                        $sql = "SELECT series.name, 
+                                        SUM(end_episode - begin_episode + 1), 
+                                        AVG(end_episode - begin_episode + 1), 
+                                        MIN(end_episode - begin_episode + 1), 
+                                        MAX(end_episode - begin_episode + 1) 
+                                FROM daily_series 
+                                INNER JOIN gunluk ON gunluk_id=gunluk.id
+                                INNER JOIN series ON series_id=series.id
+                                WHERE gunluk.name=? AND series_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "si", $name, $series_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $series_name, $total_duration, $average_duration, $min_duration, $max_duration);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
-                        // Handle both queries results
-                        do {
-                            // Store result set
-                            if ($result = mysqli_store_result($conn)) {
-                                while ($row = mysqli_fetch_row($result)) {
-                                    //echo print_r($row);
-                                    // First query's result, assign them
-                                    if (mysqli_more_results($conn)) {
-                                        $series_name = $row[0];
-                                        $total_duration = $row[1];
-                                        $average_duration = $row[2];
-                                    }
-                                    // Second query's results, put into array
-                                    else{
-                                        $series_begin_season = $row[1];
-                                        $series_begin_episode = $row[2];
-                                        $series_end_season = $row[3];
-                                        $series_end_episode = $row[4];
-                                        // If begin and end is in the same season, calculate the watched episode number
-                                        if ($series_begin_season === $series_end_season){
-                                            array_push($seriesArray, array('date' => $row[0], 
-                                                                            'season' => $series_begin_season,
-                                                                            // If only one episode print it, if not print "begin - end"
-                                                                            'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
-                                                                            // Substract end - begin and add one
-                                                                            'duration' => ($series_end_episode-$series_begin_episode + 1)));
-                                        }
-                                        // Begin and end seasons different, push both of them
-                                        else {
-                                            array_push($seriesArray, array('date' => $row[0], 
-                                                                            'season' => $series_begin_season.' - '.$series_end_season,
-                                                                            // If only one episode print it, if not print "begin - end"
-                                                                            'episode' => ($series_begin_episode===$series_end_episode) ? $series_begin_episode : $series_begin_episode.' - '.$series_end_episode,
-                                                                            'duration' => 'S'.$series_begin_season.'E'.$series_begin_episode.' - S'.$series_end_season.'E'.$series_end_episode));
-                                        }
-                                    }
-                                }
-                                mysqli_free_result($result);
-                            }
-                            else
-                                $error = true;
-                        } while (mysqli_next_result($conn));
+                        $error = true;
+                        $errorText = "Bu oyunu hiç oynamamışsın.";
                     }
                 }
+                else{
+                    $error = true;
+                    $errorText = mysqli_error($conn); 
+                }   
             }
         }
     }
@@ -290,11 +275,12 @@
         // ID is not empty
         else{
             // Check DB for user watch
-            $sql = "SELECT * FROM daily_movie 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
-                    WHERE name=? AND movie_id LIKE ?";
+            $sql = "SELECT DATE(gunluk.date), daily_movie.duration FROM daily_movie 
+                    INNER JOIN movie ON movie_id=movie.id 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE gunluk.name=? AND movie_id=?";
             $stmt = mysqli_stmt_init($conn);
-
+            // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
@@ -303,60 +289,53 @@
                 // Bind inputs to query parameters
                 mysqli_stmt_bind_param($stmt, "si", $name, $movie_id);
                 // Execute sql statement
-                if(!mysqli_stmt_execute($stmt)){
-                    $error = true;
-                    $errorText = mysqli_error($conn);
-                }
-                // Check if DB returned any result - Did player watch this movie?
-                if(mysqli_stmt_store_result($stmt) 
-                    && !(mysqli_stmt_num_rows($stmt) > 0)){
-                        $error = true;
-                        $errorText = "Bu filmi hiç izlememişsin.";
-                }
-                else{
-                    // Show section update
-                    $showSection = 4;
-
-                    // Query name, total and average movie duration
-                    $sql = "SELECT movie.name, SUM(duration) FROM daily_movie 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            INNER JOIN movie ON movie_id=movie.id
-                            WHERE movie_id=".$movie_id.
-                            " AND gunluk.name='".$name."';";
-                    // Get all dates and their duration
-                    $sql .= "SELECT DATE(gunluk.date), daily_movie.duration FROM daily_movie 
-                            INNER JOIN movie ON movie_id=movie.id 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            WHERE movie_id=".$movie_id.
-                            " AND gunluk.name='".$name."';";
-                    //$stmt = mysqli_stmt_init($conn);
-                    if(!mysqli_multi_query($conn, $sql)){
-                        $error = true;
-                        $errorText = mysqli_error($conn);
+                mysqli_stmt_execute($stmt);
+                // Bind results
+                mysqli_stmt_bind_result($stmt, $date, $movie_duration);
+                // Store results
+                if(mysqli_stmt_store_result($stmt)){ 
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Show section update
+                        $showSection = 4;
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            // Push query results into array
+                            array_push($movieArray, array('date' => $date, 'duration' => $movie_duration));
+                        }
+                        // Query name, total movie duration
+                        $sql = "SELECT movie.name, SUM(duration) FROM daily_movie 
+                                INNER JOIN gunluk ON gunluk_id=gunluk.id
+                                INNER JOIN movie ON movie_id=movie.id
+                                WHERE gunluk.name=? AND movie_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "si", $name, $movie_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $movie_name, $total_duration);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
-                        // Handle both queries results
-                        do {
-                            // Store result set
-                            if ($result = mysqli_store_result($conn)) {
-                                while ($row = mysqli_fetch_row($result)) {
-                                    // First query's result, assign them
-                                    if (mysqli_more_results($conn)) {
-                                        $movie_name = $row[0];
-                                        $total_duration = $row[1];
-                                    }
-                                    // Second query's results, put into array
-                                    else{
-                                        array_push($movieArray, array('date' => $row[0], 'duration' => $row[1]));
-                                    }
-                                }
-                                mysqli_free_result($result);
-                            }
-                            else
-                                $error = true;
-                        } while (mysqli_next_result($conn));
+                        $error = true;
+                        $errorText = "Bu filmi hiç izlememişsin.";
                     }
                 }
+                else{
+                    $error = true;
+                    $errorText = mysqli_error($conn); 
+                }   
             }
         }
     }
@@ -373,11 +352,12 @@
         // ID is not empty
         else{
             // Check DB for user read
-            $sql = "SELECT * FROM daily_book 
-                    INNER JOIN gunluk ON gunluk_id=gunluk.id 
-                    WHERE name=? AND book_id LIKE ?";
+            $sql = "SELECT DATE(gunluk.date), daily_book.duration FROM daily_book 
+                    INNER JOIN book ON book_id=book.id 
+                    INNER JOIN gunluk ON gunluk_id=gunluk.id
+                    WHERE gunluk.name=? AND book_id=?";
             $stmt = mysqli_stmt_init($conn);
-
+            // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
                 $errorText = mysqli_error($conn);
@@ -386,63 +366,64 @@
                 // Bind inputs to query parameters
                 mysqli_stmt_bind_param($stmt, "si", $name, $book_id);
                 // Execute sql statement
-                if(!mysqli_stmt_execute($stmt)){
-                    $error = true;
-                    $errorText = mysqli_error($conn);
-                }
-                // Check if DB returned any result - Did player read this book?
-                if(mysqli_stmt_store_result($stmt) 
-                    && !(mysqli_stmt_num_rows($stmt) > 0)){
-                        $error = true;
-                        $errorText = "Bu kitabı hiç okumamışsın.";
-                }
-                else{
-                    // Show section update
-                    $showSection = 5;
-
-                    // Query name, total and average book duration
-                    $sql = "SELECT book.name, SUM(duration), AVG(duration) FROM daily_book 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            INNER JOIN book ON book_id=book.id
-                            WHERE book_id=".$book_id.
-                            " AND gunluk.name='".$name."';";
-                    // Get all dates and their duration
-                    $sql .= "SELECT DATE(gunluk.date), daily_book.duration FROM daily_book 
-                            INNER JOIN book ON book_id=book.id 
-                            INNER JOIN gunluk ON gunluk_id=gunluk.id
-                            WHERE book_id=".$book_id.
-                            " AND gunluk.name='".$name."';";
-                    //$stmt = mysqli_stmt_init($conn);
-                    if(!mysqli_multi_query($conn, $sql)){
-                        $error = true;
-                        $errorText = mysqli_error($conn);
+                mysqli_stmt_execute($stmt);
+                // Bind results
+                mysqli_stmt_bind_result($stmt, $date, $book_duration);
+                // Store results
+                if(mysqli_stmt_store_result($stmt)){ 
+                    // Check if DB returned any result
+                    if(mysqli_stmt_num_rows($stmt) > 0){
+                        // Show section update
+                        $showSection = 5;
+                        // Fetch values
+                        while (mysqli_stmt_fetch($stmt)) {
+                            // Push query results into array
+                            array_push($bookArray, array('date' => $date, 'duration' => $book_duration));
+                        }
+                        // Query name, total, average, min and max book duration
+                        $sql = "SELECT book.name, SUM(duration), AVG(duration), MIN(duration), MAX(duration) 
+                                FROM daily_book 
+                                INNER JOIN gunluk ON gunluk_id=gunluk.id
+                                INNER JOIN book ON book_id=book.id
+                                WHERE gunluk.name=? AND book_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "si", $name, $book_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $book_name, $total_duration, $average_duration, $min_duration, $max_duration);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
-                        // Handle both queries results
-                        do {
-                            // Store result set
-                            if ($result = mysqli_store_result($conn)) {
-                                while ($row = mysqli_fetch_row($result)) {
-                                    // First query's result, assign them
-                                    if (mysqli_more_results($conn)) {
-                                        $book_name = $row[0];
-                                        $total_duration = $row[1];
-                                        $average_duration = $row[2];
-                                    }
-                                    // Second query's results, put into array
-                                    else{
-                                        array_push($bookArray, array('date' => $row[0], 'duration' => $row[1]));
-                                    }
-                                }
-                                mysqli_free_result($result);
-                            }
-                            else
-                                $error = true;
-                        } while (mysqli_next_result($conn));
+                        $error = true;
+                        $errorText = "Bu kitabı hiç okumamışsın.";
                     }
                 }
+                else{
+                    $error = true;
+                    $errorText = mysqli_error($conn); 
+                }   
             }
         }
+    }
+
+    // Not found error GET request handler
+    else if (isset($_GET["error"])){
+        $showSection = 0;
+        $error = true;
+        if($_GET["error"] === "not-found")
+            $errorText = "Bu tarihli günlük bulunamadı.";
     }
 
     // Initial GET request to load page: load select-options from DB
@@ -579,12 +560,18 @@
 
 <!-- Main center div-->
 <main class="main" style="min-height: 89vh;">
-    
+    <br>
     <?php
     // Error
     if($error) {
-        echo '<div>
-                <p id="dateError" class="error">Hata meydana geldi. '.$errorText.'</p>
+        echo '<!--Error-->
+            <div class="error" id="main-error">
+                <p>Hata meydana geldi. '.$errorText.'
+                    <button class="fa fa-times-circle btn text-danger" 
+                        aria-hidden="true" 
+                        onclick="$(\'#main-error\').hide()">
+                    </button>
+                </p> 
             </div>';
     }
 
@@ -993,9 +980,14 @@
                         }
                         else{
                             echo'<!--Error-->
-                            <div>
-                            <p id="dbError" class="error">Oyunlar için veritabanı \'store\' hatası.</p>
-                            </div>';
+                                <div class="error" id="dbError">
+                                    <p>Oyunlar için veritabanı \'store\' hatası.
+                                        <button class="fa fa-times-circle btn text-danger" 
+                                            aria-hidden="true" 
+                                            onclick="$(\'#dbError\').hide()">
+                                        </button>
+                                    </p> 
+                                </div>';
                         }
                     }
 
@@ -1042,9 +1034,14 @@
                         }
                         else{
                             echo'<!--Error-->
-                            <div>
-                            <p id="dbError" class="error">Diziler için veritabanı \'store\' hatası.</p>
-                            </div>';
+                                <div class="error" id="dbError">
+                                    <p>Diziler için veritabanı \'store\' hatası.
+                                        <button class="fa fa-times-circle btn text-danger" 
+                                            aria-hidden="true" 
+                                            onclick="$(\'#dbError\').hide()">
+                                        </button>
+                                    </p> 
+                                </div>';
                         }
                     }
 
@@ -1082,9 +1079,14 @@
                         }
                         else{
                             echo'<!--Error-->
-                            <div>
-                            <p id="dbError" class="error">Filmler için veritabanı \'store\' hatası.</p>
-                            </div>';
+                                <div class="error" id="dbError">
+                                    <p>Filmler için veritabanı \'store\' hatası.
+                                        <button class="fa fa-times-circle btn text-danger" 
+                                            aria-hidden="true" 
+                                            onclick="$(\'#dbError\').hide()">
+                                        </button>
+                                    </p> 
+                                </div>';
                         }
                     }
 
@@ -1122,25 +1124,32 @@
                         }
                         else{
                             echo'<!--Error-->
-                            <div>
-                            <p id="dbError" class="error">Kitaplar için veritabanı \'store\' hatası.</p>
-                            </div>';
+                                <div class="error" id="dbError">
+                                    <p>Kitaplar için veritabanı \'store\' hatası.
+                                        <button class="fa fa-times-circle btn text-danger" 
+                                            aria-hidden="true" 
+                                            onclick="$(\'#dbError\').hide()">
+                                        </button>
+                                    </p> 
+                                </div>';
                         }
                     }
 
                 }
             }
             else{
-                echo'<!--Error-->
-                    <div>
-                        <p id="notFoundError" class="error">Bu tarihli günlük bulunamadı.</p>
-                    </div>';
+                exit("<script>location.href = './show.php?error=not-found';</script>");
             }
         }
         else{
             echo'<!--Error-->
-                <div>
-                    <p id="dbError" class="error">Veritabanı \'store\' hatası.</p>
+                <div class="error" id="dbError">
+                    <p>Veritabanı \'store\' hatası.
+                        <button class="fa fa-times-circle btn text-danger" 
+                            aria-hidden="true" 
+                            onclick="$(\'#dbError\').hide()">
+                        </button>
+                    </p> 
                 </div>';
         }
         echo '</div>';
@@ -1150,8 +1159,26 @@
     else if($showSection === 2){
         echo '<div id="section2">
                 <h2>'.$game_name.'</h2>
-                <p>Toplam oyun oynama süresi: '.$total_duration.' Saat</p>
-                <p>Ortalama oyun oynama süresi: '.$average_duration.' Saat</p>
+                <br>
+                <table id="game-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
+                    <tr>
+                        <td>Toplam bu oyunu oynama süresi:</td>
+                        <td>'.$total_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Günlük ortalama oyun oynama süresi:</td>
+                        <td>'.$average_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en fazla oyun oynama süresi:</td>
+                        <td>'.$max_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en az oyun oynama süresi:</td>
+                        <td>'.$min_duration.' Saat</td>
+                    </tr>
+                </table>         
+                <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
                     <tr class="table-info">
                         <th>Tarih</th>
@@ -1172,8 +1199,26 @@
     else if($showSection === 3){
         echo '<div id="section3">
                 <h2>'.$series_name.'</h2>
-                <p>Toplam dizi izleme süresi: '.$total_duration.' Bölüm</p>
-                <p>Ortalama dizi izleme süresi: '.$average_duration.' Bölüm</p>
+                <br>
+                <table id="series-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
+                    <tr>
+                        <td>Toplam bu diziyi izleme süresi:</td>
+                        <td>'.$total_duration.' Bölüm</td>
+                    </tr>
+                    <tr>
+                        <td>Günlük ortalama dizi izleme süresi:</td>
+                        <td>'.$average_duration.' Bölüm</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en fazla dizi izleme süresi:</td>
+                        <td>'.$max_duration.' Bölüm</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en az dizi izleme süresi:</td>
+                        <td>'.$min_duration.' Bölüm</td>
+                    </tr>
+                </table>         
+                <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
                     <tr class="table-primary">
                         <th>Tarih</th>
@@ -1198,7 +1243,14 @@
     else if($showSection === 4){
         echo '<div id="section4">
                 <h2>'.$movie_name.'</h2>
-                <p>Toplam film izleme süresi: '.$total_duration.' Saat</p>
+                <br>
+                <table id="movie-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
+                    <tr>
+                        <td>Toplam bu filmi izleme süresi:</td>
+                        <td>'.$total_duration.' Saat</td>
+                    </tr>
+                </table>         
+                <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
                     <tr class="table-secondary">
                         <th>Tarih</th>
@@ -1219,8 +1271,26 @@
     else if($showSection === 5){
         echo '<div id="section5">
                 <h2>'.$book_name.'</h2>
-                <p>Toplam kitap okuma süresi: '.$total_duration.' Saat</p>
-                <p>Ortalama kitap okuma süresi: '.$average_duration.' Saat</p>
+                <br>
+                <table id="book-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
+                    <tr>
+                        <td>Toplam bu kitabı okuma süresi:</td>
+                        <td>'.$total_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Günlük ortalama kitap okuma süresi:</td>
+                        <td>'.$average_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en fazla kitap okuma süresi:</td>
+                        <td>'.$max_duration.' Saat</td>
+                    </tr>
+                    <tr>
+                        <td>Bir günde en az kitap okuma süresi:</td>
+                        <td>'.$min_duration.' Saat</td>
+                    </tr>
+                </table>         
+                <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
                     <tr class="table-warning">
                         <th>Tarih</th>
@@ -1239,12 +1309,12 @@
 
     // Error V2
     else{
-        echo '<div>
-            <p id="dateError" class="error">Hata meydana geldi.</p>
-            <p id="dateError" class="error">Burada olmaman gerek!.</p>
+        echo '<div id="dateError" class="error">
+            <p>Hata meydana geldi.</p>
+            <p>Burada olmaman gerek!.</p>
             <br/>
-            <p id="dateError" class="error">There is an error about something.</p>
-            <p id="dateError" class="error">You were not suppose to be here!</p>
+            <p>There is an error about something.</p>
+            <p>You were not suppose to be here!</p>
         </div>';
     }
     ?>
