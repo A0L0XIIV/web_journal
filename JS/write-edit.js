@@ -43,9 +43,9 @@ function sectionDisplay(type) {
   var btnId = "add-" + type + "-btn";
   var divId = "add-" + type;
   // Show new content
-  $("#" + divId).css({ display: "inline" });
-  // Remove the button from display
-  $("#" + btnId).css({ display: "none" });
+  $("#" + divId).show();
+  // Hide the button
+  $("#" + btnId).hide();
 }
 
 // Add new entertainment elements into list to show to user
@@ -106,17 +106,17 @@ function addToTheList(type) {
     duration == "S" ||
     seriesError
   ) {
-    $("#" + type + "-add-error").css({ display: "inline-block" });
+    $("#" + type + "-add-error").show();
   } else {
     // If add error is visible, hide it
-    $("#" + type + "-add-error").css({ display: "none" });
+    $("#" + type + "-add-error").hide();
 
     // Check for duplication in ul for li --> #game-list #game-ID
     if ($("#" + type + "-list li#" + type + "-" + selectedItemValue).length) {
-      $("#" + type + "-exist-error").css({ display: "inline-block" });
+      $("#" + type + "-exist-error").show();
     } else {
       // If exist error is visible, hide it
-      $("#" + type + "-exist-error").css({ display: "none" });
+      $("#" + type + "-exist-error").hide();
 
       // Get selected option's text
       var selectedItemName = $("#" + type + "-select")
@@ -243,13 +243,13 @@ function getEntertainmentNames(type) {
       );
     }
     // If AJAX error is displayed, hide it
-    $("#get-" + type + "-names-error").css({ display: "none" });
+    $("#get-" + type + "-names-error").hide();
   });
 
   // Server failure response
   request.fail(function (jqXHR, textStatus, errorThrown) {
     console.error("AJAX error: " + textStatus, errorThrown);
-    $("#get-" + type + "-names-error").css({ display: "inline" });
+    $("#get-" + type + "-names-error").show();
   });
 
   // Always promise --> success or fail
@@ -321,21 +321,21 @@ function addNewEntertainment(type) {
       );
 
       // If AJAX error is displayed, hide it
-      $("#add-entertainment-error").css({ display: "none" });
+      $("#add-entertainment-error").hide();
       // Display success message
-      $("#add-entertainment-success").css({ display: "inline" });
+      $("#add-entertainment-success").show();
       // Close the modal after successful operation (1s delay)
       setTimeout(function () {
         $("#add-entertainment-modal").modal("hide");
         // Clear input value for next submission
         $("#new-entertainment-name").val("");
         // Hide success message for next submission
-        $("#add-entertainment-success").css({ display: "none" });
+        $("#add-entertainment-success").hide();
       }, 1000);
     }
     // Error response
     else {
-      $("#add-entertainment-error").css({ display: "inline" });
+      $("#add-entertainment-error").show();
       $("#add-entertainment-error-text").text("AJAX error! " + response.errMsg);
     }
   });
@@ -343,7 +343,7 @@ function addNewEntertainment(type) {
   // Server failure response
   request.fail(function (jqXHR, textStatus, errorThrown) {
     console.error("AJAX error: " + textStatus, errorThrown);
-    $("#add-entertainment-error").css({ display: "inline" });
+    $("#add-entertainment-error").show();
     $("#add-entertainment-error-text").text(
       "AJAX error, request failed! " + jqXHR.responseText
     );
@@ -377,11 +377,11 @@ function deleteEntertaimmentFromDB(type, daily_id) {
     // Success response
     if (textStatus == "success") {
       // Hide delete button
-      $("#" + rowId + " .remove-button").css({ display: "none" });
+      $("#" + rowId + " .remove-button").hide();
       // If AJAX error is displayed, hide it
-      $("#" + rowId + " .error").css({ display: "none" });
+      $("#" + rowId + " .error").hide();
       // Show successfully deleted message
-      $("#" + rowId + " .success").css({ display: "inline" });
+      $("#" + rowId + " .success").show();
 
       // After a second, delete the entire row or table (1s delay)
       setTimeout(function () {
@@ -397,9 +397,9 @@ function deleteEntertaimmentFromDB(type, daily_id) {
     // Error response
     else {
       // Hide delete button
-      $("#" + rowId + " .remove-button").css({ display: "none" });
+      $("#" + rowId + " .remove-button").hide();
       // If AJAX there is an error, display it
-      $("#" + rowId + " .error").css({ display: "inline" });
+      $("#" + rowId + " .error").show();
       // Error message
       $("#" + rowId + " .error-msg").text("AJAX error! " + response.errMsg);
     }
@@ -409,9 +409,9 @@ function deleteEntertaimmentFromDB(type, daily_id) {
   request.fail(function (jqXHR, textStatus, errorThrown) {
     console.error("AJAX error: " + textStatus, errorThrown);
     // Hide delete button
-    $("#" + rowId + " .remove-button").css({ display: "none" });
+    $("#" + rowId + " .remove-button").hide();
     // If AJAX there is an error, display it
-    $("#" + rowId + " .error").css({ display: "inline" });
+    $("#" + rowId + " .error").show();
     // Error message
     $("#" + rowId + " .error-msg").text(
       "AJAX error, request failed! " + jqXHR.responseText
