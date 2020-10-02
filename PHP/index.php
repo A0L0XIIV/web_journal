@@ -107,8 +107,8 @@
           placeholder="..."
           required
         />
-        <p id="usernameError" class="error"><?php if($nameError) {echo "İsim boş olamaz!";}?></p>
       </div>
+      <?php if($nameError) {echo '<p id="usernameError" class="error">İsim boş olamaz!</p>';}?>
 
       <!--Input for user password, type=password-->
       <div class="input-group mb-3 justify-content-center">
@@ -124,13 +124,13 @@
           placeholder="..."
           required
         />
-        <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
       </div>
+     <?php if($pwError) {echo ' <p id="passwordError" class="error">Şifre boş olamaz!</p>';}?>
 
       <!--Login error-->
       <div>
-          <p id="authError" class="error"><?php if($authError) {echo "Hatalı giriş!";}?></p>
-          <p id="successAuth" class="success"><?php if($successAuth) {echo "Giriş başarılı!";}?></p>
+          <?php if($authError) {echo '<p id="authError" class="error">Hatalı giriş!</p>';}?>
+          <?php if($successAuth) {echo '<p id="successAuth" class="success">Giriş başarılı!</p>';}?>
       </div>
 
       <!--Input for submitting the form, type=submit-->

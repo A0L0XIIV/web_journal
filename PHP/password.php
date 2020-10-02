@@ -94,13 +94,13 @@
         placeholder="..."
         required
       />
-      <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
     </div>
+    <?php if($pwError) {echo '<p id="passwordError" class="error">Şifre boş olamaz!</p>';}?>
 
     <!--Password update error-->
     <div>
-        <p id="authError" class="error"><?php if($updateError) {echo "Şifre değiştirme başarısız!";}?></p>
-        <p id="successAuth" class="success"><?php if($successUpdate) {echo "Şifre değiştirme başarılı! ".$errorText;}?></p>
+        <?php if($updateError) {echo '<p id="authError" class="error">Şifre değiştirme başarısız! '.$errorText.'</p>';}?>
+        <?php if($successUpdate) {echo '<p id="successAuth" class="success">Şifre değiştirme başarılı!</p>';}?>
     </div>
 
     <!--Input for submitting the form, type=submit-->
