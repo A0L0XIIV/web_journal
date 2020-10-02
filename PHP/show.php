@@ -567,7 +567,8 @@
         echo '<!--Error-->
             <div class="error" id="main-error">
                 <p>Hata meydana geldi. '.$errorText.'
-                    <button class="fa fa-times-circle btn text-danger" 
+                    <button type="button"
+                        class="fa fa-times-circle btn text-danger" 
                         aria-hidden="true" 
                         onclick="$(\'#main-error\').hide()">
                     </button>
@@ -811,7 +812,7 @@
                 while (mysqli_stmt_fetch($stmt)) {
                     echo '<div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
                             <div class="col-xs-6 col-sm-2 px-0">
-                                <button class="btn btn-primary bg-primary btn-sm p-0">
+                                <button type="button" class="btn btn-primary bg-primary btn-sm p-0">
                                     <a href="edit.php?date='.explode(" ",$journal_date)[0].'" class="btn text-white">Güncelle</a>
                                 </button>
                             </div>
@@ -982,7 +983,8 @@
                             echo'<!--Error-->
                                 <div class="error" id="dbError">
                                     <p>Oyunlar için veritabanı \'store\' hatası.
-                                        <button class="fa fa-times-circle btn text-danger" 
+                                        <button type="button"
+                                            class="fa fa-times-circle btn text-danger" 
                                             aria-hidden="true" 
                                             onclick="$(\'#dbError\').hide()">
                                         </button>
@@ -1036,7 +1038,8 @@
                             echo'<!--Error-->
                                 <div class="error" id="dbError">
                                     <p>Diziler için veritabanı \'store\' hatası.
-                                        <button class="fa fa-times-circle btn text-danger" 
+                                        <button type="button"
+                                            class="fa fa-times-circle btn text-danger" 
                                             aria-hidden="true" 
                                             onclick="$(\'#dbError\').hide()">
                                         </button>
@@ -1081,7 +1084,8 @@
                             echo'<!--Error-->
                                 <div class="error" id="dbError">
                                     <p>Filmler için veritabanı \'store\' hatası.
-                                        <button class="fa fa-times-circle btn text-danger" 
+                                        <button type="button"
+                                            class="fa fa-times-circle btn text-danger" 
                                             aria-hidden="true" 
                                             onclick="$(\'#dbError\').hide()">
                                         </button>
@@ -1126,7 +1130,8 @@
                             echo'<!--Error-->
                                 <div class="error" id="dbError">
                                     <p>Kitaplar için veritabanı \'store\' hatası.
-                                        <button class="fa fa-times-circle btn text-danger" 
+                                        <button type="button"
+                                            class="fa fa-times-circle btn text-danger" 
                                             aria-hidden="true" 
                                             onclick="$(\'#dbError\').hide()">
                                         </button>
@@ -1145,7 +1150,8 @@
             echo'<!--Error-->
                 <div class="error" id="dbError">
                     <p>Veritabanı \'store\' hatası.
-                        <button class="fa fa-times-circle btn text-danger" 
+                        <button type="button"
+                            class="fa fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$(\'#dbError\').hide()">
                         </button>

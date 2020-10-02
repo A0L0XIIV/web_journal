@@ -381,7 +381,8 @@
         echo '<!--Error-->
             <div class="error" id="main-error">
                 <p>Hata meydana geldi. '.$errorText.
-                ' <button class="fa fa-times-circle btn text-danger" 
+                ' <button type="button"
+                        class="fa fa-times-circle btn text-danger" 
                         aria-hidden="true" 
                         onclick="$(\'#main-error\').hide()">
                     </button>
@@ -766,7 +767,8 @@
             echo'<!--Error-->
                 <div class="error" id="dbError">
                     <p>Veritabanı \'store\' hatası.
-                        <button class="fa fa-times-circle btn text-danger" 
+                        <button type="button"
+                            class="fa fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$(\'#dbError\').hide()">
                         </button>

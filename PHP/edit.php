@@ -524,7 +524,8 @@
         echo '<!--Success-->
             <div id="main-success" class="success">
                 <p>Günlük başarılı bir şekilde güncellendi.
-                    <button class="fa fa-times-circle btn text-danger" 
+                    <button type="button"
+                        class="fa fa-times-circle btn text-danger" 
                         aria-hidden="true" 
                         onclick="$(\'#main-success\').hide()">
                     </button>
@@ -537,7 +538,8 @@
         echo '<!--Error-->
                 <div class="error" id="main-error">
                     <p>Hata meydana geldi. '.$errorText.'
-                        <button class="fa fa-times-circle btn text-danger" 
+                        <button type="button"
+                            class="fa fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$(\'#main-error\').hide()">
                         </button>
@@ -692,7 +694,8 @@
                         echo'<!--Error-->
                             <div class="error" id="dbError">
                                 <p>Veritabanı \'store\' hatası. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#dbError\').hide()">
                                     </button>
@@ -780,7 +783,8 @@
                     echo'<!--Error-->
                         <div class="error" id="dbError">
                             <p>Oyunlar için veritabanı \'store\' hatası. 
-                                <button class="fa fa-times-circle btn text-danger" 
+                                <button type="button"
+                                    class="fa fa-times-circle btn text-danger" 
                                     aria-hidden="true" 
                                     onclick="$(\'#dbError\').hide()">
                                 </button>
@@ -1062,7 +1066,8 @@
                             <div id="game-add-error" class="error" style="display:none;">
                                 <!--game-add-error-->
                                 <p>Oyun adı ya da süresi uygun değil. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#game-add-error\').hide()">
                                     </button>
@@ -1071,7 +1076,8 @@
                             <div id="game-exist-error" class="error" style="display:none;">
                                 <!--game-exist-error-->
                                 <p>Oyun zaten var, silip tekrar ekleyebilirsin. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#game-exist-error\').hide()">
                                     </button>
@@ -1100,7 +1106,8 @@
                     <div id="get-game-names-error" class="error" style="display:none;">
                         <!--get-game-names-error-->
                         <p>AJAX hatası. Oyun isimlerini sunucudan alamadık.  
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-game-names-error\').hide()">
                             </button>
@@ -1203,7 +1210,8 @@
                                 <!--series-add-error-->
                                 <p>Dizi adı ya da bölümleri uygun değil. <br>
                                     Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#series-add-error\').hide()">
                                     </button>
@@ -1212,7 +1220,8 @@
                             <div id="series-exist-error" class="error" style="display:none;">
                                 <!--series-exist-error-->
                                 <p>Dizi zaten var, silip tekrar ekleyebilirsin. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#series-exist-error\').hide()">
                                     </button>
@@ -1241,7 +1250,8 @@
                     <div id="get-series-names-error" class="error" style="display:none;">
                         <!--get-series-names-error-->
                         <p>AJAX hatası. Dizi isimlerini sunucudan alamadık.  
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-series-names-error\').hide()">
                             </button>
@@ -1307,7 +1317,8 @@
                             <div id="movie-add-error" class="error" style="display:none;">
                                 <!--movie-add-error-->
                                 <p>Film adı ya da süresi uygun değil.
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#movie-add-error\').hide()">
                                     </button>
@@ -1316,7 +1327,8 @@
                             <div id="movie-exist-error" class="error" style="display:none;">
                                 <!--movie-exist-error-->
                                 <p>Film zaten var, silip tekrar ekleyebilirsin.
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#movie-exist-error\').hide()">
                                     </button>
@@ -1346,7 +1358,8 @@
                     <div id="get-movie-names-error" class="error" style="display:none;">
                         <!--get-movie-names-error-->
                         <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-movie-names-error\').hide()">
                             </button>
@@ -1410,7 +1423,8 @@
                             <div id="book-add-error" class="error" style="display:none;">
                                 <!--book-add-error-->
                                 <p>Kitap adı ya da süresi uygun değil. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#book-add-error\').hide()">
                                     </button>
@@ -1419,7 +1433,8 @@
                             <div id="book-exist-error" class="error" style="display:none;">
                                 <!--book-exist-error-->
                                 <p>Kitap zaten var, silip tekrar ekleyebilirsin. 
-                                    <button class="fa fa-times-circle btn text-danger" 
+                                    <button type="button"
+                                        class="fa fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#book-exist-error\').hide()">
                                     </button>
@@ -1448,7 +1463,8 @@
                     <div id="get-book-names-error" class="error" style="display:none;">
                         <!--get-book-names-error-->
                         <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-book-names-error\').hide()">
                             </button>
@@ -1485,7 +1501,8 @@
                     <div id="add-entertainment-success" class="success" style="display:none;">
                         <!--Success-->
                         <p><span class="entertaintment-type"></span> başarılı bir şekilde eklendi. Lütfen bekleyin... 
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$('#add-entertainment-success').hide()">
                             </button>
@@ -1495,7 +1512,8 @@
                     <div id="add-entertainment-error" class="error" style="display:none;">
                         <!--Error-->
                         <p>Hata meydana geldi. <span id="add-entertainment-error-text"></span> 
-                            <button class="fa fa-times-circle btn text-danger" 
+                            <button type="button"
+                                class="fa fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$('#add-entertainment-error').hide()">
                             </button>
