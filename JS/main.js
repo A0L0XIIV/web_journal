@@ -2,6 +2,14 @@
 window.onload = init;
 
 function init() {
+  // If there is an error and it is visible, highlight it
+  if($(".error").length && $(".error").is(':visible')){
+    $(".error").ready(highlight(".error"));
+  }
+  // If there is a success message and it is visible, highlight it
+  if($(".success").length && $(".success").is(':visible')){
+    $(".success").ready(highlight(".success"));
+  }
   // Set dark theme initial value
   initializeCookieIsDarkTheme();
   var isDarkTheme = getCookie("isDarkTheme");
@@ -84,4 +92,9 @@ function getCookie(cname) {
     }
   }
   return "";
+}
+
+function highlight(target){
+  // Highlight an element via blinking it twice
+  $(target).delay(100).fadeOut().fadeIn('slow').delay(100).fadeOut().fadeIn('slow');
 }

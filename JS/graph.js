@@ -26,6 +26,9 @@ var happiness_label_colors = [
 ];
 var fontColor;
 
+// Init function
+window.onload = init;
+
 function init() {
   // Get dark theme initial value
   var isDarkTheme = getCookie("isDarkTheme");
@@ -35,6 +38,10 @@ function init() {
     fontColor = "#000000";
   } else {
     fontColor = "#7f7f7f";
+  }
+  // If there is an error and it is visible, highlight it
+  if($(".error").length && $(".error").is(':visible')){
+    $(".error").ready(highlight(".error"));
   }
 }
 
