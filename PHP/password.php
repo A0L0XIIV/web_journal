@@ -61,62 +61,61 @@
 
 ?>
 
-   <!-- Centered main-->
-   <main class="main" style="min-height: 90vh;">
+<!-- Centered main-->
+<main class="main" style="min-height: 90vh;">
 
-      <form
-        name="login-form"
-        id="login-form"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-        method="post"
-      >
-    
-        <h1>
-          Şifreni buradan değiştirebilirsin
-          <?php
-            if(isset($_SESSION['name'])){
-                echo ' '.$_SESSION['name'];
-            }
-          ?>
-        </h1>
+  <form
+    name="login-form"
+    id="login-form"
+    action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
+    method="post">
 
-        <!--Input for user password, type=password-->
-        <div class="input-group mb-3 justify-content-center">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="pw-label">Şifre</span>
-          </div>
-          <input
-            type="password"
-            name="password"
-            id="password-input"
-            title="Max uzunluk 50."
-            maxlength="50"
-            minlength="3"
-            placeholder="..."
-            required
-          />
-          <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
-        </div>
+    <h1>
+      Şifreni buradan değiştirebilirsin
+      <?php
+        if(isset($_SESSION['name'])){
+            echo ' '.$_SESSION['name'];
+        }
+      ?>
+    </h1>
 
-        <!--Password update error-->
-        <div>
-            <p id="authError" class="error"><?php if($updateError) {echo "Şifre değiştirme başarısız!";}?></p>
-            <p id="successAuth" class="success"><?php if($successUpdate) {echo "Şifre değiştirme başarılı! ".$errorText;}?></p>
-        </div>
+    <!--Input for user password, type=password-->
+    <div class="input-group mb-3 justify-content-center">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="pw-label">Şifre</span>
+      </div>
+      <input
+        type="password"
+        name="password"
+        id="password-input"
+        title="Max uzunluk 50."
+        maxlength="50"
+        minlength="3"
+        placeholder="..."
+        required
+      />
+      <p id="passwordError" class="error"><?php if($pwError) {echo "Şifre boş olamaz!";}?></p>
+    </div>
 
-        <!--Input for submitting the form, type=submit-->
-        <div>
-          <input
-            type="submit"
-            value="Gönder"
-            name="pw-update-submit"
-            class="btn btn-primary bg-secondary"
-            aria-pressed="false"
-          />
-        </div>
-      </form>
-      <br /><br />
-    </main>
+    <!--Password update error-->
+    <div>
+        <p id="authError" class="error"><?php if($updateError) {echo "Şifre değiştirme başarısız!";}?></p>
+        <p id="successAuth" class="success"><?php if($successUpdate) {echo "Şifre değiştirme başarılı! ".$errorText;}?></p>
+    </div>
+
+    <!--Input for submitting the form, type=submit-->
+    <div>
+      <input
+        type="submit"
+        value="Gönder"
+        name="pw-update-submit"
+        class="btn btn-primary bg-secondary"
+        aria-pressed="false"
+      />
+    </div>
+  </form>
+  <br /><br />
+</main>
 
 <?php
     require "footer.php";
