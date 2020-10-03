@@ -211,8 +211,8 @@ function getEntertainmentNames(type) {
 
   // Send request to server
   request = $.ajax({
-    type: "POST",
-    //url: "write.php",
+    type: "GET",
+    url: "entertainment.php",
     data: { type: type },
     dataType: "json",
   });
@@ -290,9 +290,15 @@ function openNewEntertainmentModal(type) {
     // Open modal
     $("#add-entertainment-modal").modal();
   }
+  // Show last watched series episode button
+  else if (type === "series"
+      && selectedItemValue !== ""
+      && selectedItemValue !== 0 ) {
+    $("#last-episode-btn").show();
+  }
 }
 
-// Add new entertainment elements in to DB
+// AJAX add new entertainment elements in to DB
 function addNewEntertainment(type) {
   // jQuery request variable
   var request;
@@ -306,6 +312,7 @@ function addNewEntertainment(type) {
   // Send request to server
   request = $.ajax({
     type: "POST",
+    url: "entertainment.php",
     data: { type: type, name: newEntertainmentName },
     dataType: "json",
   });
@@ -420,4 +427,59 @@ function deleteEntertaimmentFromDB(type, daily_id) {
 
   // Always promise --> success or fail
   request.always(function () {});
+}
+
+function getLastWatchedSeriesEpisode(){
+  // Get name value from the select
+  var selectedItemValue = $("#series-select")
+    .find("option:selected")
+    .attr("value");
+
+  // AJAX request to get last watched episode
+  if(selectedItemValue !==0
+    || selectedItemValue !== ""){
+    // jQuery request variable
+    var request;
+
+    // Abort any pending request
+    if (request) {
+      request.abort();
+    }
+
+    // Send request to server
+    request = $.ajax({
+      type: "GET",
+      url: "entertainment.php",
+      data: { lastWatchedSeries: selectedItemValue },
+      dataType: "json",
+    });
+
+    // Get server's response and handle it
+    request.done(function (response, textStatus, jqXHR) {
+      // Success response
+      if (textStatus == "success") {
+        $("#last-episode-btn button").text('Son bölüm +1');
+        //console.log(response + response.length);
+        var beginSeason = $("#series-season-begin");
+        var beginEpisode = $("#series-episode-begin");
+        for (var i = 0; i < response.length; i++) {
+          beginSeason.val(response[i].season);
+          beginEpisode.val(response[i].episode + 1);
+        }
+      }
+      // Response error
+      else {
+        $("#last-episode-btn button").text('Hata!');
+      }
+    });
+
+    // Server failure response
+    request.fail(function (jqXHR, textStatus, errorThrown) {
+      console.error("AJAX error: " + textStatus, errorThrown);
+      $("#last-episode-btn button").text('Bulamadık!');
+    });
+
+    // Always promise --> success or fail
+    request.always(function () {});
+  }
 }

@@ -1,262 +1,3 @@
-<?php
-    // Get entertainments AJAX request handler
-
-    // Database connection
-    require "./mysqli_connect.php";
-
-    // Variables
-    $entertainment_name = $entertainment_id = "";
-    
-    if ($_SERVER["REQUEST_METHOD"] === "POST"
-        && !isset($_POST["write-submit"])
-        && !isset($_POST['name'])
-        && !isset($_POST['id'])
-        && isset($_POST['type'])) {
-        // Get entertainment type
-        $type = $_POST['type'];
-
-        // Each type has different tables
-        // Get game names
-        if($type === "game"){
-            // Check DB for picked date
-            $sql = "SELECT name, id FROM game";
-        }
-        // Series SQL
-        else if($type === "series"){
-            // Check DB for picked date
-            $sql = "SELECT name, id FROM series";
-        }
-        // Series SQL
-        else if($type === "movie"){
-            // Check DB for picked date
-            $sql = "SELECT name, id FROM movie";
-        }
-        // Series SQL
-        else if($type === "book"){
-            // Check DB for picked date
-            $sql = "SELECT name, id FROM book";
-        }
-
-        // Start SQL query
-        $stmt = mysqli_stmt_init($conn);
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            $error = true;
-        }
-        else{
-            // Bind inputs to query parameters
-            //mysqli_stmt_bind_param($stmt, "s", $name);
-            // Execute sql statement
-            mysqli_stmt_execute($stmt);
-            // Bind result variables
-            mysqli_stmt_bind_result($stmt, $entertainment_name, $entertainment_id);
-            // Results fetched below...
-            if(mysqli_stmt_store_result($stmt)){
-                // Check if DB returned any result
-                if(mysqli_stmt_num_rows($stmt) > 0){
-                    // Fetch values
-                    //$gameArray = [];
-                    while (mysqli_stmt_fetch($stmt)) {
-                        //array_push($gameArray, array('value' => htmlspecialchars($work_happiness), 'name' => $work_happiness));
-                        $gameArray[] = array(
-                            'id' =>htmlspecialchars($entertainment_id),
-                            'desc' => $entertainment_name,
-                            );
-                    }
-                    exit(json_encode($gameArray));
-                    
-                }
-            }
-        } 
-        
-    }
-?>
-
-<?php
-    // AJAX request handler for adding new entertainments to DB
-
-    // define variables and set to empty values
-    $new_entertainment_name = "";
-    $addEntertainmentErrorText = "";
-    $id = -1;
-
-    // Check request type and sumbitted form
-    if ($_SERVER["REQUEST_METHOD"] === "POST"
-        && !isset($_POST["write-submit"])
-        && isset($_POST["name"])
-        && isset($_POST["type"])) {
-
-        // Get entertainment type
-        $entertainment_type = $_POST["type"];
-        // Security operations on text
-        $new_entertainment_name = test_input($_POST["name"]);
-        // Encoding change
-        $new_entertainment_name = mb_convert_encoding($new_entertainment_name, "UTF-8");
-
-        // Save entertainment into DB by types
-        switch($entertainment_type){
-            case "game":
-                $sql = "INSERT INTO game (name) VALUES (?)";
-                break;
-            case "series":
-                $sql = "INSERT INTO series (name) VALUES (?)";
-                break;
-            case "movie":
-                $sql = "INSERT INTO movie (name) VALUES (?)";
-                break;
-            case "book":
-                $sql = "INSERT INTO book (name) VALUES (?)";
-                break;
-            default:
-                $addEntertainmentErrorText = "Undefined entertainment type!";
-                http_response_code(400);
-                exit($addEntertainmentErrorText);
-                break;
-        }
-
-        $stmt = mysqli_stmt_init($conn);
-        // DB error check
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            $addEntertainmentErrorText = mysqli_error($conn);
-            http_response_code(400);
-            exit($addEntertainmentErrorText);
-        }
-        else{
-            // Bind inputs to query parameters
-            mysqli_stmt_bind_param($stmt, "s", $new_entertainment_name);
-            // Execute sql statement
-            if(mysqli_stmt_execute($stmt)){
-                // Get new entertainment's id
-                switch($entertainment_type){
-                    case "game":
-                        $sql = "SELECT id FROM game WHERE name=?";
-                        break;
-                    case "series":
-                        $sql = "SELECT id FROM series WHERE name=?";
-                        break;
-                    case "movie":
-                        $sql = "SELECT id FROM movie WHERE name=?";
-                        break;
-                    case "book":
-                        $sql = "SELECT id FROM book WHERE name=?";
-                        break;
-                    default:
-                        $addEntertainmentErrorText = "Undefined entertainment type!";
-                        http_response_code(400);
-                        exit($addEntertainmentErrorText);
-                        break;
-                }
-                $stmt = mysqli_stmt_init($conn);
-                // Prepare SQL
-                if(!mysqli_stmt_prepare($stmt, $sql)){
-                    $addEntertainmentErrorText = mysqli_error($conn);
-                    http_response_code(400);
-                    exit($addEntertainmentErrorText);
-                }
-                else{
-                    // Bind inputs to query parameters
-                    mysqli_stmt_bind_param($stmt, "s", $new_entertainment_name);
-                    // Execute sql statement
-                    if(!mysqli_stmt_execute($stmt)){
-                        $addEntertainmentErrorText = mysqli_error($conn);
-                        http_response_code(400);
-                        exit($addEntertainmentErrorText);
-                    }
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id);
-                    // Results fetched
-                    if(mysqli_stmt_store_result($stmt)){
-                        // Check if DB returned any result - Same day entry check
-                        if(mysqli_stmt_num_rows($stmt) > 0){
-                            // Fetch values
-                            while (mysqli_stmt_fetch($stmt)) {
-                                $response = array(
-                                    'id' => $id,
-                                    'desc' => $new_entertainment_name,
-                                );
-                                // Return id and name in JSON
-                                exit(json_encode($response));
-                            }
-                        }
-                        else{
-                            $addEntertainmentErrorText = mysqli_error($conn);
-                            http_response_code(400);
-                            exit($addEntertainmentErrorText);
-                        }
-                    }
-                }
-            }
-            else{
-                $addEntertainmentErrorText = mysqli_error($conn);
-                http_response_code(400);
-                exit($addEntertainmentErrorText);
-            }
-        }
-    }
-?>
-
-<?php
-    // AJAX request handler for deleting entertainments from DB
-
-    // define variables and set to empty values
-    $addEntertainmentErrorText = "";
-
-    // Check request type and sumbitted form
-    if ($_SERVER["REQUEST_METHOD"] === "POST"
-        && !isset($_POST["write-submit"])
-        && isset($_POST["id"])
-        && isset($_POST["type"])) {
-
-        // Get entertainment type
-        $entertainment_type = $_POST["type"];
-        // Security operations on text
-        $daily_entertainment_id = test_input($_POST["id"]);
-
-        // Save entertainment into DB by types
-        switch($entertainment_type){
-            case "game":
-                $sql = "DELETE FROM daily_game WHERE id=(?)";
-                break;
-            case "series":
-                $sql = "DELETE FROM daily_series WHERE id=(?)";
-                break;
-            case "movie":
-                $sql = "DELETE FROM daily_movie WHERE id=(?)";
-                break;
-            case "book":
-                $sql = "DELETE FROM daily_book WHERE id=(?)";
-                break;
-            default:
-                $addEntertainmentErrorText = "Undefined entertainment type!";
-                http_response_code(400);
-                exit($addEntertainmentErrorText);
-                break;
-        }
-
-        $stmt = mysqli_stmt_init($conn);
-        // DB error check
-        if(!mysqli_stmt_prepare($stmt, $sql)){
-            $addEntertainmentErrorText = mysqli_error($conn);
-            http_response_code(400);
-            exit($addEntertainmentErrorText);
-        }
-        else{
-            // Bind inputs to query parameters
-            mysqli_stmt_bind_param($stmt, "i", $daily_entertainment_id);
-            // Execute sql statement
-            if(mysqli_stmt_execute($stmt)){
-                // Return success
-                http_response_code(200);
-                exit("success"); 
-            }
-            else{
-                $addEntertainmentErrorText = mysqli_error($conn);
-                http_response_code(400);
-                exit($addEntertainmentErrorText);
-            }
-        }
-    }
-?>
-
 <?php 
     require "header.php";
     // Check if the session variable name is empty or not and redirect
@@ -268,6 +9,9 @@
 
 <?php 
     // GET selected date data & UPDATE gunluk database with new data
+
+    // Database connection
+    require "./mysqli_connect.php";
 
     // define variables and set to empty values
     $journal_id = "";
@@ -1134,13 +878,20 @@
                             method="post">
 
                             <!--Add a series, name & episodes-->
-                            <select name="series-select"
-                                    id="series-select" 
-                                    class="custom-select" 
-                                    onchange="openNewEntertainmentModal(\'series\')">
-                                <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
-                                <option value="" class="opt10">YENi DİZİ EKLE</option>
-                            </select>
+                            <div class="row">
+                                <div class="col-xs-3 col-sm-6 mx-auto">
+                                        <select name="series-select"
+                                                id="series-select" 
+                                                class="custom-select" 
+                                                onchange="openNewEntertainmentModal(\'series\')">
+                                            <option value="0" hidden selected>Hangi diziyi seyrettin?</option>
+                                            <option value="" class="opt10">YENi DİZİ EKLE</option>
+                                        </select>
+                                    </div>
+                                <div id="last-episode-btn" class="col-xs-3 col-sm-6" style="display: none;">
+                                    <button type="button" class="btn btn-primary" onclick="getLastWatchedSeriesEpisode()">Son bölüm +1</button>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
