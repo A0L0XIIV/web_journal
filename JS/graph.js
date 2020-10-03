@@ -24,26 +24,21 @@ var happiness_label_colors = [
   "#0077ff",
   "#7700ff"
 ];
-var fontColor;
+var dynamicThemeColor = "#000000";
 
-// Init function
-window.onload = init;
-
-function init() {
-  // Get dark theme initial value
-  var isDarkTheme = getCookie("isDarkTheme");
-  if (isDarkTheme == "true") {
-    fontColor = "#ffffff";
-  } else if (isDarkTheme == "false") {
-    fontColor = "#000000";
-  } else {
-    fontColor = "#7f7f7f";
-  }
-  // If there is an error and it is visible, highlight it
-  if($(".error").length && $(".error").is(':visible')){
-    $(".error").ready(highlight(".error"));
-  }
+// Get dark theme initial value
+var isDarkTheme = getCookie("isDarkTheme");
+// Check preferd dark theme or cookie dark theme
+if (isDarkTheme == "true"
+    || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  dynamicThemeColor = "#ffffff";
+} else if (isDarkTheme == "false"
+          || window.matchMedia('(prefers-color-scheme: light)').matches) {
+  dynamicThemeColor = "#000000";
+} else {
+  dynamicThemeColor = "#7f7f7f";
 }
+
 
 function count(array) {
   array.sort();
