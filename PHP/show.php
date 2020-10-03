@@ -87,9 +87,9 @@
     }
 
     // Game name form handler for showing game data
-    else if(isset($_GET["game-id"])){
+    else if(isset($_GET["game"])){
         // Get game id from request
-        $game_id = test_input($_GET["game-id"]);
+        $game_id = test_input($_GET["game"]);
         // Check id for emptiness
         if(empty($game_id)){
             $error = true;
@@ -165,9 +165,9 @@
     }
     
     // Series name form handler for showing series data
-    else if(isset($_GET["series-id"])){
+    else if(isset($_GET["series"])){
         // Get series id from request
-        $series_id = test_input($_GET["series-id"]);
+        $series_id = test_input($_GET["series"]);
         // Check id for emptiness
         if(empty($series_id)){
             $error = true;
@@ -264,9 +264,9 @@
     }
 
     // Movie name form handler for showing movie data
-    else if(isset($_GET["movie-id"])){
+    else if(isset($_GET["movie"])){
         // Get movie id from request
-        $movie_id = test_input($_GET["movie-id"]);
+        $movie_id = test_input($_GET["movie"]);
         // Check id for emptiness
         if(empty($movie_id)){
             $error = true;
@@ -341,9 +341,9 @@
     }
 
     // Book name form handler for showing book data
-    else if(isset($_GET["book-id"])){
+    else if(isset($_GET["book"])){
         // Get book id from request
-        $book_id = test_input($_GET["book-id"]);
+        $book_id = test_input($_GET["book"]);
         // Check id for emptiness
         if(empty($book_id)){
             $error = true;
@@ -638,7 +638,7 @@
 
                     <!--Select for game, hidden input for request-->
                     <div class="mb-3 justify-content-center">
-                        <select name="game-id"
+                        <select name="game"
                                 id="game-select" 
                                 class="custom-select">
                             <option value="" hidden selected>Oyun seç</option>';
@@ -679,7 +679,7 @@
 
                     <!--Select for series, hidden input for request-->
                     <div class="mb-3 justify-content-center">
-                        <select name="series-id"
+                        <select name="series"
                                 id="series-select" 
                                 class="custom-select">
                             <option value="" hidden selected>Dizi seç</option>';
@@ -720,7 +720,7 @@
 
                     <!--Select for movie, hidden input for request-->
                     <div class="mb-3 justify-content-center">
-                        <select name="movie-id"
+                        <select name="movie"
                                 id="movie-select" 
                                 class="custom-select">
                             <option value="" hidden selected>Film seç</option>';
@@ -761,7 +761,7 @@
 
                     <!--Select for book, hidden input for request-->
                     <div class="mb-3 justify-content-center">
-                        <select name="book-id"
+                        <select name="book"
                                 id="book-select" 
                                 class="custom-select">
                             <option value="" hidden selected>Kitap seç</option>';
@@ -1165,7 +1165,11 @@
     else if($showSection === 2){
         echo '<div id="section2">
                 <h2>'.$game_name.'</h2>
-                <br>
+                <hr>
+                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
+                    <a href="./graph.php?game='.$game_id.'" class="btn text-white">Grafik</a>
+                </button>
+                <hr>
                 <table id="game-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
                     <tr>
                         <td>Toplam bu oyunu oynama süresi:</td>
@@ -1205,7 +1209,11 @@
     else if($showSection === 3){
         echo '<div id="section3">
                 <h2>'.$series_name.'</h2>
-                <br>
+                <hr>
+                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
+                    <a href="./graph.php?series='.$series_id.'" class="btn text-white">Grafik</a>
+                </button>
+                <hr>
                 <table id="series-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
                     <tr>
                         <td>Toplam bu diziyi izleme süresi:</td>
@@ -1277,7 +1285,11 @@
     else if($showSection === 5){
         echo '<div id="section5">
                 <h2>'.$book_name.'</h2>
-                <br>
+                <hr>
+                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
+                    <a href="./graph.php?book='.$book_id.'" class="btn text-white">Grafik</a>
+                </button>
+                <hr>
                 <table id="book-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
                     <tr>
                         <td>Toplam bu kitabı okuma süresi:</td>

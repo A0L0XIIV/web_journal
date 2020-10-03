@@ -79,9 +79,9 @@
     }
 
     // Game name form handler for showing game data
-    else if(isset($_GET["game-id"])){
+    else if(isset($_GET["game"])){
         // Get game id from request
-        $game_id = test_input($_GET["game-id"]);
+        $game_id = test_input($_GET["game"]);
 
         // Check id for emptiness
         if(empty($game_id)){
@@ -130,6 +130,28 @@
                         }
                         $duration_JSON = json_encode($duration_array);
                         $date_JSON = json_encode($date_array);
+                        // Query game name
+                        $sql = "SELECT name FROM daily_game
+                                INNER JOIN game ON game_id=game.id
+                                WHERE game_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "i", $game_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $game_name);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
                         $error = true;
@@ -145,9 +167,9 @@
     }
 
     // Series name form handler for showing series data
-    else if(isset($_GET["series-id"])){
+    else if(isset($_GET["series"])){
         // Get series id from request
-        $series_id = test_input($_GET["series-id"]);
+        $series_id = test_input($_GET["series"]);
         // Check id for emptiness
         if(empty($series_id)){
             $error = true;
@@ -189,6 +211,28 @@
                         }
                         $duration_JSON = json_encode($duration_array);
                         $date_JSON = json_encode($date_array);
+                        // Query series name
+                        $sql = "SELECT name FROM daily_series
+                                INNER JOIN series ON series_id=series.id
+                                WHERE series_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "i", $series_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $series_name);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
                         $error = true;
@@ -204,9 +248,9 @@
     }
 
     // Book name form handler for showing book data
-    else if(isset($_GET["book-id"])){
+    else if(isset($_GET["book"])){
         // Get book id from request
-        $book_id = test_input($_GET["book-id"]);
+        $book_id = test_input($_GET["book"]);
         // Check id for emptiness
         if(empty($book_id)){
             $error = true;
@@ -247,6 +291,28 @@
                         }
                         $duration_JSON = json_encode($duration_array);
                         $date_JSON = json_encode($date_array);
+                        // Query book name
+                        $sql = "SELECT name FROM daily_book
+                                INNER JOIN book ON book_id=book.id
+                                WHERE book_id=?";
+                        $stmt = mysqli_stmt_init($conn);
+                        // Prepare statement
+                        if(!mysqli_stmt_prepare($stmt, $sql)){
+                            $error = true;
+                            $errorText = mysqli_error($conn);
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt, "i", $book_id);
+                            // Execute sql statement
+                            mysqli_stmt_execute($stmt);
+                            // Bind results
+                            mysqli_stmt_bind_result($stmt, $book_name);
+                            // Store results
+                            mysqli_stmt_store_result($stmt);
+                            // Fetch results
+                            mysqli_stmt_fetch($stmt);
+                        }
                     }
                     else{
                         $error = true;
@@ -448,7 +514,7 @@
 
                 <!--Select for game, hidden input for request-->
                 <div class="mb-3 justify-content-center">
-                    <select name="game-id"
+                    <select name="game"
                             id="game-select" 
                             class="custom-select">
                         <option value="" hidden selected>Oyun seç</option>';
@@ -489,7 +555,7 @@
 
                 <!--Select for series, hidden input for request-->
                 <div class="mb-3 justify-content-center">
-                    <select name="series-id"
+                    <select name="series"
                             id="series-select" 
                             class="custom-select">
                         <option value="" hidden selected>Dizi seç</option>';
@@ -530,7 +596,7 @@
 
                 <!--Select for book, hidden input for request-->
                 <div class="mb-3 justify-content-center">
-                    <select name="book-id"
+                    <select name="book"
                             id="book-select" 
                             class="custom-select">
                         <option value="" hidden selected>Kitap seç</option>';
@@ -655,13 +721,13 @@
                             legend: {
                                 display: true,
                                 labels: {
-                                    fontColor: fontColor
+                                    fontColor: dynamicThemeColor
                                 }
                             },
                             title: {
                                 display: true,
                                 text: 'Zamana bağlı 3 farklı mutluluk grafiği',
-                                fontColor: fontColor
+                                fontColor: dynamicThemeColor
                             }
                         }
                     }); 
@@ -685,14 +751,14 @@
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor,
+                                    fontColor: dynamicThemeColor,
                                     usePointStyle: true
                                 }
                             },
                             title: {
                                 display: true,
                                 text: 'İşte/okulda mutluluk sayısı',
-                                fontColor: fontColor
+                                fontColor: dynamicThemeColor
                             }
                         }
                     });
@@ -715,14 +781,14 @@
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor,
+                                    fontColor: dynamicThemeColor,
                                     usePointStyle: true
                                 }
                             },
                             title: {
                                 display: true,
                                 text: 'İş/okul dışında mutluluk sayısı',
-                                fontColor: fontColor
+                                fontColor: dynamicThemeColor
                             }
                         }
                     });
@@ -745,14 +811,14 @@
                                 display: true,
                                 position: 'right',
                                 labels: {
-                                    fontColor: fontColor,
+                                    fontColor: dynamicThemeColor,
                                     usePointStyle: true
                                 }
                             },
                             title: {
                                 display: true,
                                 text: 'Genelde mutluluk sayısı',
-                                fontColor: fontColor
+                                fontColor: dynamicThemeColor
                             }
                         }
                     });
@@ -808,8 +874,13 @@
                 if(isset($_SESSION['name'])){
                     echo $_SESSION['name'].', ';
                 }
-                echo ' oyun oynama süre grafiğin';
-        echo '</h1>';
+                echo $game_name.' oynama grafiğin';
+        echo '</h1>
+            <hr>
+            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
+                <a href="./show.php?game='.$game_id.'" class="btn text-white">Görüntüle</a>
+            </button>
+            <hr>';
 
         echo "<script>
         $(document).ready(function () {
@@ -852,20 +923,42 @@
                         yAxes: [{
                             ticks: {
                                 suggestedMin: 0,
-                                suggestedMax: maxDuruation
+                                suggestedMax: maxDuruation,
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Süre (Saat)',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Günlük tarihi',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
                             }
                         }]
                     },
                     legend: {
                         display: true,
                         labels: {
-                            fontColor: fontColor
+                            fontColor: dynamicThemeColor
                         }
                     },
                     title: {
                         display: true,
                         text: 'Zamana bağlı oyun oynanma süre grafiği',
-                        fontColor: fontColor
+                        fontColor: dynamicThemeColor
                     }
                 }
             });
@@ -892,8 +985,13 @@
                 if(isset($_SESSION['name'])){
                     echo $_SESSION['name'].', ';
                 }
-                echo ' dizi izleme süre grafiğin';
-        echo '</h1>';
+                echo ' dizi izleme grafiğin';
+        echo '</h1>
+            <hr>
+            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
+                <a href="./show.php?series='.$series_id.'" class="btn text-white">Görüntüle</a>
+            </button>
+            <hr>';
 
         echo "<script>
         $(document).ready(function () {
@@ -936,20 +1034,42 @@
                         yAxes: [{
                             ticks: {
                                 suggestedMin: 0,
-                                suggestedMax: maxDuruation
+                                suggestedMax: maxDuruation,
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Süre (Saat)',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Günlük tarihi',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
                             }
                         }]
                     },
                     legend: {
                         display: true,
                         labels: {
-                            fontColor: fontColor
+                            fontColor: dynamicThemeColor
                         }
                     },
                     title: {
                         display: true,
                         text: 'Zamana bağlı dizi izleme süre grafiği',
-                        fontColor: fontColor
+                        fontColor: dynamicThemeColor
                     }
                 }
             });
@@ -976,8 +1096,13 @@
                 if(isset($_SESSION['name'])){
                     echo $_SESSION['name'].', ';
                 }
-                echo ' kitap okuma süre grafiğin';
-        echo '</h1>';
+                echo ' kitap okuma grafiğin';
+        echo '</h1>
+            <hr>
+            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
+                <a href="./show.php?book='.$book_id.'" class="btn text-white">Görüntüle</a>
+            </button>
+            <hr>';
 
         echo "<script>
         $(document).ready(function () {
@@ -1020,20 +1145,42 @@
                         yAxes: [{
                             ticks: {
                                 suggestedMin: 0,
-                                suggestedMax: maxDuruation
+                                suggestedMax: maxDuruation,
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Süre (Saat)',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                fontColor: dynamicThemeColor
+                            },
+                            scaleLabel: {
+                                display: window.innerWidth > 600,
+                                labelString: 'Günlük tarihi',
+                                fontColor: dynamicThemeColor
+                            },
+                            gridLines: { 
+                                color: dynamicThemeColor 
                             }
                         }]
                     },
                     legend: {
                         display: true,
                         labels: {
-                            fontColor: fontColor
+                            fontColor: dynamicThemeColor
                         }
                     },
                     title: {
                         display: true,
                         text: 'Zamana bağlı kitap okuma süre grafiği',
-                        fontColor: fontColor
+                        fontColor: dynamicThemeColor
                     }
                 }
             });
