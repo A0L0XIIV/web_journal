@@ -373,6 +373,7 @@ function deleteEntertaimmentFromDB(type, daily_id) {
   // Send request to server
   request = $.ajax({
     type: "POST",
+    url: "entertainment.php",
     data: { type: type, id: daily_id },
   });
 
@@ -393,8 +394,8 @@ function deleteEntertaimmentFromDB(type, daily_id) {
       // After a second, delete the entire row or table (1s delay)
       setTimeout(function () {
         var rowCount = $("#" + type + "-table tr").length;
-        // Check table row count and remove either row or table (1 row)
-        if (rowCount === 1) {
+        // Check table row count and remove either row or table (2 rows: 1 header)
+        if (rowCount === 2) {
           $("#" + type + "-table").remove();
         } else {
           $("#" + rowId).remove();

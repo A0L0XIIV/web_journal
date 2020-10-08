@@ -109,7 +109,7 @@
         $sql = "SELECT end_season, end_episode FROM daily_series
                 INNER JOIN gunluk ON gunluk_id=gunluk.id
                 WHERE name=? AND series_id=?
-                ORDER BY gunluk.date
+                ORDER BY gunluk.date DESC
                 LIMIT 1";
         // Start SQL query
         $stmt = mysqli_stmt_init($conn);
@@ -279,10 +279,69 @@
         }
     }
 
+    // AJAX request handler for deleting entertainments from DB
+    else if ($_SERVER["REQUEST_METHOD"] === "POST"
+        && !isset($_POST["name"])
+        && isset($_POST["id"])
+        && isset($_POST["type"])) {
+
+        // define variables and set to empty values
+        $addEntertainmentErrorText = "";
+
+        // Get entertainment type
+        $entertainment_type = test_input($_POST["type"]);
+        // Security operations on text
+        $daily_entertainment_id = test_input($_POST["id"]);
+
+        // Save entertainment into DB by types
+        switch($entertainment_type){
+            case "game":
+                $sql = "DELETE FROM daily_game WHERE id=(?)";
+                break;
+            case "series":
+                $sql = "DELETE FROM daily_series WHERE id=(?)";
+                break;
+            case "movie":
+                $sql = "DELETE FROM daily_movie WHERE id=(?)";
+                break;
+            case "book":
+                $sql = "DELETE FROM daily_book WHERE id=(?)";
+                break;
+            default:
+                $addEntertainmentErrorText = "Undefined entertainment type!";
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+                break;
+        }
+
+        $stmt = mysqli_stmt_init($conn);
+        // DB error check
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $addEntertainmentErrorText = mysqli_error($conn);
+            http_response_code(400);
+            exit($addEntertainmentErrorText);
+        }
+        else{
+            // Bind inputs to query parameters
+            mysqli_stmt_bind_param($stmt, "i", $daily_entertainment_id);
+            // Execute sql statement
+            if(mysqli_stmt_execute($stmt)){
+                // Return success
+                http_response_code(200);
+                exit("success"); 
+            }
+            else{
+                $addEntertainmentErrorText = mysqli_error($conn);
+                http_response_code(400);
+                exit($addEntertainmentErrorText);
+            }
+        }
+    }
+
     // Not get entertainment or add new entertainment request
     // Cannot access
     else {
-        $addEntertainmentErrorText = "You cannot access this page!";
+        $addEntertainmentErrorText = "You cannot access this page.";
         http_response_code(401);
         exit($addEntertainmentErrorText);
     }
