@@ -608,7 +608,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="year-label">Yıl</span>
                         </div>
-                        <input type="number" name="journal-year" id="journal-year-input" min="1000" max="9999" title="Sadece 4 rakam">
+                        <input type="number" name="journal-year" id="journal-year-input" placeholder="yyyy" min="1000" max="9999" title="Sadece 4 rakam">
                     </div>
 
                     <br>
@@ -640,7 +640,8 @@
                     <div class="mb-3 justify-content-center">
                         <select name="game"
                                 id="game-select" 
-                                class="custom-select">
+                                class="custom-select"
+                                required>
                             <option value="" hidden selected>Oyun seç</option>';
 
                             if(empty($gameArray)){
@@ -681,7 +682,8 @@
                     <div class="mb-3 justify-content-center">
                         <select name="series"
                                 id="series-select" 
-                                class="custom-select">
+                                class="custom-select"
+                                required>
                             <option value="" hidden selected>Dizi seç</option>';
                             
                             if(empty($seriesArray)){
@@ -722,7 +724,8 @@
                     <div class="mb-3 justify-content-center">
                         <select name="movie"
                                 id="movie-select" 
-                                class="custom-select">
+                                class="custom-select"
+                                required>
                             <option value="" hidden selected>Film seç</option>';
                             
                             if(empty($movieArray)){
@@ -763,7 +766,8 @@
                     <div class="mb-3 justify-content-center">
                         <select name="book"
                                 id="book-select" 
-                                class="custom-select">
+                                class="custom-select"
+                                required>
                             <option value="" hidden selected>Kitap seç</option>';
                             
                             if(empty($bookArray)){

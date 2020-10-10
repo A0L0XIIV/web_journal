@@ -346,8 +346,21 @@
             cols="30" 
             rows="10" 
             maxlength="1000" 
-            placeholder="En fazla 1000 harf"
+            placeholder="En fazla 1000 karakter"
         ></textarea>
+        <p id="content-count" class="text-right" style="width: 90%;"></p>
+        <script>
+            $("#content").keyup(function(){
+                var count = $(this).val().length;
+                var remain = 1000 - count;
+
+                $("#content-count").text("Kalan karakter: " + remain);
+                if(window.matchMedia('(prefers-color-scheme: dark)').matches)
+                    $("#content-count").css("color", "rgb(255," + remain/4 + "," + remain/4 + ")");
+                else
+                    $("#content-count").css("color", "rgb(" + count/4 + ",0,0)");
+            });
+        </script>
 
         <hr>
 
@@ -394,7 +407,7 @@
                             Ekle
                     </button>
                 </div>
-                <div id="game-add-error" class="error" style="display:none;">
+                <div id="game-add-error" class="error mt-3" style="display:none;">
                     <!--game-add-error-->
                     <p>Oyun adı ya da süresi uygun değil. 
                         <button type="button"
@@ -404,7 +417,7 @@
                         </button>
                     </p> 
                 </div>
-                <div id="game-exist-error" class="error" style="display:none;">
+                <div id="game-exist-error" class="error mt-3" style="display:none;">
                     <!--game-exist-error-->
                     <p>Oyun zaten var, silip tekrar ekleyebilirsin. 
                         <button type="button"
@@ -418,7 +431,7 @@
                 <ul id="game-list" class="mb-0 px-3"></ul>
             </div>
 
-            <div id="get-game-names-error" class="error" style="display:none;">
+            <div id="get-game-names-error" class="error mt-3" style="display:none;">
                 <!--get-game-names-error-->
                 <p>AJAX hatası. Oyun isimlerini sunucudan alamadık.  
                     <button type="button"
@@ -517,7 +530,7 @@
                             Ekle
                     </button>
                 </div>
-                <div id="series-add-error" class="error" style="display:none;">
+                <div id="series-add-error" class="error mt-3" style="display:none;">
                     <!--series-add-error-->
                     <p>Dizi adı ya da bölümleri uygun değil. <br>
                         Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
@@ -528,7 +541,7 @@
                         </button>
                     </p> 
                 </div>
-                <div id="series-exist-error" class="error" style="display:none;">
+                <div id="series-exist-error" class="error mt-3" style="display:none;">
                     <!--series-exist-error-->
                     <p>Dizi zaten var, silip tekrar ekleyebilirsin. 
                         <button type="button"
@@ -542,7 +555,7 @@
                 <ul id="series-list" class="mb-0 px-3"></ul>
             </div>
 
-            <div id="get-series-names-error" class="error" style="display:none;">
+            <div id="get-series-names-error" class="error mt-3" style="display:none;">
                 <!--get-series-names-error-->
                 <p>AJAX hatası. Dizi isimlerini sunucudan alamadık.  
                     <button type="button"
@@ -599,7 +612,7 @@
                             Ekle
                     </button>
                 </div>
-                <div id="movie-add-error" class="error" style="display:none;">
+                <div id="movie-add-error" class="error mt-3" style="display:none;">
                     <!--movie-add-error-->
                     <p>Film adı ya da süresi uygun değil.
                         <button type="button"
@@ -609,7 +622,7 @@
                         </button>
                     </p> 
                 </div>
-                <div id="movie-exist-error" class="error" style="display:none;">
+                <div id="movie-exist-error" class="error mt-3" style="display:none;">
                     <!--movie-exist-error-->
                     <p>Film zaten var, silip tekrar ekleyebilirsin.
                         <button type="button"
@@ -623,7 +636,7 @@
                 <ul id="movie-list" class="mb-0 px-3"></ul>
             </div>
 
-            <div id="get-movie-names-error" class="error" style="display:none;">
+            <div id="get-movie-names-error" class="error mt-3" style="display:none;">
                 <!--get-movie-names-error-->
                 <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
                     <button type="button"
@@ -680,7 +693,7 @@
                             Ekle
                     </button>
                 </div>
-                <div id="book-add-error" class="error" style="display:none;">
+                <div id="book-add-error" class="error mt-3" style="display:none;">
                     <!--book-add-error-->
                     <p>Kitap adı ya da süresi uygun değil. 
                         <button type="button"
@@ -690,7 +703,7 @@
                         </button>
                     </p> 
                 </div>
-                <div id="book-exist-error" class="error" style="display:none;">
+                <div id="book-exist-error" class="error mt-3" style="display:none;">
                     <!--book-exist-error-->
                     <p>Kitap zaten var, silip tekrar ekleyebilirsin. 
                         <button type="button"
@@ -704,7 +717,7 @@
                 <ul id="book-list" class="mb-0 px-3"></ul>
             </div>
 
-            <div id="get-book-names-error" class="error" style="display:none;">
+            <div id="get-book-names-error" class="error mt-3" style="display:none;">
                 <!--get-book-names-error-->
                 <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
                     <button type="button"
