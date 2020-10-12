@@ -494,7 +494,7 @@
                     <button
                         type="submit"
                         id="date-picker-submit"
-                        class="btn btn-success bg-warning"
+                        class="sbmt-btn bg-graph"
                         aria-pressed="false"
                     >
                     Göster
@@ -536,7 +536,7 @@
                     <button
                         type="submit"
                         id="game-submit"
-                        class="btn btn-info bg-warning"
+                        class="sbmt-btn bg-game"
                         aria-pressed="false"
                     >
                     Göster
@@ -578,7 +578,7 @@
                     <button
                         type="submit"
                         id="series-submit"
-                        class="btn btn-primary bg-warning"
+                        class="sbmt-btn bg-series"
                         aria-pressed="false"
                     >
                     Göster
@@ -620,7 +620,7 @@
                     <button
                         type="submit"
                         id="book-submit"
-                        class="btn btn-warning bg-warning"
+                        class="sbmt-btn bg-book"
                         aria-pressed="false"
                     >
                     Göster

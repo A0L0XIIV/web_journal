@@ -618,7 +618,7 @@
                         <button
                             type="submit"
                             id="date-picker-submit"
-                            class="btn btn-success bg-primary"
+                            class="sbmt-btn bg-show"
                             aria-pressed="false"
                         >
                         Göster
@@ -660,7 +660,7 @@
                         <button
                             type="submit"
                             id="game-submit"
-                            class="btn btn-info bg-primary"
+                            class="sbmt-btn bg-game"
                             aria-pressed="false"
                         >
                         Göster
@@ -702,7 +702,7 @@
                         <button
                             type="submit"
                             id="series-submit"
-                            class="btn btn-primary bg-primary"
+                            class="sbmt-btn bg-series"
                             aria-pressed="false"
                         >
                         Göster
@@ -744,7 +744,7 @@
                         <button
                             type="submit"
                             id="movie-submit"
-                            class="btn btn-secondary bg-primary"
+                            class="sbmt-btn bg-movie"
                             aria-pressed="false"
                         >
                         Göster
@@ -786,7 +786,7 @@
                         <button
                             type="submit"
                             id="book-submit"
-                            class="btn btn-warning bg-primary"
+                            class="sbmt-btn bg-book"
                             aria-pressed="false"
                         >
                         Göster
@@ -821,11 +821,11 @@
                                 </button>
                             </div>
                             <div class="col-xs-6 col-sm-3 px-0">
-                                <p class="orangeText">Tarih:</p>
+                                <p class="orange-text">Tarih:</p>
                                 <p>'.$journal_date.'</p>
                             </div>
                             <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orangeText">İş/Okul:</p>';
+                                <p class="orange-text">İş/Okul:</p>';
                                 switch($work_happiness){
                                     case 10:
                                         echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
@@ -865,7 +865,7 @@
                             echo
                             '</div>
                             <div class="col-xs-4 col-sm-3 px-0">
-                                <p class="orangeText">İş/Okul dışı:</p>';
+                                <p class="orange-text">İş/Okul dışı:</p>';
                                 switch($daily_happiness){
                                     case 10:
                                         echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
@@ -905,7 +905,7 @@
                             echo
                             '</div>
                             <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orangeText">Genel:</p>';
+                                <p class="orange-text">Genel:</p>';
                                 switch($total_happiness){
                                     case 10:
                                         echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';

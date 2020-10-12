@@ -367,13 +367,14 @@
         <!--Daily Entertainment: Playing Games-->
         <div class="daily-game">
             <button type="button"
-                    class="btn btn-info"
+                    class="ent-btn bg-game"
                     id="add-game-btn"
                     onclick="getEntertainmentNames('game');">
                     Oyun Ekle
             </button>
             
             <div id="add-game" style="display:none;">
+                <p>Oyun Ekle</p>
                 <!--Add a game, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -402,7 +403,7 @@
                 <!--Add a game to list & error messages-->
                 <div class="mx-auto" style="width:100%">
                     <button type="button"
-                            class="btn btn-info mt-2 mx-auto"
+                            class="add-btn bg-game mt-2"
                             onclick="addToTheList('game')">
                             Ekle
                     </button>
@@ -448,13 +449,14 @@
         <!--Daily Entertainment: Watching Series-->
         <div class="daily-series">
             <button type="button"
-                    class="btn btn-primary"
+                    class="ent-btn bg-series"
                     id="add-series-btn"
                     onclick="getEntertainmentNames('series');">
                     Dizi Ekle
             </button>
             
             <div id="add-series" style="display:none;">
+                <p>Dizi Ekle</p>
                 <!--Add a series, name & episodes-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6 mx-auto">
@@ -525,7 +527,7 @@
                 <!--Add a series to list & error messages-->
                 <div class="mx-auto" style="width:100%">
                     <button type="button"
-                            class="btn btn-primary mt-2 mx-auto"
+                            class="add-btn bg-series mt-2"
                             onclick="addToTheList('series')">
                             Ekle
                     </button>
@@ -572,13 +574,14 @@
         <!--Daily Entertainment: Watching movies-->
         <div class="daily-movie">
             <button type="button"
-                    class="btn btn-secondary"
+                    class="ent-btn bg-movie"
                     id="add-movie-btn"
                     onclick="getEntertainmentNames('movie');">
                     Film Ekle
             </button>
             
             <div id="add-movie" style="display:none;">
+                <p>Film Ekle</p>
                 <!--Add a movie, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -607,7 +610,7 @@
                 <!--Add a movie to list & error messages-->
                 <div class="mx-auto" style="width:100%">
                     <button type="button"
-                            class="btn btn-secondary mt-2 mx-auto"
+                            class="add-btn bg-movie mt-2"
                             onclick="addToTheList('movie')">
                             Ekle
                     </button>
@@ -653,13 +656,14 @@
         <!--Daily Entertainment: Book Reading-->
         <div class="daily-book">
             <button type="button"
-                    class="btn btn-warning"
+                    class="ent-btn bg-book"
                     id="add-book-btn"
                     onclick="getEntertainmentNames('book');">
                     Kitap Ekle
             </button>
             
             <div id="add-book" style="display:none;">
+                <p>Kitap Ekle</p>
                 <!--Add a book, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -688,7 +692,7 @@
                 <!--Add a book to list & error messages-->
                 <div class="mx-auto" style="width:100%">
                     <button type="button"
-                            class="btn btn-warning mt-2 mx-auto"
+                            class="add-btn bg-book mt-2"
                             onclick="addToTheList('book')">
                             Ekle
                     </button>
@@ -734,15 +738,15 @@
         <!--Input for submitting the form, type=submit-->
         <input type="text" value="" name="date" id="date-input" hidden />
 
-        <!--Input for submitting the form, type=submit-->
+        <!--Button for submitting the form-->
         <div>
-          <input
-            type="submit"
-            value="Gönder"
-            name="write-submit"
-            class="btn btn-success bg-success"
-            aria-pressed="false"
-          />
+            <button
+                type="submit"
+                name="write-submit"
+                class="sbmt-btn bg-write"
+                aria-pressed="false">
+                Gönder
+            </button>
         </div>
 
         <br>
@@ -789,8 +793,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-success" id="add-entertainment-btn" onclick="addNewEntertainment('game');">Ekle</button>
+                    <button type="button" class="bg-logout" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="sbmt-btn bg-login" id="add-entertainment-btn" onclick="addNewEntertainment('game');">Ekle</button>
                 </div>
             </div>
         </div>

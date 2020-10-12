@@ -314,7 +314,7 @@
             <div>
             <button
                 type="submit"
-                class="btn btn-primary bg-info"
+                class="sbmt-btn bg-edit"
                 aria-pressed="false">
                 Gönder
             </button>
@@ -334,7 +334,7 @@
                 action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                 method="post">
 
-                <h1 class="orangeText">';
+                <h1 class="orange-text">';
                     if(isset($_SESSION['name'])){
                         echo $_SESSION['name'].', ';
                     }
@@ -471,7 +471,7 @@
                 <div>
                 <button
                     type="submit"
-                    class="btn btn-primary bg-info"
+                    class="sbmt-btn bg-edit"
                     aria-pressed="false">
                     Gönder
                 </button>
@@ -482,7 +482,7 @@
             <br>
             <hr>
 
-            <h2 class="orangeText">Aynı tarihli ('.$date.') hobilerin</h2>
+            <h2 class="orange-text">Aynı tarihli ('.$date.') hobilerin</h2>
 
             <hr>';
 
@@ -511,7 +511,7 @@
                     // Check if DB returned any result
                     if(mysqli_stmt_num_rows($stmt_game) > 0){
                         echo '<table id="game-table" class="table table-bordered table-hover table-sm table-striped">';
-                        echo '<tr class="table-info"><th>Oyun</th><th>Süre</th><th>Sil</th></tr>';
+                        echo '<tr class="bg-game"><th>Oyun</th><th>Süre</th><th>Sil</th></tr>';
                         // Fetch values
                         while (mysqli_stmt_fetch($stmt_game)) {
                             echo '<tr id="game-row-'.$game_id.'">
@@ -521,7 +521,7 @@
                                         <div class="remove-button">
                                             <button onclick="deleteEntertaimmentFromDB(\'game\', '.$game_id.')" 
                                                     type="button" 
-                                                    class="btn btn-danger mx-auto" 
+                                                    class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
@@ -580,7 +580,7 @@
                     // Check if DB returned any result
                     if(mysqli_stmt_num_rows($stmt_series) > 0){
                         echo '<table id="series-table" class="table table-bordered table-hover table-sm table-striped">';
-                        echo '<tr class="table-primary">
+                        echo '<tr class="bg-series">
                                 <th>Dizi</th>
                                 <th>İlk sezon</th>
                                 <th>İlk bölüm</th>
@@ -599,7 +599,7 @@
                                         <div class="remove-button">
                                             <button onclick="deleteEntertaimmentFromDB(\'series\', '.$series_id.')" 
                                                     type="button" 
-                                                    class="btn btn-danger mx-auto" 
+                                                    class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
@@ -652,7 +652,7 @@
                     // Check if DB returned any result
                     if(mysqli_stmt_num_rows($stmt_movie) > 0){
                         echo '<table id="movie-table" class="table table-bordered table-hover table-sm table-striped">';
-                        echo '<tr class="table-success"><th>Film</th><th>Süre</th><th>Sil</th></tr>';
+                        echo '<tr class="bg-movie"><th>Film</th><th>Süre</th><th>Sil</th></tr>';
                         // Fetch values
                         while (mysqli_stmt_fetch($stmt_movie)) {
                             echo '<tr id="movie-row-'.$movie_id.'">
@@ -662,7 +662,7 @@
                                         <div class="remove-button">
                                             <button onclick="deleteEntertaimmentFromDB(\'movie\', '.$movie_id.')" 
                                                     type="button" 
-                                                    class="btn btn-danger mx-auto" 
+                                                    class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
@@ -715,7 +715,7 @@
                     // Check if DB returned any result
                     if(mysqli_stmt_num_rows($stmt_book) > 0){
                         echo '<table id="book-table" class="table table-bordered table-hover table-sm table-striped">';
-                        echo '<tr class="table-warning"><th>Kitap</th><th>Süre</th><th>Sil</th></tr>';
+                        echo '<tr class="bg-book"><th>Kitap</th><th>Süre</th><th>Sil</th></tr>';
                         // Fetch values
                         while (mysqli_stmt_fetch($stmt_book)) {
                             echo '<tr id="book-row-'.$book_id.'">
@@ -725,7 +725,7 @@
                                         <div class="remove-button">
                                             <button onclick="deleteEntertaimmentFromDB(\'book\', '.$book_id.')" 
                                                     type="button" 
-                                                    class="btn btn-danger mx-auto" 
+                                                    class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
@@ -758,8 +758,8 @@
             <br>
 
             <button 
-                type="button" 
-                class="btn btn-success"
+                type="button"
+                class="ent-btn"
                 id="newEntertainmentMenuButton"
                 onclick="$(\'#newEntertainmentMenu\').show();
                         $(\'#newEntertainmentMenuButton\').hide();">
@@ -767,13 +767,13 @@
             </button>
 
             <div id="newEntertainmentMenu" style="display: none;">
-                <h3 class="orangeText">Eklemek için aşağıdan yeni hobi seç</h3>
+                <h3 class="orange-text">Eklemek için aşağıdan yeni hobi seç</h3>
                 <br>
 
                 <!--Daily Entertainment: Playing Games-->
                 <div class="daily-game">
                     <button type="button"
-                            class="btn btn-info"
+                            class="ent-btn bg-game"
                             id="add-game-btn"
                             onclick="getEntertainmentNames(\'game\');">
                             Oyun Ekle
@@ -786,6 +786,7 @@
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
+                            <p>Oyun Ekle</p>
                             <!--Add a game, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -816,7 +817,7 @@
                             <!--Add a game to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="btn btn-info mt-2 mx-auto"
+                                        class="add-btn bg-game mt-2"
                                         id="asd"
                                         onclick="addToTheList(\'game\'); 
                                                 $(\'#edit-game-form-submit\').show();
@@ -857,7 +858,7 @@
                                 <br>
                                 <button
                                     type="submit"
-                                    class="btn btn-info bg-success"
+                                    class="sbmt-btn bg-edit"
                                     aria-pressed="false">
                                     Gönder
                                 </button>
@@ -882,7 +883,7 @@
                 <!--Daily Entertainment: Watching Series-->
                 <div class="daily-series">
                     <button type="button"
-                            class="btn btn-primary"
+                            class="ent-btn bg-series"
                             id="add-series-btn"
                             onclick="getEntertainmentNames(\'series\');">
                             Dizi Ekle
@@ -895,6 +896,7 @@
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
+                            <p>Dizi Ekle</p>
                             <!--Add a series, name & episodes-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6 mx-auto">
@@ -967,7 +969,7 @@
                             <!--Add a series to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="btn btn-primary mt-2 mx-auto"
+                                        class="add-btn bg-series mt-2"
                                         onclick="addToTheList(\'series\');
                                                 $(\'#edit-series-form-submit\').show();
                                                 highlight(\'#edit-series-form-submit\');">
@@ -1008,7 +1010,7 @@
                                 <br>
                                 <button
                                     type="submit"
-                                    class="btn btn-primary bg-success"
+                                    class="sbmt-btn bg-edit"
                                     aria-pressed="false">
                                     Gönder
                                 </button>
@@ -1033,7 +1035,7 @@
                 <!--Daily Entertainment: Watching movies-->
                 <div class="daily-movie">
                     <button type="button"
-                            class="btn btn-secondary"
+                            class="ent-btn bg-movie"
                             id="add-movie-btn"
                             onclick="getEntertainmentNames(\'movie\');">
                             Film Ekle
@@ -1046,6 +1048,7 @@
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
+                            <p>Film Ekle</p>
                             <!--Add a movie, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -1075,7 +1078,7 @@
                             <!--Add a movie to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="btn btn-secondary mt-2 mx-auto"
+                                        class="add-btn bg-movie mt-2"
                                         onclick="addToTheList(\'movie\')
                                                 $(\'#edit-movie-form-submit\').show();
                                                 highlight(\'#edit-movie-form-submit\');">
@@ -1115,7 +1118,7 @@
                                 <br>
                                 <button
                                     type="submit"
-                                    class="btn btn-secondary bg-success"
+                                    class="sbmt-btn bg-edit"
                                     aria-pressed="false">
                                     Gönder
                                 </button>
@@ -1141,7 +1144,7 @@
                 <!--Daily Entertainment: Book Reading-->
                 <div class="daily-book">
                     <button type="button"
-                            class="btn btn-warning"
+                            class="ent-btn bg-book"
                             id="add-book-btn"
                             onclick="getEntertainmentNames(\'book\');">
                             Kitap Ekle
@@ -1153,6 +1156,8 @@
                             id="edit-book-form"
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
+
+                            <p>Kitap Ekle</p>
                             <!--Add a book, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -1182,7 +1187,7 @@
                             <!--Add a book to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="btn btn-warning mt-2 mx-auto"
+                                        class="add-btn bg-book mt-2"
                                         onclick="addToTheList(\'book\')
                                                 $(\'#edit-book-form-submit\').show();
                                                 highlight(\'#edit-book-form-submit\');">
@@ -1221,7 +1226,7 @@
                                 <br>
                                 <button
                                     type="submit"
-                                    class="btn btn-warning bg-success"
+                                    class="sbmt-btn bg-edit"
                                     aria-pressed="false">
                                     Gönder
                                 </button>
@@ -1290,8 +1295,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kapat</button>
-                    <button type="button" class="btn btn-success" id="add-entertainment-btn" onclick="addNewEntertainment('game');">Ekle</button>
+                    <button type="button" class="bg-logout" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="sbmt-btn bg-login" id="add-entertainment-btn" onclick="addNewEntertainment('game');">Ekle</button>
                 </div>
             </div>
         </div>

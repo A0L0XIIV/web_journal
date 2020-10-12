@@ -1,3 +1,59 @@
+/* --- Define color variables --- */
+:root { 
+  --primary-color: #ff7b00;
+  --secondary-color: #715; 
+  --primary-text: #222;
+  --write: #0050ff;
+  --edit: #20cdee;
+  --show: #159030;
+  --graph: #ffc107;
+  --password: #ff6507;
+  --logout: #bb1010;
+  --login: #33e0b0;
+  --game: #2bc500;
+  --series: #5da2d8;
+  --movie: #ff599a;
+  --book: #f7ee43;
+}
+
+.bg-write {
+  background-color: var(--write) !important;
+  color: #fff !important;
+}
+.bg-edit {
+  background-color: var(--edit) !important;
+}
+.bg-show {
+  background-color: var(--show) !important;
+  color: #000 !important;
+}
+.bg-graph {
+  background-color: var(--graph) !important;
+}
+.bg-password {
+  background-color: var(--password) !important;
+}
+.bg-logout {
+  background-color: var(--logout) !important;
+  color: #fff !important;
+}
+.bg-login {
+  background-color: var(--login) !important;
+}
+.bg-game {
+  background-color: var(--game) !important;
+}
+.bg-series {
+  background-color: var(--series) !important;
+}
+.bg-movie {
+  background-color: var(--movie) !important;
+}
+.bg-book {
+  background-color: var(--book) !important;
+}
+/* --- Define color variables --- */
+
 /* --- HTML tags --- */
 /*Body sizes, font decorations, background image*/
 html {
@@ -15,14 +71,14 @@ body {
 
 /*Header background image and sizes*/
 header {
-  background: #ff7b00;
+  background: var(--primary-color); 
   margin: 0;
 }
 
 /*Footer colors and size*/
 footer {
-  background: #ff7b00;
-  color: rgb(54, 40, 0);
+  background: var(--primary-color);
+  color: var(--primary-text);
   text-align: center;
   padding: 0.5%;
   clear: both;
@@ -32,7 +88,6 @@ footer {
 /*Link decoration: no underline*/
 a {
   text-decoration: none;
-  color: rgb(100, 100, 255);
 }
 
 /*Hide meta tags*/
@@ -55,12 +110,12 @@ input:invalid {
 
 input[type="number"]:valid,
 input[type="text"]:valid {
-  border-color: #006900;
+  border-color: var(--login);
 }
 
 input:required {
-  border-color: red;
-  border-width: 1px;
+  border-color: var(--primary-color);
+  border-width: 0.5em;
 }
 
 textarea {
@@ -72,12 +127,15 @@ textarea {
 /* --- Select-option --- */
 /*Select decorated like input tags*/
 .custom-select {
-  width: 12vw;
+  width: 25vw;
   font-size: 1.2vw;
 }
 
 select {
   font-family: "FontAwesome", "Helvetica";
+  text-align: center;
+  text-align-last: center;
+  -moz-text-align-last: center;
 }
 
 /*On hover: change text color to black*/
@@ -136,7 +194,7 @@ select:hover {
   text-align: center;
   width: 70%;
   margin: 0 auto;
-  background: #ffffff;
+  background: #fff;
 }
 /* --- Main  --- */
 
@@ -144,7 +202,7 @@ select:hover {
 /*Site name centered*/
 #websiteName {
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
   text-shadow: 3px 3px rgb(54, 40, 0);
   font-size: 1.2em;
   font-weight: bold;
@@ -153,47 +211,88 @@ select:hover {
 
 /*Site name links to index color change*/
 #websiteName:hover {
-  color: #ff7b00;
-  text-shadow: 0 0 3px #000000;
+  color: var(--primary-color); 
+  text-shadow: 0 0 3px #000;
 }
+
+#websiteName:hover img{
+  border-radius: 1em;
+  box-shadow: 0 0 3px #000;
+  opacity: 0.5;
+} 
+
 /* --- Name  --- */
+
+/* --- Buttons  --- */
+/* Custom button */
+button {
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  border: none;
+  border-radius: 5em;
+  background-color: var(--primary-color);
+  color: var(--primary-text);
+  position: relative;
+  overflow: hidden !important;
+}
+
+/* Navigation bar button */
+.nav-btn {
+  border: none;
+  background-color: rgba(123, 0, 255, 0.1);/* Slightly show buttons */
+  height: 5vh !important;
+  color: var(--primary-text);
+  font-weight: bolder;
+  font-size: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Submit button */
+.sbmt-btn {
+  font-weight: bold;
+}
+
+/* Entertainment button */
+.ent-btn {
+  border-radius: 0 0.75em 0 0.75rem;
+}
+/* --- Buttons  --- */
+
 
 /* --- Error and success styles  --- */
 .error,
-.notFound,
 .success {
   font-size: 1em;
-  color: red;
+  color: var(--primary-text);
   margin: auto;
   margin-bottom: 1em;
   padding-left: 1em;
   padding-right: 1em;
   width: fit-content;
   text-align: center;
-  background-color: #ff7b00;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 10px 2px var(--logout);
   border-radius: 0.5em;
-  text-shadow: -1px 1px 0 #000,
-               1px 1px 0 #000,
-               1px -1px 0 #000,
-               -1px -1px 0 #000;
+  text-shadow: -1px 1px 0 var(--logout),
+               1px 1px 0 var(--logout),
+               1px -1px 0 var(--logout),
+               -1px -1px 0 var(--logout);
 }
 
 .success {
   font-size: 0.8em;
-  color: green;
+  box-shadow: 0 0 10px 2px var(--login);
+  text-shadow: -1px 1px 0 var(--login),
+               1px 1px 0 var(--login),
+               1px -1px 0 var(--login),
+               -1px -1px 0 var(--login);
 }
 
-.notFound {
-  font-size: 2em;
-  color: #ffffff;
-  text-shadow: 0 0 5px #000000;
-  background: #ff7b00;
-  margin: 1em;
-  text-align: center;
-}
-
-.orangeText {
-  color: #ff7b00;
+.orange-text {
+  color: var(--primary-color); 
   font-weight: bold;
 }
 /* --- Error and success styles  --- */
@@ -201,45 +300,53 @@ select:hover {
 /* --- Dark Theme  --- */
 /*Dark Theme Body*/
 .dark-body {
-  background: #333333;
+  background: #111;
 }
 
 /*Dark Theme Main*/
 .dark-main {
-  background: #444444;
-  color: #ffffff;
+  background: #222;
+  color: #fff;
 }
 
 /*Dark Theme Inputs*/
 .dark-input,
 .dark-textarea,
 .dark-select {
-  background-color: #555555;
-  color: #ffffff;
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-input:invalid {
+  background-color: #944;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: #333333;
+    background: #111;
     min-width: 100%;
   }
 
   main,
   .modal-content {
-    background: #444444 !important;
-    color: #ffffff;
+    background: #222 !important;
+    color: #fff;
   }
 
   .table {
-    background-color: #343a40;
-    color: #ffffff;
+    background-color: #333;
+    color: #fff;
   }
 
   input,
   select,
   textarea {
-    background-color: #555555 !important;
-    color: #ffffff !important;
+    background-color: #333 !important;
+    color: #fff !important;
+  }
+
+  input:invalid {
+    background-color: #944;
   }
 
   #dark-theme-selection {
@@ -254,7 +361,7 @@ select:hover {
 @media only screen and (max-width: 575px) {
   body {
     font-size: 1rem;
-    background: #ffffff;
+    background: #fff;
     max-width: 100% !important;
   }
 
@@ -295,7 +402,7 @@ select:hover {
 @media only screen and (min-width: 576px) and (max-width: 991px) {
   body {
     font-size: 1rem;
-    background: #ffffff;
+    background: #fff;
   }
 
   .main {

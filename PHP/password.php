@@ -103,15 +103,15 @@
         <?php if($successUpdate) {echo '<p id="successAuth" class="success">Şifre değiştirme başarılı!</p>';}?>
     </div>
 
-    <!--Input for submitting the form, type=submit-->
+    <!--Button for submitting the form-->
     <div>
-      <input
+      <button
         type="submit"
-        value="Gönder"
         name="pw-update-submit"
-        class="btn btn-primary bg-secondary"
-        aria-pressed="false"
-      />
+        class="sbmt-btn bg-password"
+        aria-pressed="false">
+        Gönder
+      </button>
     </div>
   </form>
   <br /><br />

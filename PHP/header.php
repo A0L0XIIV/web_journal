@@ -12,11 +12,14 @@
         exit();
     }
 ?>
-    <header>
+    <header class="sticky-top">
         <!-- Website name and Navbar -->
-        <nav class="navbar navbar-expand-sm navbar-dark mx-auto">
+        <nav class="navbar navbar-expand-md navbar-dark mx-auto py-md-0">
 
-            <a class="navbar-brand" id="websiteName" href="./index.php">Günlük</a>
+            <a class="navbar-brand py-0" id="websiteName" href="./index.php">
+                <span><img src="./g.png" alt="" style="width: 1.4em;"></span>
+                <span>Günlük</span>
+            </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,44 +29,59 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <?php
                 if(isset($_SESSION['name'])){
-                    echo '<ul class="navbar-nav mx-auto row" style="width:75%;">     
-                            <li class="nav-item mx-auto mt-3 mt-sm-0 col-xs-0 col-sm-2 active">
-                                <button class="btn btn-success btn-block p-0">
-                                    <a href="write.php" class="btn text-white" style="width: 100%;">Yeni Yaz</a>
-                                </button>
+                    echo '<ul class="navbar-nav mx-auto row w-75 h-100">  
+                            <li class="nav-item mx-auto mt-3 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2 active">
+                                <a href="write.php" 
+                                    id="nav-write"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4"">
+                                    Yeni Yaz
+                                </a>
                             </li>
-                            <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
-                                <button class="btn btn-info btn-block p-0">
-                                    <a href="edit.php" class="btn text-white" style="width: 100%;">Güncelle</a>
-                                </button>
+                            <li class="nav-item mx-auto mt-1 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2">
+                                <a href="edit.php" 
+                                    id="nav-edit"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4">
+                                    Güncelle
+                                </a>
                             </li>
-                            <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
-                                <button class="btn btn-primary btn-block p-0">
-                                    <a href="show.php" class="btn text-white" style="width: 100%;">Görüntüle</a>
-                                </button>
+                            <li class="nav-item mx-auto mt-1 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2">
+                                <a href="show.php" 
+                                    id="nav-show"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4">
+                                    Görüntüle
+                                </a>
                             </li>
-                            <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
-                                <button class="btn btn-warning btn-block p-0">
-                                    <a href="graph.php" class="btn text-white" style="width: 100%;">Grafik</a>
-                                </button>
+                            <li class="nav-item mx-auto mt-1 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2">
+                                <a href="graph.php" 
+                                    id="nav-graph"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4">
+                                    Grafik
+                                </a>
                             </li>
-                            <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
-                                <button class="btn btn-secondary btn-block p-0">
-                                    <a href="password.php" class="btn text-white" style="width: 100%;">Şifre</a>
-                                </button>
+                            <li class="nav-item mx-auto mt-1 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2">
+                                <a href="password.php" 
+                                    id="nav-password"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4">
+                                    Şifre
+                                </a>
                             </li>
-                            <li class="nav-item mx-auto mt-1 mt-sm-0 col-xs-0 col-sm-2">
-                                <button class="btn btn-danger btn-block p-0">
-                                    <a href="header.php?action=logout" class="btn text-white" style="width: 100%;">Çıkış yap</a>
-                                </button>
+                            <li class="nav-item mx-auto mt-1 mt-md-0 pl-0 pr-1 col-xs-0 col-md-2">
+                                <a href="header.php?action=logout" 
+                                    id="nav-logout"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4"">
+                                    Çıkış Yap
+                                    <span class="fa fa-times-circle "></span>
+                                </a>
                             </li>';
                 }
                 else{
-                    echo '<ul class="navbar-nav mr-auto">
+                    echo '<ul class="navbar-nav ml-auto h-100">
                             <li class="nav-item mx-auto">
-                                <button class="btn btn-dark btn-block p-0">
-                                    <a href="index.php" class="btn btn-dark" style="width: 100%;">Giriş yap</a>
-                                </button>
+                                <a href="index.php" 
+                                    id="nav-login"
+                                    class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-3 p-md-4 mx-auto mx-md-5">
+                                    Giriş yap
+                                </a>
                             </li>';
                 }
                 ?>
@@ -72,7 +90,7 @@
                 <!-- Dark theme switch -->
                 <div class="custom-control custom-switch float-right" id="dark-theme-selection">
                     <input type="checkbox" class="custom-control-input" id="customSwitches" onclick="switchDarkTheme(true)">
-                    <label class="custom-control-label" for="customSwitches">Karanlık</label>
+                    <label class="custom-control-label text-white" for="customSwitches">Karanlık</label>
                 </div>
                     
             </div>
