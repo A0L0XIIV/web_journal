@@ -880,8 +880,8 @@
                 echo $game_name.' oynama grafiğin';
         echo '</h1>
             <hr>
-            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
-                <a href="./show.php?game='.$game_id.'" class="btn text-white">Görüntüle</a>
+            <button type="button" class="bg-show p-0">
+                <a href="./show.php?game='.$game_id.'" class="bg-show p-3">Görüntüle</a>
             </button>
             <hr>';
 
@@ -991,8 +991,8 @@
                 echo ' dizi izleme grafiğin';
         echo '</h1>
             <hr>
-            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
-                <a href="./show.php?series='.$series_id.'" class="btn text-white">Görüntüle</a>
+            <button type="button" class="bg-show p-0">
+                <a href="./show.php?series='.$series_id.'" class="bg-show p-3">Görüntüle</a>
             </button>
             <hr>';
 
@@ -1102,8 +1102,8 @@
                 echo ' kitap okuma grafiğin';
         echo '</h1>
             <hr>
-            <button type="button" class="btn btn-warning bg-primary btn-sm p-0">
-                <a href="./show.php?book='.$book_id.'" class="btn text-white">Görüntüle</a>
+            <button type="button" class="bg-show p-0">
+                <a href="./show.php?book='.$book_id.'" class="bg-show p-3">Görüntüle</a>
             </button>
             <hr>';
 

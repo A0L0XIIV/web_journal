@@ -1170,8 +1170,8 @@
         echo '<div id="section2">
                 <h2>'.$game_name.'</h2>
                 <hr>
-                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
-                    <a href="./graph.php?game='.$game_id.'" class="btn text-white">Grafik</a>
+                <button type="button" class="bg-graph p-0">
+                    <a href="./graph.php?game='.$game_id.'" class="bg-graph p-3">Grafik</a>
                 </button>
                 <hr>
                 <table id="game-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
@@ -1214,8 +1214,8 @@
         echo '<div id="section3">
                 <h2>'.$series_name.'</h2>
                 <hr>
-                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
-                    <a href="./graph.php?series='.$series_id.'" class="btn text-white">Grafik</a>
+                <button type="button" class="bg-graph p-0">
+                    <a href="./graph.php?series='.$series_id.'" class="bg-graph p-3">Grafik</a>
                 </button>
                 <hr>
                 <table id="series-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
@@ -1290,8 +1290,8 @@
         echo '<div id="section5">
                 <h2>'.$book_name.'</h2>
                 <hr>
-                <button type="button" class="btn btn-primary bg-warning btn-sm p-0">
-                    <a href="./graph.php?book='.$book_id.'" class="btn text-white">Grafik</a>
+                <button type="button" class="bg-graph p-0">
+                    <a href="./graph.php?book='.$book_id.'" class="bg-graph p-3">Grafik</a>
                 </button>
                 <hr>
                 <table id="book-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
