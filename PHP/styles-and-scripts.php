@@ -28,6 +28,8 @@ $this_page = basename($_SERVER['PHP_SELF']);
 
 <!-- Common stylesheets -->
 <link rel="stylesheet" type="text/css" href="<?="$cssDir/main.css"?>">
+<!-- Animation stylesheets -->
+<link rel="stylesheet" type="text/css" media="only screen and (min-device-width: 991px)" href="<?="$cssDir/animation.css"?>">
 <!-- CSS, specific to the current page -->
 <link rel="stylesheet" type="text/css" href="<?="$cssDir/$styles[$this_page]"?>">
 
