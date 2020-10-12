@@ -22,6 +22,7 @@
 }
 .bg-edit {
   background-color: var(--edit) !important;
+  color: var(--primary-text) !important;
 }
 .bg-show {
   background-color: var(--show) !important;
@@ -29,9 +30,11 @@
 }
 .bg-graph {
   background-color: var(--graph) !important;
+  color: var(--primary-text) !important;
 }
 .bg-password {
   background-color: var(--password) !important;
+  color: var(--primary-text) !important;
 }
 .bg-logout {
   background-color: var(--logout) !important;
@@ -39,18 +42,23 @@
 }
 .bg-login {
   background-color: var(--login) !important;
+  color: var(--primary-text) !important;
 }
 .bg-game {
   background-color: var(--game) !important;
+  color: var(--primary-text) !important;
 }
 .bg-series {
   background-color: var(--series) !important;
+  color: var(--primary-text) !important;
 }
 .bg-movie {
   background-color: var(--movie) !important;
+  color: var(--primary-text) !important;
 }
 .bg-book {
   background-color: var(--book) !important;
+  color: var(--primary-text) !important;
 }
 /* --- Define color variables --- */
 
@@ -236,6 +244,16 @@ button {
   color: var(--primary-text);
   position: relative;
   overflow: hidden !important;
+}
+
+button a {
+  text-decoration: none !important;
+  color: var(--primary-text);
+}
+
+button:hover a {
+  text-decoration: none !important;
+  background-color: rgba(currentColor, 0.2) !important;
 }
 
 /* Navigation bar button */

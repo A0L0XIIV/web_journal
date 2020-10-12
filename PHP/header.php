@@ -70,7 +70,6 @@
                                     id="nav-logout"
                                     class="btn btn-block nav-btn hvr-bounce-to-top w-100 h-100 p-0 py-sm-3 py-md-4"">
                                     Çıkış Yap
-                                    <span class="fa fa-times-circle "></span>
                                 </a>
                             </li>';
                 }

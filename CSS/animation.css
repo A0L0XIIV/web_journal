@@ -1,65 +1,40 @@
 /* NavBar button animation */
 /* Bounce To Top - Source: https://github.com/IanLunn/Hover */
-.hvr-bounce-to-top {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-  -webkit-transition-property: color;
-  transition-property: color;
-  -webkit-transition-duration: 0.5s;
-  transition-duration: 0.5s;
-}
 .hvr-bounce-to-top:before {
   font-family: "FontAwesome", "Helvetica";
-  content: "\f067";
+  content: "\f111";
   position: absolute;
-  z-index: -1;
+  padding-top: 0.7em;/*Vertical align symbols*/
   top: -1px;
   left: -1px;
   right: -1px;
   bottom: -1px;
+  background-color: var(--secondary-color);
   border-radius: 0.25rem 0.25rem 0 0;
   border-bottom: 0.4em solid #fff;
-  background: var(--secondary-color);
-  -webkit-transform: scaleY(0);
+  color: #fff;
   transform: scaleY(0);
-  -webkit-transform-origin: 50% 100%;
   transform-origin: 50% 100%;
-  -webkit-transition-property: transform;
-  transition-property: transform;
-  -webkit-transition-duration: 0.5s;
-  transition-duration: 0.5s;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-
-.hvr-bounce-to-top:hover, 
-.hvr-bounce-to-top:focus, 
-.hvr-bounce-to-top:active {
-  color: #fff; 
+  transition: transform 0.5s ease-in-out;
 }
 .hvr-bounce-to-top:hover:before, 
-.hvr-bounce-to-top:focus:before, 
-.hvr-bounce-to-top:active:before {
-  -webkit-transform: scaleY(1);
+.hvr-bounce-to-top:focus:before {
   transform: scaleY(1);
-  -webkit-transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
   transition-timing-function: cubic-bezier(0.52, 1.64, 0.37, 0.66);
 }
-
 .hvr-bounce-to-top:active{
   box-shadow: 0 -0.5em 0.5em -0.4em #000;
   transform: translateY(0.25em);
+  transition: all 0.25s ease-in-out;
 }
+
 /*Navbar write button*/
 #nav-write:before{
+  content: "\f067";
   border-color: var(--write);
 }
-#nav-write:hover,
-#nav-write:focus{
+#nav-write:hover:before,
+#nav-write:focus:before{
   text-shadow: -1px 1px 0 var(--write),
                 1px 1px 0 var(--write),
                 1px -1px 0 var(--write),
@@ -70,6 +45,7 @@
 }
 /*Navbar edit button*/
 #nav-edit:before{
+  content: "\f040";
   border-color: var(--edit);
 }
 #nav-edit:hover,
@@ -83,6 +59,7 @@
   box-shadow: 0 -0.5em 0.5em -0.4em var(--edit);}
 /*Navbar show button*/
 #nav-show:before{
+  content: "\f0ce";
   border-color: var(--show);
 }
 #nav-show:hover,
@@ -97,6 +74,7 @@
 }
 /*Navbar graph button*/
 #nav-graph:before{
+  content: "\f200";
   border-color: var(--graph);
 }
 #nav-graph:hover,
@@ -111,6 +89,7 @@
 }
 /*Navbar password button*/
 #nav-password:before{
+  content: "\f084";
   border-color: var(--password);
 }
 #nav-password:hover,
@@ -125,6 +104,7 @@
 }
 /*Navbar logout button*/
 #nav-logout:before{
+  content: "\f08b";
   border-color: var(--logout);
 }
 #nav-logout:hover,
@@ -139,6 +119,7 @@
 }
 /*Navbar login button*/
 #nav-login:before{
+  content: "\f090";
   border-color: var(--login);
 }
 #nav-login:hover,
@@ -157,16 +138,10 @@
 .sbmt-btn {
   font-weight: bold;
   z-index: 1;
-  -webkit-transition: all 0.85s ease-in-out;
-  -moz-transition: all 0.85s ease-in-out;
-  -o-transition: all 0.85s ease-in-out;
   transition: all 0.85s ease-in-out;
 }
 .sbmt-btn:hover {
-  color: #fff;
-  -webkit-transition: all 0.85s ease-in-out;
-  -moz-transition: all 0.85s ease-in-out;
-  -o-transition: all 0.85s ease-in-out;
+  color: #fff !important;
   transition: all 0.85s ease-in-out;
 }
 .sbmt-btn::before {
@@ -174,14 +149,11 @@
   height: 100%;
   width: 0%;
   position: absolute;
-  background: var(--secondary-color);
+  background-color: var(--secondary-color);
   border-radius: 5em;
   top: 0;
   left: 0;
   z-index: 1;
-  -webkit-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
-  -moz-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
-  -o-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
   transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
 }
 .sbmt-btn::after {
@@ -189,24 +161,21 @@
   height: 10%;
   width: 0%;
   position: absolute;
-  background: var(--primary-color);
+  background-color: var(--primary-color);
   border-radius: 5em;
   bottom: 0;
   right: 0;
   z-index: 1;
   transform: translate(-20%, -150%);
-  -webkit-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
-  -moz-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
-  -o-transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
   transition: all 0.85s cubic-bezier(0.75, -0.5, 0.25, 1.25);
 }
 .sbmt-btn:hover::before {
-  background: var(--secondary-color);
+  background-color: var(--secondary-color);
   width: 100%;
   z-index: -1;
 }
 .sbmt-btn:hover::after {
-  background: var(--primary-color);
+  background-color: var(--primary-color);
   width: 70%;
   z-index: -1;
 }
@@ -216,17 +185,11 @@
 .ent-btn {
   border-radius: 0 0.75em 0 0.75rem;
   z-index: 1;
-  -webkit-transition: all 0.75s ease-in-out;
-  -moz-transition: all 0.75s ease-in-out;
-  -o-transition: all 0.75s ease-in-out;
   transition: all 0.75s ease-in-out;
 }
 .ent-btn:hover{
   color: #fff;
   font-style: italic;
-  -webkit-transition: all 0.75s ease-in-out;
-  -moz-transition: all 0.75s ease-in-out;
-  -o-transition: all 0.75s ease-in-out;
   transition: all 0.75s ease-in-out;
 }
 .ent-btn::before {
@@ -242,9 +205,6 @@
   left: -10%;
   top: 0;
   z-index: -1;
-  -webkit-transition: all 0.75s cubic-bezier(0.75, 0, 0.25, 1);
-  -moz-transition: all 0.75s cubic-bezier(0.75, 0, 0.25, 1);
-  -o-transition: all 0.75s cubic-bezier(0.75, 0, 0.25, 1);
   transition: all 0.75s cubic-bezier(0.75, 0, 0.25, 1);
 } 
 .ent-btn::after {
@@ -260,13 +220,10 @@
   left: -10%;
   top: 0;
   z-index: -2;
-  -webkit-transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  -moz-transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  -o-transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 .ent-btn:hover::before{
-  width: 115%;
+  width: 113%;
 }
 .ent-btn:hover::after{
   width: 120%;
@@ -274,6 +231,10 @@
 
 
 /* Add entertainment button animation */
+.add-btn {
+  border-radius: 0.75em 0 0.75rem 0;
+}
+
 .add-btn:hover,
 .add-btn:focus {
   transition: 0.25s;
