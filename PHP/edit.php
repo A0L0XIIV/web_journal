@@ -484,7 +484,7 @@
 
             <h2 class="orange-text">Aynı tarihli ('.$date.') hobilerin</h2>
 
-            <hr>';
+            <br>';
 
             // Get daily game data from DB
             $sql_game = "SELECT daily_game.id, name, duration
@@ -755,11 +755,9 @@
 
             echo '
             <hr>
-            <br>
-
             <button 
                 type="button"
-                class="ent-btn"
+                class="ent-btn my-4"
                 id="newEntertainmentMenuButton"
                 onclick="$(\'#newEntertainmentMenu\').show();
                         $(\'#newEntertainmentMenuButton\').hide();">
@@ -768,25 +766,24 @@
 
             <div id="newEntertainmentMenu" style="display: none;">
                 <h3 class="orange-text">Eklemek için aşağıdan yeni hobi seç</h3>
-                <br>
 
                 <!--Daily Entertainment: Playing Games-->
                 <div class="daily-game">
                     <button type="button"
-                            class="ent-btn bg-game"
+                            class="ent-btn bg-game my-4"
                             id="add-game-btn"
                             onclick="getEntertainmentNames(\'game\');">
                             Oyun Ekle
                     </button>
                     
-                    <div id="add-game" style="display:none;">
+                    <div id="add-game" class="py-3" style="display:none; background-color:#2bc5001a;">
                         <form
                             name="edit-game-form"
                             id="edit-game-form"
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
-                            <p>Oyun Ekle</p>
+                            <p class="font-weight-bolder">Oyun Ekle</p>
                             <!--Add a game, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -809,8 +806,7 @@
                                         step="0.5"
                                         minlength="0"
                                         maxlength="2"
-                                        style="width:45%;"
-                                        required>
+                                        style="width:45%;">
                                 </div>
                             </div>
 
@@ -878,25 +874,23 @@
                     </div>
                 </div>
 
-                <hr>
-
                 <!--Daily Entertainment: Watching Series-->
                 <div class="daily-series">
                     <button type="button"
-                            class="ent-btn bg-series"
+                            class="ent-btn bg-series my-4"
                             id="add-series-btn"
                             onclick="getEntertainmentNames(\'series\');">
                             Dizi Ekle
                     </button>
                     
-                    <div id="add-series" style="display:none;">
+                    <div id="add-series" class="py-3" style="display:none; background-color:#5da2d81a;">
                         <form
                             name="edit-series-form"
                             id="edit-series-form"
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
-                            <p>Dizi Ekle</p>
+                            <p class="font-weight-bolder">Dizi Ekle</p>
                             <!--Add a series, name & episodes-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6 mx-auto">
@@ -1030,25 +1024,23 @@
                 </div>
                 </div>
 
-                <hr>
-
                 <!--Daily Entertainment: Watching movies-->
                 <div class="daily-movie">
                     <button type="button"
-                            class="ent-btn bg-movie"
+                            class="ent-btn bg-movie my-4"
                             id="add-movie-btn"
                             onclick="getEntertainmentNames(\'movie\');">
                             Film Ekle
                     </button>
                     
-                    <div id="add-movie" style="display:none;">
+                    <div id="add-movie" class="py-3" style="display:none; background-color:#ff599a1a;">
                         <form
                             name="edit-movie-form"
                             id="edit-movie-form"
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
-                            <p>Film Ekle</p>
+                            <p class="font-weight-bolder">Film Ekle</p>
                             <!--Add a movie, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -1139,25 +1131,23 @@
                     </div>
                 </div>
 
-                <hr>
-
                 <!--Daily Entertainment: Book Reading-->
                 <div class="daily-book">
                     <button type="button"
-                            class="ent-btn bg-book"
+                            class="ent-btn bg-book my-4"
                             id="add-book-btn"
                             onclick="getEntertainmentNames(\'book\');">
                             Kitap Ekle
                     </button>
                     
-                    <div id="add-book" style="display:none;">
+                    <div id="add-book" class="py-3" style="display:none; background-color:#f7ee431a;">
                         <form
                             name="edit-book-form"
                             id="edit-book-form"
                             action="'.htmlspecialchars($_SERVER["PHP_SELF"]).'"
                             method="post">
 
-                            <p>Kitap Ekle</p>
+                            <p class="font-weight-bolder">Kitap Ekle</p>
                             <!--Add a book, name & duration-->
                             <div class="row">
                                 <div class="col-xs-3 col-sm-6">
@@ -1247,9 +1237,6 @@
                 </div>
 
             </div>
-
-            <br>
-            <br>
         </div>';
     }
     ?>

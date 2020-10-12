@@ -367,14 +367,14 @@
         <!--Daily Entertainment: Playing Games-->
         <div class="daily-game">
             <button type="button"
-                    class="ent-btn bg-game"
+                    class="ent-btn bg-game my-4"
                     id="add-game-btn"
                     onclick="getEntertainmentNames('game');">
                     Oyun Ekle
             </button>
             
-            <div id="add-game" style="display:none;">
-                <p>Oyun Ekle</p>
+            <div id="add-game" class="py-3" style="display:none; background-color:#2bc5001a;">
+                <p class="font-weight-bolder">Oyun Ekle</p>
                 <!--Add a game, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -444,19 +444,17 @@
             </div>
         </div>
 
-        <hr>
-
         <!--Daily Entertainment: Watching Series-->
         <div class="daily-series">
             <button type="button"
-                    class="ent-btn bg-series"
+                    class="ent-btn bg-series my-4"
                     id="add-series-btn"
                     onclick="getEntertainmentNames('series');">
                     Dizi Ekle
             </button>
             
-            <div id="add-series" style="display:none;">
-                <p>Dizi Ekle</p>
+            <div id="add-series" class="py-3" style="display:none; background-color:#5da2d81a;">
+                <p class="font-weight-bolder">Dizi Ekle</p>
                 <!--Add a series, name & episodes-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6 mx-auto">
@@ -569,19 +567,17 @@
             </div>
         </div>
 
-        <hr>
-
         <!--Daily Entertainment: Watching movies-->
         <div class="daily-movie">
             <button type="button"
-                    class="ent-btn bg-movie"
+                    class="ent-btn bg-movie my-4"
                     id="add-movie-btn"
                     onclick="getEntertainmentNames('movie');">
                     Film Ekle
             </button>
             
-            <div id="add-movie" style="display:none;">
-                <p>Film Ekle</p>
+            <div id="add-movie" class="py-3" style="display:none; background-color:#ff599a1a;">
+                <p class="font-weight-bolder">Film Ekle</p>
                 <!--Add a movie, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
@@ -651,19 +647,17 @@
             </div>
         </div>
 
-        <hr>
-
         <!--Daily Entertainment: Book Reading-->
         <div class="daily-book">
             <button type="button"
-                    class="ent-btn bg-book"
+                    class="ent-btn bg-book my-4"
                     id="add-book-btn"
                     onclick="getEntertainmentNames('book');">
                     Kitap Ekle
             </button>
             
-            <div id="add-book" style="display:none;">
-                <p>Kitap Ekle</p>
+            <div id="add-book" class="py-3" style="display:none; background-color:#f7ee431a;">
+                <p class="font-weight-bolder">Kitap Ekle</p>
                 <!--Add a book, name & duration-->
                 <div class="row">
                     <div class="col-xs-3 col-sm-6">
