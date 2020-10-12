@@ -133,15 +133,15 @@
           <?php if($successAuth) {echo '<p id="successAuth" class="success">Giriş başarılı!</p>';}?>
       </div>
 
-      <!--Input for submitting the form, type=submit-->
+      <!--Button for submitting the form-->
       <div>
-        <input
+        <button
           type="submit"
-          value="Gönder"
           name="login-submit"
-          class="btn btn-primary bg-dark"
-          aria-pressed="false"
-        />
+          class="sbmt-btn bg-login"
+          aria-pressed="false">
+          Gönder
+        </button>
       </div>
     </form>
   </div>

@@ -178,7 +178,7 @@
         // ID is not empty
         else{
             // DB query
-            $sql = "SELECT DATE(date), (end_episode-begin_episode) FROM daily_series
+            $sql = "SELECT DATE(date), (end_episode-begin_episode +1) FROM daily_series
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
                     WHERE name=? AND series_id=?
                     AND begin_season=end_season

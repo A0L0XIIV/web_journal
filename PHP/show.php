@@ -230,7 +230,8 @@
                                 FROM daily_series 
                                 INNER JOIN gunluk ON gunluk_id=gunluk.id
                                 INNER JOIN series ON series_id=series.id
-                                WHERE gunluk.name=? AND series_id=?";
+                                WHERE gunluk.name=? AND series_id=?
+                                AND begin_season = end_season";
                         $stmt = mysqli_stmt_init($conn);
                         // Prepare statement
                         if(!mysqli_stmt_prepare($stmt, $sql)){
