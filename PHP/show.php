@@ -101,7 +101,8 @@
             $sql = "SELECT DATE(gunluk.date), daily_game.duration FROM daily_game 
                     INNER JOIN game ON game_id=game.id 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE gunluk.name=? AND game_id=?";
+                    WHERE gunluk.name=? AND game_id=?
+                    ORDER BY (gunluk.date) DESC";
             $stmt = mysqli_stmt_init($conn);
             // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -180,7 +181,8 @@
                     FROM daily_series 
                     INNER JOIN series ON series_id=series.id 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE gunluk.name=? AND series_id=?";
+                    WHERE gunluk.name=? AND series_id=?
+                    ORDER BY (gunluk.date) DESC";
             $stmt = mysqli_stmt_init($conn);
             // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -279,7 +281,8 @@
             $sql = "SELECT DATE(gunluk.date), daily_movie.duration FROM daily_movie 
                     INNER JOIN movie ON movie_id=movie.id 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE gunluk.name=? AND movie_id=?";
+                    WHERE gunluk.name=? AND movie_id=?
+                    ORDER BY (gunluk.date) DESC";
             $stmt = mysqli_stmt_init($conn);
             // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
@@ -356,7 +359,8 @@
             $sql = "SELECT DATE(gunluk.date), daily_book.duration FROM daily_book 
                     INNER JOIN book ON book_id=book.id 
                     INNER JOIN gunluk ON gunluk_id=gunluk.id
-                    WHERE gunluk.name=? AND book_id=?";
+                    WHERE gunluk.name=? AND book_id=?
+                    ORDER BY (gunluk.date) DESC";
             $stmt = mysqli_stmt_init($conn);
             // Prepare statement
             if(!mysqli_stmt_prepare($stmt, $sql)){
