@@ -903,7 +903,7 @@
                                         </select>
                                     </div>
                                 <div id="last-episode-btn" class="col-xs-3 col-sm-6" style="display: none;">
-                                    <button type="button" class="btn btn-primary" onclick="getLastWatchedSeriesEpisode()">Son bölüm +1</button>
+                                    <button type="button" class="bg-series" onclick="getLastWatchedSeriesEpisode()">Son bölüm +1</button>
                                 </div>
                             </div>
 

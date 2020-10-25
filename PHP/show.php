@@ -817,8 +817,8 @@
                 while (mysqli_stmt_fetch($stmt)) {
                     echo '<div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
                             <div class="col-xs-6 col-sm-2 px-0">
-                                <button type="button" class="btn btn-primary bg-primary btn-sm p-0">
-                                    <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn text-white">Güncelle</a>
+                                <button type="button" class="add-btn bg-edit p-0">
+                                    <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
                                 </button>
                             </div>
                             <div class="col-xs-6 col-sm-3 px-0">
