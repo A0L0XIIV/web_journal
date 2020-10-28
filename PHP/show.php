@@ -980,7 +980,7 @@
                             // Check if DB returned any result
                             if(mysqli_stmt_num_rows($stmt_game) > 0){
                                 echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="table-info"><th>Oyun</th><th>Süre</th></tr>';
+                                echo '<tr class="bg-game"><th>Oyun</th><th>Süre</th></tr>';
                                 // Fetch values
                                 while (mysqli_stmt_fetch($stmt_game)) {
                                     echo '<tr><td>'.$game_name.'</td><td>'.$game_duration.' Saat</td></tr>';
@@ -1026,7 +1026,7 @@
                             // Check if DB returned any result
                             if(mysqli_stmt_num_rows($stmt_series) > 0){
                                 echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="table-primary">
+                                echo '<tr class="bg-series">
                                         <th>Dizi</th>
                                         <th>İlk sezon</th>
                                         <th>İlk bölüm</th>
@@ -1081,7 +1081,7 @@
                             // Check if DB returned any result
                             if(mysqli_stmt_num_rows($stmt_movie) > 0){
                                 echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="table-success"><th>Film</th><th>Süre</th></tr>';
+                                echo '<tr class="bg-movie"><th>Film</th><th>Süre</th></tr>';
                                 // Fetch values
                                 while (mysqli_stmt_fetch($stmt_movie)) {
                                     echo '<tr><td>'.$movie_name.'</td><td>'.$movie_duration.' Saat</td></tr>';
@@ -1127,7 +1127,7 @@
                             // Check if DB returned any result
                             if(mysqli_stmt_num_rows($stmt_book) > 0){
                                 echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="table-warning"><th>Kitap</th><th>Süre</th></tr>';
+                                echo '<tr class="bg-book"><th>Kitap</th><th>Süre</th></tr>';
                                 // Fetch values
                                 while (mysqli_stmt_fetch($stmt_book)) {
                                     echo '<tr><td>'.$book_name.'</td><td>'.$book_duration.' Saat</td></tr>';
@@ -1199,7 +1199,7 @@
                 </table>         
                 <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
-                    <tr class="table-info">
+                    <tr class="bg-game">
                         <th>Tarih</th>
                         <th>Süre</th>
                     </tr>';
@@ -1243,7 +1243,7 @@
                 </table>         
                 <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
-                    <tr class="table-primary">
+                    <tr class="bg-series">
                         <th>Tarih</th>
                         <th>Sezon</th>
                         <th>Bölümler</th>
@@ -1275,7 +1275,7 @@
                 </table>         
                 <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
-                    <tr class="table-secondary">
+                    <tr class="bg-movie">
                         <th>Tarih</th>
                         <th>Süre</th>
                     </tr>';
@@ -1319,7 +1319,7 @@
                 </table>         
                 <br>
                 <table id="game-table" class="table table-bordered table-hover table-sm table-striped">
-                    <tr class="table-warning">
+                    <tr class="bg-book">
                         <th>Tarih</th>
                         <th>Süre</th>
                     </tr>';
