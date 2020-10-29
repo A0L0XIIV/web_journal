@@ -647,7 +647,7 @@
                                 id="game-select" 
                                 class="custom-select"
                                 required>
-                            <option value="" hidden selected>Oyun seç</option>';
+                            <option value="-1" hidden selected>Oyun seç</option>';
 
                             if(empty($gameArray)){
                                 echo '<option value="" class="error">Oyun bulunamadı</option>';
@@ -689,7 +689,7 @@
                                 id="series-select" 
                                 class="custom-select"
                                 required>
-                            <option value="" hidden selected>Dizi seç</option>';
+                            <option value="-1" hidden selected>Dizi seç</option>';
                             
                             if(empty($seriesArray)){
                                 echo '<option value="" class="error">Dizi bulunamadı</option>';
@@ -731,7 +731,7 @@
                                 id="movie-select" 
                                 class="custom-select"
                                 required>
-                            <option value="" hidden selected>Film seç</option>';
+                            <option value="-1" hidden selected>Film seç</option>';
                             
                             if(empty($movieArray)){
                                 echo '<option value="" class="error">Dizi bulunamadı</option>';
@@ -773,7 +773,7 @@
                                 id="book-select" 
                                 class="custom-select"
                                 required>
-                            <option value="" hidden selected>Kitap seç</option>';
+                            <option value="-1" hidden selected>Kitap seç</option>';
                             
                             if(empty($bookArray)){
                                 echo '<option value="" class="error">Kitap bulunamadı</option>';

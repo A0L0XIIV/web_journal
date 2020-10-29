@@ -4,12 +4,43 @@ window.onload = init;
 function init() {
   // If there is an error and it is visible, highlight it
   if($(".error").length && $(".error").is(':visible')){
-    $(".error").ready(highlight(".error"));
+    $(".error:visible").ready(highlight(".error:visible"));
   }
   // If there is a success message and it is visible, highlight it
   if($(".success").length && $(".success").is(':visible')){
-    $(".success").ready(highlight(".success"));
+    $(".success:visible").ready(highlight(".success:visible"));
   }
+
+  // Start select2 dropdowns
+  $('#game-select').select2({
+    placeholder: {
+      id: '-1', // the value of the option
+      text: 'Oyun Seç',
+    },
+    selectOnClose: true,
+  });
+  $('#series-select').select2({
+    placeholder: {
+      id: '-1',
+      text: 'Dizi Seç',
+    },
+    selectOnClose: true,
+  });
+  $('#movie-select').select2({
+    placeholder: {
+      id: '-1',
+      text: 'Film Seç',
+    },
+    selectOnClose: true,
+  });
+  $('#book-select').select2({
+    placeholder: {
+      id: '-1',
+      text: 'Kitap Seç',
+    },
+    selectOnClose: true,
+  });
+
   // Set dark theme initial value
   initializeCookieIsDarkTheme();
   var isDarkTheme = getCookie("isDarkTheme");
@@ -34,6 +65,11 @@ function switchDarkTheme(isUserChangeTheme) {
   $("textarea").toggleClass("dark-textarea");
   /* Swicht select theme*/
   $("select").toggleClass("dark-select");
+  /* Swicht select2 theme*/
+  $(".select2-results").toggleClass("dark-select");
+  $(".select2-dropdown").toggleClass("dark-select");
+  $(".select2-selection").toggleClass("dark-select");
+  $(".select2-selection__rendered").toggleClass("dark-select");
   /* Swicht modal theme*/
   $(".modal-content").toggleClass("dark-main");
   /* Swicht modal theme*/

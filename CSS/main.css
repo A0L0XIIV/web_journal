@@ -145,54 +145,64 @@ select {
   text-align-last: center;
   -moz-text-align-last: center;
 }
+/* Makes all selects first elements green
+* CSS doesn't have choose with text
+* JS requires too much because select2 
+* genereates new HTML at the end of the page
+* when user clicks the select 
+.select2-results__options li:nth-child(1){
+  color: #0b7;
+  font-weight: bold;
+}
+*/
 
 /*On hover: change text color to black*/
 select:hover {
-  color: #000000;
+  color: #000;
 }
 
 .opt10 {
-  color: #00ff77;
+  color: #0f7;
 }
 
 .opt9 {
-  color: #00ff00;
+  color: #0f0;
 }
 
 .opt8 {
-  color: #33ff00;
+  color: #3f0;
 }
 
 .opt7 {
-  color: #77ff00;
+  color: #7f0;
 }
 
 .opt6 {
-  color: #bbff00;
+  color: #bf0;
 }
 
 .opt5 {
-  color: #ffff00;
+  color: #ff0;
 }
 
 .opt4 {
-  color: #ffbb00;
+  color: #fb0;
 }
 
 .opt3 {
-  color: #ff7700;
+  color: #f70;
 }
 
 .opt2 {
-  color: #ff3300;
+  color: #f30;
 }
 
 .opt1 {
-  color: #ff0000;
+  color: #f00;
 }
 
 .opt0 {
-  color: #ff0077;
+  color: #f07;
 }
 /* --- Select-option --- */
 
@@ -331,8 +341,8 @@ button:hover a {
 .dark-input,
 .dark-textarea,
 .dark-select {
-  background-color: #333;
-  color: #fff;
+  background-color: #333 !important;
+  color: #fff !important;
 }
 
 .dark-input:invalid {
@@ -369,6 +379,14 @@ button:hover a {
 
   #dark-theme-selection {
     visibility: hidden;
+  }
+
+  .select2-results,
+  .select2-dropdown,
+  .select2-selection,
+  .select2-selection__rendered {
+    background-color: #333 !important;
+    color: #fff !important;
   }
 }
 /* --- Dark Theme  --- */
