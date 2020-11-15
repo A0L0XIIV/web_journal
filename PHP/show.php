@@ -819,336 +819,341 @@
             if(mysqli_stmt_num_rows($stmt) > 0){
                 // Fetch values
                 while (mysqli_stmt_fetch($stmt)) {
-                    echo '<div class="row" style="border-top: solid 1px #ff7700; padding-top:5px;">
-                            <div class="col-xs-6 col-sm-2 px-0">
-                                <button type="button" class="add-btn bg-edit p-0">
-                                    <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
-                                </button>
+                    echo '<div class="card" style="margin-top:15px;">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-xs-6 col-sm-2 px-0">
+                                        <button type="button" class="add-btn bg-edit p-0">
+                                            <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-6 col-sm-3 px-0">
+                                        <p class="orange-text">Tarih:</p>
+                                        <p>'.$journal_date.'</p>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-2 px-0">
+                                        <p class="orange-text">İş/Okul:</p>';
+                                        switch($work_happiness){
+                                            case 10:
+                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                break;
+                                            case 9:
+                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                break;
+                                            case 8:
+                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                break;
+                                            case 7:
+                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                break;
+                                            case 6:
+                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                break;
+                                            case 5:
+                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                break;
+                                            case 4:
+                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                break;
+                                            case 3:
+                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                break;
+                                            case 2:
+                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                break;
+                                            case 1:
+                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                break;
+                                            case 0:
+                                            default:
+                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                break;
+                                        }
+                                    echo
+                                    '</div>
+                                    <div class="col-xs-4 col-sm-3 px-0">
+                                        <p class="orange-text">İş/Okul dışı:</p>';
+                                        switch($daily_happiness){
+                                            case 10:
+                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                break;
+                                            case 9:
+                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                break;
+                                            case 8:
+                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                break;
+                                            case 7:
+                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                break;
+                                            case 6:
+                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                break;
+                                            case 5:
+                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                break;
+                                            case 4:
+                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                break;
+                                            case 3:
+                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                break;
+                                            case 2:
+                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                break;
+                                            case 1:
+                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                break;
+                                            case 0:
+                                            default:
+                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                break;
+                                        }
+                                    echo
+                                    '</div>
+                                    <div class="col-xs-4 col-sm-2 px-0">
+                                        <p class="orange-text">Genel:</p>';
+                                        switch($total_happiness){
+                                            case 10:
+                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                break;
+                                            case 9:
+                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                break;
+                                            case 8:
+                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                break;
+                                            case 7:
+                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                break;
+                                            case 6:
+                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                break;
+                                            case 5:
+                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                break;
+                                            case 4:
+                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                break;
+                                            case 3:
+                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                break;
+                                            case 2:
+                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                break;
+                                            case 1:
+                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                break;
+                                            case 0:
+                                            default:
+                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                break;
+                                        }
+                                    echo
+                                    '</div>
+                                </div>
                             </div>
-                            <div class="col-xs-6 col-sm-3 px-0">
-                                <p class="orange-text">Tarih:</p>
-                                <p>'.$journal_date.'</p>
+                            <div class="card-body"> 
+                                <div class="text-center">
+                                    <p class="mb-0">'.(!empty($content) ? $content : "").'</p>
+                                </div>
                             </div>
-                            <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orange-text">İş/Okul:</p>';
-                                switch($work_happiness){
-                                    case 10:
-                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
-                                        break;
-                                    case 9:
-                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
-                                        break;
-                                    case 8:
-                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
-                                        break;
-                                    case 7:
-                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
-                                        break;
-                                    case 6:
-                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
-                                        break;
-                                    case 5:
-                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
-                                        break;
-                                    case 4:
-                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
-                                        break;
-                                    case 3:
-                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
-                                        break;
-                                    case 2:
-                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
-                                        break;
-                                    case 1:
-                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
-                                        break;
-                                    case 0:
-                                    default:
-                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
-                                        break;
+                            <div class="card-footer">';
+                                // Get daily game data from DB
+                                $sql_game = "SELECT name, duration
+                                            FROM daily_game
+                                            INNER JOIN game ON daily_game.game_id=game.id 
+                                            WHERE gunluk_id=? ORDER BY daily_game.id ASC";
+                                $stmt_game = mysqli_stmt_init($conn);
+                                if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
+                                    $error = true;
                                 }
-                            echo
-                            '</div>
-                            <div class="col-xs-4 col-sm-3 px-0">
-                                <p class="orange-text">İş/Okul dışı:</p>';
-                                switch($daily_happiness){
-                                    case 10:
-                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
-                                        break;
-                                    case 9:
-                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
-                                        break;
-                                    case 8:
-                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
-                                        break;
-                                    case 7:
-                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
-                                        break;
-                                    case 6:
-                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
-                                        break;
-                                    case 5:
-                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
-                                        break;
-                                    case 4:
-                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
-                                        break;
-                                    case 3:
-                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
-                                        break;
-                                    case 2:
-                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
-                                        break;
-                                    case 1:
-                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
-                                        break;
-                                    case 0:
-                                    default:
-                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
-                                        break;
+                                else{
+                                    // Bind inputs to query parameters
+                                    mysqli_stmt_bind_param($stmt_game, "i", $journal_id);
+                                    // Execute sql statement
+                                    if(!mysqli_stmt_execute($stmt_game)){
+                                        $error = true;
+                                        $errorText = mysqli_error($conn);
+                                    }
+                                    // Bind result variables
+                                    mysqli_stmt_bind_result($stmt_game, $game_name, $game_duration);
+                                    // Game Results fetched below...
+                                    if(mysqli_stmt_store_result($stmt_game)){
+                                        // Check if DB returned any result
+                                        if(mysqli_stmt_num_rows($stmt_game) > 0){
+                                            echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                            echo '<tr class="bg-game"><th>Oyun</th><th>Süre</th></tr>';
+                                            // Fetch values
+                                            while (mysqli_stmt_fetch($stmt_game)) {
+                                                echo '<tr><td>'.$game_name.'</td><td>'.$game_duration.' Saat</td></tr>';
+                                            }
+                                            echo '</table>';
+                                        }
+                                    }
+                                    else{
+                                        echo'<!--Error-->
+                                            <div class="error" id="dbError">
+                                                <p>Oyunlar için veritabanı \'store\' hatası.
+                                                    <button type="button"
+                                                        class="fa fa-times-circle btn text-danger" 
+                                                        aria-hidden="true" 
+                                                        onclick="$(\'#dbError\').hide()">
+                                                    </button>
+                                                </p> 
+                                            </div>';
+                                    }
                                 }
-                            echo
-                            '</div>
-                            <div class="col-xs-4 col-sm-2 px-0">
-                                <p class="orange-text">Genel:</p>';
-                                switch($total_happiness){
-                                    case 10:
-                                        echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
-                                        break;
-                                    case 9:
-                                        echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
-                                        break;
-                                    case 8:
-                                        echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
-                                        break;
-                                    case 7:
-                                        echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
-                                        break;
-                                    case 6:
-                                        echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
-                                        break;
-                                    case 5:
-                                        echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
-                                        break;
-                                    case 4:
-                                        echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
-                                        break;
-                                    case 3:
-                                        echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
-                                        break;
-                                    case 2:
-                                        echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
-                                        break;
-                                    case 1:
-                                        echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
-                                        break;
-                                    case 0:
-                                    default:
-                                        echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
-                                        break;
-                                }
-                            echo
-                            '</div>
-                        </div>
-                        <hr>
-                        <div class="text-center">
-                            <p class="mb-0 pb-3">'.(!empty($content) ? $content : "").'</p>
-                        </div>
-                    ';
 
-                    // Get daily game data from DB
-                    $sql_game = "SELECT name, duration
-                                FROM daily_game
-                                INNER JOIN game ON daily_game.game_id=game.id 
-                                WHERE gunluk_id=? ORDER BY daily_game.id ASC";
-                    $stmt_game = mysqli_stmt_init($conn);
-                    if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
-                        $error = true;
-                    }
-                    else{
-                        // Bind inputs to query parameters
-                        mysqli_stmt_bind_param($stmt_game, "i", $journal_id);
-                        // Execute sql statement
-                        if(!mysqli_stmt_execute($stmt_game)){
-                            $error = true;
-                            $errorText = mysqli_error($conn);
-                        }
-                        // Bind result variables
-                        mysqli_stmt_bind_result($stmt_game, $game_name, $game_duration);
-                        // Game Results fetched below...
-                        if(mysqli_stmt_store_result($stmt_game)){
-                            // Check if DB returned any result
-                            if(mysqli_stmt_num_rows($stmt_game) > 0){
-                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="bg-game"><th>Oyun</th><th>Süre</th></tr>';
-                                // Fetch values
-                                while (mysqli_stmt_fetch($stmt_game)) {
-                                    echo '<tr><td>'.$game_name.'</td><td>'.$game_duration.' Saat</td></tr>';
+                                // Get daily series data from DB
+                                $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
+                                            FROM daily_series
+                                            INNER JOIN series ON daily_series.series_id=series.id 
+                                            WHERE gunluk_id=? ORDER BY daily_series.id ASC";
+                                $stmt_series = mysqli_stmt_init($conn);
+                                if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
+                                    $error = true;
                                 }
-                                echo '</table>';
-                            }
-                        }
-                        else{
-                            echo'<!--Error-->
-                                <div class="error" id="dbError">
-                                    <p>Oyunlar için veritabanı \'store\' hatası.
-                                        <button type="button"
-                                            class="fa fa-times-circle btn text-danger" 
-                                            aria-hidden="true" 
-                                            onclick="$(\'#dbError\').hide()">
-                                        </button>
-                                    </p> 
-                                </div>';
-                        }
-                    }
-
-                    // Get daily series data from DB
-                    $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
-                                FROM daily_series
-                                INNER JOIN series ON daily_series.series_id=series.id 
-                                WHERE gunluk_id=? ORDER BY daily_series.id ASC";
-                    $stmt_series = mysqli_stmt_init($conn);
-                    if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
-                        $error = true;
-                    }
-                    else{
-                        // Bind inputs to query parameters
-                        mysqli_stmt_bind_param($stmt_series, "i", $journal_id);
-                        // Execute sql statement
-                        if(!mysqli_stmt_execute($stmt_series)){
-                            $error = true;
-                            $errorText = mysqli_error($conn);
-                        }
-                        // Bind result variables
-                        mysqli_stmt_bind_result($stmt_series, $series_name, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
-                        // Series Results fetched below...
-                        if(mysqli_stmt_store_result($stmt_series)){
-                            // Check if DB returned any result
-                            if(mysqli_stmt_num_rows($stmt_series) > 0){
-                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="bg-series">
-                                        <th>Dizi</th>
-                                        <th>İlk sezon</th>
-                                        <th>İlk bölüm</th>
-                                        <th>Son sezon</th>
-                                        <th>Son bölüm</th></tr>';
-                                // Fetch values
-                                while (mysqli_stmt_fetch($stmt_series)) {
-                                    echo '<tr><td>'.$series_name.'</td>
-                                            <td>'.$series_begin_season.'</td>
-                                            <td>'.$series_begin_episode.'</td>
-                                            <td>'.$series_end_season.'</td>
-                                            <td>'.$series_end_episode.'</td></tr>';
+                                else{
+                                    // Bind inputs to query parameters
+                                    mysqli_stmt_bind_param($stmt_series, "i", $journal_id);
+                                    // Execute sql statement
+                                    if(!mysqli_stmt_execute($stmt_series)){
+                                        $error = true;
+                                        $errorText = mysqli_error($conn);
+                                    }
+                                    // Bind result variables
+                                    mysqli_stmt_bind_result($stmt_series, $series_name, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
+                                    // Series Results fetched below...
+                                    if(mysqli_stmt_store_result($stmt_series)){
+                                        // Check if DB returned any result
+                                        if(mysqli_stmt_num_rows($stmt_series) > 0){
+                                            echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                            echo '<tr class="bg-series">
+                                                    <th>Dizi</th>
+                                                    <th>İlk sezon</th>
+                                                    <th>İlk bölüm</th>
+                                                    <th>Son sezon</th>
+                                                    <th>Son bölüm</th></tr>';
+                                            // Fetch values
+                                            while (mysqli_stmt_fetch($stmt_series)) {
+                                                echo '<tr><td>'.$series_name.'</td>
+                                                        <td>'.$series_begin_season.'</td>
+                                                        <td>'.$series_begin_episode.'</td>
+                                                        <td>'.$series_end_season.'</td>
+                                                        <td>'.$series_end_episode.'</td></tr>';
+                                            }
+                                            echo '</table>';
+                                        }
+                                    }
+                                    else{
+                                        echo'<!--Error-->
+                                            <div class="error" id="dbError">
+                                                <p>Diziler için veritabanı \'store\' hatası.
+                                                    <button type="button"
+                                                        class="fa fa-times-circle btn text-danger" 
+                                                        aria-hidden="true" 
+                                                        onclick="$(\'#dbError\').hide()">
+                                                    </button>
+                                                </p> 
+                                            </div>';
+                                    }
                                 }
-                                echo '</table>';
-                            }
-                        }
-                        else{
-                            echo'<!--Error-->
-                                <div class="error" id="dbError">
-                                    <p>Diziler için veritabanı \'store\' hatası.
-                                        <button type="button"
-                                            class="fa fa-times-circle btn text-danger" 
-                                            aria-hidden="true" 
-                                            onclick="$(\'#dbError\').hide()">
-                                        </button>
-                                    </p> 
-                                </div>';
-                        }
-                    }
 
-                    // Get daily movie data from DB
-                    $sql_movie = "SELECT name, duration
-                                FROM daily_movie
-                                INNER JOIN movie ON daily_movie.movie_id=movie.id 
-                                WHERE gunluk_id=? ORDER BY daily_movie.id ASC";
-                    $stmt_movie = mysqli_stmt_init($conn);
-                    if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
-                        $error = true;
-                    }
-                    else{
-                        // Bind inputs to query parameters
-                        mysqli_stmt_bind_param($stmt_movie, "i", $journal_id);
-                        // Execute sql statement
-                        if(!mysqli_stmt_execute($stmt_movie)){
-                            $error = true;
-                            $errorText = mysqli_error($conn);
-                        }
-                        // Bind result variables
-                        mysqli_stmt_bind_result($stmt_movie, $movie_name, $movie_duration);
-                        // Movie Results fetched below...
-                        if(mysqli_stmt_store_result($stmt_movie)){
-                            // Check if DB returned any result
-                            if(mysqli_stmt_num_rows($stmt_movie) > 0){
-                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="bg-movie"><th>Film</th><th>Süre</th></tr>';
-                                // Fetch values
-                                while (mysqli_stmt_fetch($stmt_movie)) {
-                                    echo '<tr><td>'.$movie_name.'</td><td>'.$movie_duration.' Saat</td></tr>';
+                                // Get daily movie data from DB
+                                $sql_movie = "SELECT name, duration
+                                            FROM daily_movie
+                                            INNER JOIN movie ON daily_movie.movie_id=movie.id 
+                                            WHERE gunluk_id=? ORDER BY daily_movie.id ASC";
+                                $stmt_movie = mysqli_stmt_init($conn);
+                                if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
+                                    $error = true;
                                 }
-                                echo '</table>';
-                            }
-                        }
-                        else{
-                            echo'<!--Error-->
-                                <div class="error" id="dbError">
-                                    <p>Filmler için veritabanı \'store\' hatası.
-                                        <button type="button"
-                                            class="fa fa-times-circle btn text-danger" 
-                                            aria-hidden="true" 
-                                            onclick="$(\'#dbError\').hide()">
-                                        </button>
-                                    </p> 
-                                </div>';
-                        }
-                    }
-
-                    // Get daily book data from DB
-                    $sql_book = "SELECT name, duration
-                                FROM daily_book
-                                INNER JOIN book ON daily_book.book_id=book.id 
-                                WHERE gunluk_id=? ORDER BY daily_book.id ASC";
-                    $stmt_book = mysqli_stmt_init($conn);
-                    if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
-                        $error = true;
-                    }
-                    else{
-                        // Bind inputs to query parameters
-                        mysqli_stmt_bind_param($stmt_book, "i", $journal_id);
-                        // Execute sql statement
-                        if(!mysqli_stmt_execute($stmt_book)){
-                            $error = true;
-                            $errorText = mysqli_error($conn);
-                        }
-                        // Bind result variables
-                        mysqli_stmt_bind_result($stmt_book, $book_name, $book_duration);
-                        // Book Results fetched below...
-                        if(mysqli_stmt_store_result($stmt_book)){
-                            // Check if DB returned any result
-                            if(mysqli_stmt_num_rows($stmt_book) > 0){
-                                echo '<table class="table table-bordered table-hover table-sm table-striped">';
-                                echo '<tr class="bg-book"><th>Kitap</th><th>Süre</th></tr>';
-                                // Fetch values
-                                while (mysqli_stmt_fetch($stmt_book)) {
-                                    echo '<tr><td>'.$book_name.'</td><td>'.$book_duration.' Saat</td></tr>';
+                                else{
+                                    // Bind inputs to query parameters
+                                    mysqli_stmt_bind_param($stmt_movie, "i", $journal_id);
+                                    // Execute sql statement
+                                    if(!mysqli_stmt_execute($stmt_movie)){
+                                        $error = true;
+                                        $errorText = mysqli_error($conn);
+                                    }
+                                    // Bind result variables
+                                    mysqli_stmt_bind_result($stmt_movie, $movie_name, $movie_duration);
+                                    // Movie Results fetched below...
+                                    if(mysqli_stmt_store_result($stmt_movie)){
+                                        // Check if DB returned any result
+                                        if(mysqli_stmt_num_rows($stmt_movie) > 0){
+                                            echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                            echo '<tr class="bg-movie"><th>Film</th><th>Süre</th></tr>';
+                                            // Fetch values
+                                            while (mysqli_stmt_fetch($stmt_movie)) {
+                                                echo '<tr><td>'.$movie_name.'</td><td>'.$movie_duration.' Saat</td></tr>';
+                                            }
+                                            echo '</table>';
+                                        }
+                                    }
+                                    else{
+                                        echo'<!--Error-->
+                                            <div class="error" id="dbError">
+                                                <p>Filmler için veritabanı \'store\' hatası.
+                                                    <button type="button"
+                                                        class="fa fa-times-circle btn text-danger" 
+                                                        aria-hidden="true" 
+                                                        onclick="$(\'#dbError\').hide()">
+                                                    </button>
+                                                </p> 
+                                            </div>';
+                                    }
                                 }
-                                echo '</table>';
-                            }
-                        }
-                        else{
-                            echo'<!--Error-->
-                                <div class="error" id="dbError">
-                                    <p>Kitaplar için veritabanı \'store\' hatası.
-                                        <button type="button"
-                                            class="fa fa-times-circle btn text-danger" 
-                                            aria-hidden="true" 
-                                            onclick="$(\'#dbError\').hide()">
-                                        </button>
-                                    </p> 
-                                </div>';
-                        }
-                    }
 
+                                // Get daily book data from DB
+                                $sql_book = "SELECT name, duration
+                                            FROM daily_book
+                                            INNER JOIN book ON daily_book.book_id=book.id 
+                                            WHERE gunluk_id=? ORDER BY daily_book.id ASC";
+                                $stmt_book = mysqli_stmt_init($conn);
+                                if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
+                                    $error = true;
+                                }
+                                else{
+                                    // Bind inputs to query parameters
+                                    mysqli_stmt_bind_param($stmt_book, "i", $journal_id);
+                                    // Execute sql statement
+                                    if(!mysqli_stmt_execute($stmt_book)){
+                                        $error = true;
+                                        $errorText = mysqli_error($conn);
+                                    }
+                                    // Bind result variables
+                                    mysqli_stmt_bind_result($stmt_book, $book_name, $book_duration);
+                                    // Book Results fetched below...
+                                    if(mysqli_stmt_store_result($stmt_book)){
+                                        // Check if DB returned any result
+                                        if(mysqli_stmt_num_rows($stmt_book) > 0){
+                                            echo '<table class="table table-bordered table-hover table-sm table-striped">';
+                                            echo '<tr class="bg-book"><th>Kitap</th><th>Süre</th></tr>';
+                                            // Fetch values
+                                            while (mysqli_stmt_fetch($stmt_book)) {
+                                                echo '<tr><td>'.$book_name.'</td><td>'.$book_duration.' Saat</td></tr>';
+                                            }
+                                            echo '</table>';
+                                        }
+                                    }
+                                    else{
+                                        echo'<!--Error-->
+                                            <div class="error" id="dbError">
+                                                <p>Kitaplar için veritabanı \'store\' hatası.
+                                                    <button type="button"
+                                                        class="fa fa-times-circle btn text-danger" 
+                                                        aria-hidden="true" 
+                                                        onclick="$(\'#dbError\').hide()">
+                                                    </button>
+                                                </p> 
+                                            </div>';
+                                    }
+                                }
+                            echo '
+                            </div>
+                        </div>';
                 }
             }
             else{

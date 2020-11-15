@@ -74,6 +74,10 @@ function switchDarkTheme(isUserChangeTheme) {
   $(".modal-content").toggleClass("dark-main");
   /* Swicht modal theme*/
   $(".table").toggleClass("table-dark");
+  /* Swicht card theme*/
+  $(".card").toggleClass("dark-card");
+  $(".card-header").toggleClass("dark-card-header");
+  $(".card-footer").toggleClass("dark-card-footer");
 
   if (isUserChangeTheme) {
     // Change isDarkTheme in cookie.

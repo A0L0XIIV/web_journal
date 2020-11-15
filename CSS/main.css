@@ -1,7 +1,7 @@
 /* --- Define color variables --- */
-:root { 
+:root {
   --primary-color: #ff7b00;
-  --secondary-color: #715; 
+  --secondary-color: #715;
   --primary-text: #222;
   --write: #0050ff;
   --edit: #20cdee;
@@ -79,7 +79,7 @@ body {
 
 /*Header background image and sizes*/
 header {
-  background: var(--primary-color); 
+  background: var(--primary-color);
   margin: 0;
 }
 
@@ -229,15 +229,15 @@ select:hover {
 
 /*Site name links to index color change*/
 #websiteName:hover {
-  color: var(--primary-color); 
+  color: var(--primary-color);
   text-shadow: 0 0 3px #000;
 }
 
-#websiteName:hover img{
+#websiteName:hover img {
   border-radius: 1em;
   box-shadow: 0 0 3px #000;
   opacity: 0.5;
-} 
+}
 
 /* --- Name  --- */
 
@@ -269,7 +269,7 @@ button:hover a {
 /* Navigation bar button */
 .nav-btn {
   border: none;
-  background-color: rgba(123, 0, 255, 0.1);/* Slightly show buttons */
+  background-color: rgba(123, 0, 255, 0.1); /* Slightly show buttons */
   height: 5vh !important;
   color: var(--primary-text);
   font-weight: bolder;
@@ -289,7 +289,6 @@ button:hover a {
 }
 /* --- Buttons  --- */
 
-
 /* --- Error and success styles  --- */
 .error,
 .success {
@@ -304,26 +303,34 @@ button:hover a {
   background-color: var(--primary-color);
   box-shadow: 0 0 10px 2px var(--logout);
   border-radius: 0.5em;
-  text-shadow: -1px 1px 0 var(--logout),
-               1px 1px 0 var(--logout),
-               1px -1px 0 var(--logout),
-               -1px -1px 0 var(--logout);
+  text-shadow: -1px 1px 0 var(--logout), 1px 1px 0 var(--logout),
+    1px -1px 0 var(--logout), -1px -1px 0 var(--logout);
 }
 
 .success {
   font-size: 0.8em;
   box-shadow: 0 0 10px 2px var(--login);
-  text-shadow: -1px 1px 0 var(--login),
-               1px 1px 0 var(--login),
-               1px -1px 0 var(--login),
-               -1px -1px 0 var(--login);
+  text-shadow: -1px 1px 0 var(--login), 1px 1px 0 var(--login),
+    1px -1px 0 var(--login), -1px -1px 0 var(--login);
 }
 
 .orange-text {
-  color: var(--primary-color); 
+  color: var(--primary-color);
   font-weight: bold;
 }
 /* --- Error and success styles  --- */
+
+/* --- Text selection color  --- */
+::-moz-selection {
+  color: #fff !important;
+  background: var(--primary-color) !important;
+}
+
+::selection {
+  color: #fff !important;
+  background: var(--primary-color) !important;
+}
+/* --- Text selection color  --- */
 
 /* --- Dark Theme  --- */
 /*Dark Theme Body*/
@@ -335,6 +342,21 @@ button:hover a {
 .dark-main {
   background: #222;
   color: #fff;
+}
+
+/*Dark Card*/
+.dark-card {
+  background: #222 !important;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+.dark-card-header {
+  border-bottom: 1px solid #333;
+}
+
+.dark-card-footer {
+  border-top: 1px solid #333;
 }
 
 /*Dark Theme Inputs*/
@@ -359,6 +381,20 @@ button:hover a {
   .modal-content {
     background: #222 !important;
     color: #fff;
+  }
+
+  .card {
+    background: #222 !important;
+    color: #fff;
+    border: 1px solid #555;
+  }
+
+  .card-header {
+    border-bottom: 1px solid #333;
+  }
+
+  .card-footer {
+    border-top: 1px solid #333;
   }
 
   .table {
