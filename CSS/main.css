@@ -332,6 +332,31 @@ button:hover a {
 }
 /* --- Text selection color  --- */
 
+/* --- Loading...  --- */
+#loader-icon {
+  border: 10px solid var(--primary-color);
+  border-top: 10px solid var(--secondary-color);
+  border-bottom: 10px solid var(--secondary-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: none;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* --- Loading...  --- */
+
 /* --- Dark Theme  --- */
 /*Dark Theme Body*/
 .dark-body {
