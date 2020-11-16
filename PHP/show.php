@@ -1,3 +1,390 @@
+<?php
+    // AJAX dynamically load content
+    if($_SERVER["REQUEST_METHOD"] === "GET"
+        && isset($_GET["page"])){
+        
+        // Session start for getting name from the session
+        session_start();
+        // Check if the session variable name is empty or not and redirect
+        if (!isset($_SESSION['name'])) {
+            $addEntertainmentErrorText = "You cannot access this page!";
+            http_response_code(401);
+            exit($addEntertainmentErrorText); 
+        }
+
+        // Variables
+        $perPage = 10;
+        $page = 1;
+        $start = ($page-1)*$perPage;
+        $AJAXoutput = "";
+        $date = "";
+
+        /* Get page number from request */
+        if(!empty($_GET["page"])) {
+            $page = test_input($_GET["page"]);
+        }
+        else{
+            $AJAXoutput = "<div class=\"error\">Yüklerken sayfa sayısı hatası.</div>";
+            exit($AJAXoutput);
+        }
+        /* Get date from request */
+        if(!empty($_GET["date"])){
+            $date = test_input($_GET["date"]);
+        }
+        else{
+            $AJAXoutput = "<div class=\"error\">Yüklerken tarih hatası.</div>";
+            exit($AJAXoutput);
+        }
+
+        // Get name from session
+        $name = $_SESSION['name'];
+        // Check if name is empty or not and redirect
+        if($name == "" || $name == NULL || $_SERVER["REQUEST_METHOD"] !== "GET")      
+            echo("<script>location.href = './index.php';</script>"); 
+    
+        // Database connection
+        require "./mysqli_connect.php";
+
+        // Start variable for SQL limit
+        $start = ($page-1)*$perPage;
+        if($start < 0) 
+            $start = 0;
+
+        // SQL operations for AJAX call
+        $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
+                FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC LIMIT ?, ?";
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)){
+            $AJAXoutput = "<div class=\"error\">Yüklerken günlük hazırlama hatası.</div>";
+            exit($AJAXoutput);
+        }
+        else{
+            // Preparing the park name for LIKE query 
+            $param = '%'.$date.'%';
+            // Bind inputs to query parameters
+            mysqli_stmt_bind_param($stmt, "ssii", $name, $param, $start, $perPage);
+            // Execute sql statement
+            if(!mysqli_stmt_execute($stmt)){
+                $AJAXoutput = "<div class=\"error\">Yüklerken günlük yürütme hatası.</div>";
+                exit($AJAXoutput);
+            }
+            // Bind result variables
+            mysqli_stmt_bind_result($stmt, $journal_id, $work_happiness, $daily_happiness, $total_happiness, $content, $journal_date);
+            mysqli_stmt_store_result($stmt);
+            // Journal Results fetched below...
+            while (mysqli_stmt_fetch($stmt)) {
+                $AJAXoutput .=
+                '<div class="card" style="margin-top:15px;">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-2 px-0">
+                                <button type="button" class="add-btn bg-edit p-0">
+                                    <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
+                                </button>
+                            </div>
+                            <div class="col-xs-6 col-sm-3 px-0">
+                                <p class="orange-text">Tarih:</p>
+                                <p>'.$journal_date.'</p>
+                            </div>
+                            <div class="col-xs-4 col-sm-2 px-0">
+                                <p class="orange-text">İş/Okul:</p>';
+                                switch($work_happiness){
+                                    case 10:
+                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        break;
+                                    case 8:
+                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        break;
+                                    case 4:
+                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        break;
+                                    case 2:
+                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        break;
+                                    case 1:
+                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                    default:
+                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        break;
+                                }
+                            $AJAXoutput .=
+                            '</div>
+                            <div class="col-xs-4 col-sm-3 px-0">
+                                <p class="orange-text">İş/Okul dışı:</p>';
+                                switch($daily_happiness){
+                                    case 10:
+                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        break;
+                                    case 8:
+                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        break;
+                                    case 4:
+                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        break;
+                                    case 2:
+                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        break;
+                                    case 1:
+                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                    default:
+                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        break;
+                                }
+                            $AJAXoutput .=
+                            '</div>
+                            <div class="col-xs-4 col-sm-2 px-0">
+                                <p class="orange-text">Genel:</p>';
+                                switch($total_happiness){
+                                    case 10:
+                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        break;
+                                    case 9:
+                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        break;
+                                    case 8:
+                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        break;
+                                    case 7:
+                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        break;
+                                    case 6:
+                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        break;
+                                    case 5:
+                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        break;
+                                    case 4:
+                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        break;
+                                    case 3:
+                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        break;
+                                    case 2:
+                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        break;
+                                    case 1:
+                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        break;
+                                    case 0:
+                                    default:
+                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        break;
+                                }
+                            $AJAXoutput .=
+                            '</div>
+                        </div>
+                    </div>
+                    <div class="card-body"> 
+                        <div class="text-center">
+                            <p class="mb-0">'.(!empty($content) ? $content : "").'</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">';
+
+                    //mysqli_stmt_free_result ($stmt);
+
+                        // Get daily game data from DB
+                        $sql_game = "SELECT name, duration
+                                    FROM daily_game
+                                    INNER JOIN game ON daily_game.game_id=game.id 
+                                    WHERE gunluk_id=? ORDER BY daily_game.id ASC";
+                        $stmt_game = mysqli_stmt_init($conn);
+                        if(!mysqli_stmt_prepare($stmt_game, $sql_game)){
+                            $AJAXoutput .= "<div class=\"error\">Yüklerken oyun hazırlama hatası.".mysqli_error($conn)."</div>";
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt_game, "i", $journal_id);
+                            // Execute sql statement
+                            if(!mysqli_stmt_execute($stmt_game)){
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken oyun yürütme hatası.</div>";
+                            }
+                            // Bind result variables
+                            mysqli_stmt_bind_result($stmt_game, $game_name, $game_duration);
+                            // Game Results fetched below...
+                            if(mysqli_stmt_store_result($stmt_game)){
+                                // Check if DB returned any result
+                                if(mysqli_stmt_num_rows($stmt_game) > 0){
+                                    $AJAXoutput .= '<table class="table table-bordered table-hover table-sm table-striped">';
+                                    $AJAXoutput .= '<tr class="bg-game"><th>Oyun</th><th>Süre</th></tr>';
+                                    // Fetch values
+                                    while (mysqli_stmt_fetch($stmt_game)) {
+                                        $AJAXoutput .= '<tr><td>'.$game_name.'</td><td>'.$game_duration.' Saat</td></tr>';
+                                    }
+                                    $AJAXoutput .= '</table>';
+                                }
+                            }
+                            else{
+                                $AJAXoutput .= '<div class=\"error\">Yüklerken oyun saklama hatası.</div>';
+                            }
+                        }
+
+                        // Get daily series data from DB
+                        $sql_series = "SELECT name, begin_season, begin_episode, end_season, end_episode
+                                    FROM daily_series
+                                    INNER JOIN series ON daily_series.series_id=series.id 
+                                    WHERE gunluk_id=? ORDER BY daily_series.id ASC";
+                        $stmt_series = mysqli_stmt_init($conn);
+                        if(!mysqli_stmt_prepare($stmt_series, $sql_series)){
+                            $AJAXoutput .= "<div class=\"error\">Yüklerken dizi hazırlama hatası.</div>";
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt_series, "i", $journal_id);
+                            // Execute sql statement
+                            if(!mysqli_stmt_execute($stmt_series)){
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken dizi yürütme hatası.</div>";
+                            }
+                            // Bind result variables
+                            mysqli_stmt_bind_result($stmt_series, $series_name, $series_begin_season, $series_begin_episode, $series_end_season, $series_end_episode);
+                            // Series Results fetched below...
+                            if(mysqli_stmt_store_result($stmt_series)){
+                                // Check if DB returned any result
+                                if(mysqli_stmt_num_rows($stmt_series) > 0){
+                                    $AJAXoutput .= '<table class="table table-bordered table-hover table-sm table-striped">';
+                                    $AJAXoutput .= '<tr class="bg-series">
+                                            <th>Dizi</th>
+                                            <th>İlk sezon</th>
+                                            <th>İlk bölüm</th>
+                                            <th>Son sezon</th>
+                                            <th>Son bölüm</th></tr>';
+                                    // Fetch values
+                                    while (mysqli_stmt_fetch($stmt_series)) {
+                                        $AJAXoutput .= '<tr><td>'.$series_name.'</td>
+                                                <td>'.$series_begin_season.'</td>
+                                                <td>'.$series_begin_episode.'</td>
+                                                <td>'.$series_end_season.'</td>
+                                                <td>'.$series_end_episode.'</td></tr>';
+                                    }
+                                    $AJAXoutput .= '</table>';
+                                }
+                            }
+                            else{
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken dizi saklama hatası.</div>";
+                            }
+                        }
+
+                        // Get daily movie data from DB
+                        $sql_movie = "SELECT name, duration
+                                    FROM daily_movie
+                                    INNER JOIN movie ON daily_movie.movie_id=movie.id 
+                                    WHERE gunluk_id=? ORDER BY daily_movie.id ASC";
+                        $stmt_movie = mysqli_stmt_init($conn);
+                        if(!mysqli_stmt_prepare($stmt_movie, $sql_movie)){
+                            $AJAXoutput .= "<div class=\"error\">Yüklerken film hazırlama hatası.</div>";
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt_movie, "i", $journal_id);
+                            // Execute sql statement
+                            if(!mysqli_stmt_execute($stmt_movie)){
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken film yürütme hatası.</div>";
+                            }
+                            // Bind result variables
+                            mysqli_stmt_bind_result($stmt_movie, $movie_name, $movie_duration);
+                            // Movie Results fetched below...
+                            if(mysqli_stmt_store_result($stmt_movie)){
+                                // Check if DB returned any result
+                                if(mysqli_stmt_num_rows($stmt_movie) > 0){
+                                    $AJAXoutput .= '<table class="table table-bordered table-hover table-sm table-striped">';
+                                    $AJAXoutput .= '<tr class="bg-movie"><th>Film</th><th>Süre</th></tr>';
+                                    // Fetch values
+                                    while (mysqli_stmt_fetch($stmt_movie)) {
+                                        $AJAXoutput .= '<tr><td>'.$movie_name.'</td><td>'.$movie_duration.' Saat</td></tr>';
+                                    }
+                                    $AJAXoutput .= '</table>';
+                                }
+                            }
+                            else{
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken film saklama hatası.</div>";
+                            }
+                        }
+
+                        // Get daily book data from DB
+                        $sql_book = "SELECT name, duration
+                                    FROM daily_book
+                                    INNER JOIN book ON daily_book.book_id=book.id 
+                                    WHERE gunluk_id=? ORDER BY daily_book.id ASC";
+                        $stmt_book = mysqli_stmt_init($conn);
+                        if(!mysqli_stmt_prepare($stmt_book, $sql_book)){
+                            $AJAXoutput .= "<div class=\"error\">Yüklerken kitap hazırlama hatası.</div>";
+                        }
+                        else{
+                            // Bind inputs to query parameters
+                            mysqli_stmt_bind_param($stmt_book, "i", $journal_id);
+                            // Execute sql statement
+                            if(!mysqli_stmt_execute($stmt_book)){
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken kitap yürütme hatası.</div>";
+                            }
+                            // Bind result variables
+                            mysqli_stmt_bind_result($stmt_book, $book_name, $book_duration);
+                            // Book Results fetched below...
+                            if(mysqli_stmt_store_result($stmt_book)){
+                                // Check if DB returned any result
+                                if(mysqli_stmt_num_rows($stmt_book) > 0){
+                                    $AJAXoutput .= '<table class="table table-bordered table-hover table-sm table-striped">';
+                                    $AJAXoutput .= '<tr class="bg-book"><th>Kitap</th><th>Süre</th></tr>';
+                                    // Fetch values
+                                    while (mysqli_stmt_fetch($stmt_book)) {
+                                        $AJAXoutput .= '<tr><td>'.$book_name.'</td><td>'.$book_duration.' Saat</td></tr>';
+                                    }
+                                    $AJAXoutput .= '</table>';
+                                }
+                            }
+                            else{
+                                $AJAXoutput .= "<div class=\"error\">Yüklerken kitap saklama hatası.</div>";
+                            }
+                        }
+                        $AJAXoutput .= '
+                    </div>
+                </div>';
+            }
+
+            // Check if AJAXoutput is empty or not
+            if($AJAXoutput == ""){
+                $AJAXoutput = "Finished";
+            }
+        }
+
+        // Return output to AJAX client-side
+        exit($AJAXoutput);
+    }
+?>
+
 <?php 
     require "header.php";
     // Check if the session variable name is empty or not and redirect
@@ -60,7 +447,7 @@
 
             // Check DB for picked date
             $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
-                    FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC";
+                    FROM gunluk WHERE name=? AND date LIKE ? ORDER BY date DESC LIMIT 10";
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)){
                 $error = true;
@@ -583,8 +970,7 @@
 
     // Section 0 of 6, submit forms
     if($showSection === 0){ 
-        echo '<div>
-
+        echo '<div id="section0" class="section">
                 <!-- Get journal by date  -->
                 <form
                     name="date-form"
@@ -806,13 +1192,14 @@
 
     // Section 1 of 6, show journal data
     else if($showSection === 1){ 
-        echo '<div>
-                <h1>';
-                if(isset($_SESSION['name'])){
-                    echo $_SESSION['name'].', ';
-                }
-                echo $date.' tarihili günlüklerin';
-            echo'</h1>';
+        echo '<div id="section1" class="section">
+            <h1>';
+            if(isset($_SESSION['name'])){
+                echo $_SESSION['name'].', ';
+            }
+            echo '<span id="date">'.$date.'</span> tarihili günlüklerin';
+        echo'</h1>
+            <div id="journals">';
 
         if(mysqli_stmt_store_result($stmt)){
             // Check if DB returned any result
@@ -1172,12 +1559,14 @@
                     </p> 
                 </div>';
         }
-        echo '</div>';
+        echo '</div>
+            <div id="loader-icon"></div>
+        </div>';
     }
 
     // Section 2 of 6, show game data
     else if($showSection === 2){
-        echo '<div id="section2">
+        echo '<div id="section2" class="section">
                 <h2>'.$game_name.'</h2>
                 <hr>
                 <button type="button" class="bg-graph p-0">
@@ -1221,7 +1610,7 @@
 
     // Section 3 of 6, show series data
     else if($showSection === 3){
-        echo '<div id="section3">
+        echo '<div id="section3" class="section">
                 <h2>'.$series_name.'</h2>
                 <hr>
                 <button type="button" class="bg-graph p-0">
@@ -1269,7 +1658,7 @@
 
     // Section 4 of 6, show movie data
     else if($showSection === 4){
-        echo '<div id="section4">
+        echo '<div id="section4" class="section">
                 <h2>'.$movie_name.'</h2>
                 <br>
                 <table id="movie-info-table" class="table table-borderless col-12 col-sm-10 col-md-8 col-xl-6 mx-auto">
@@ -1297,7 +1686,7 @@
 
     // Section 5 of 6, show book data
     else if($showSection === 5){
-        echo '<div id="section5">
+        echo '<div id="section5" class="section">
                 <h2>'.$book_name.'</h2>
                 <hr>
                 <button type="button" class="bg-graph p-0">
