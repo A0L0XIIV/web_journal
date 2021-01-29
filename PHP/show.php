@@ -1603,15 +1603,6 @@
                             </div>
                         </div>';
                 }
-                // If page shows more than one journal, put AJAX call button and loading icon at the end
-                if(mysqli_stmt_num_rows($stmt) > 1){
-                    echo '
-                        <button type="button" id="load-more-btn" class="add-btn bg-show" onclick="getContentCall()">
-                            Daha fazla yükle
-                        </button>
-                        <div id="loader-icon"></div>';
-
-                }
             }
             else{
                 exit("<script>location.href = './show.php?error=not-found';</script>");
@@ -1629,8 +1620,18 @@
                     </p> 
                 </div>';
         }
-        echo '</div>
-        </div>';
+        // End of journals div
+        echo '</div>';
+        // If page shows more than one journal, put AJAX call button and loading icon at the end of the journals div
+        if(mysqli_stmt_num_rows($stmt) > 1){
+            echo '
+                <button type="button" id="load-more-btn" class="add-btn bg-show" onclick="getContentCall()">
+                    Daha fazla yükle
+                </button>
+                <div id="loader-icon"></div>';
+        }
+        // End of section1 div
+        echo '</div>';
     }
 
     // Section 2 of 6, show game data
