@@ -73,13 +73,21 @@
             mysqli_stmt_store_result($stmt);
             // Journal Results fetched below...
             while (mysqli_stmt_fetch($stmt)) {
+                // journal_date containes time as well, split that part
+                $just_journal_date = explode(' ', $journal_date)[0];
                 $AJAXoutput .=
-                '<div class="card" style="margin-top:15px;">
+                '<div class="card"  id="'.$just_journal_date.'" style="margin-top:15px;">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-xs-6 col-sm-2 px-0">
+                                <button type="button" class="add-btn bg-password p-0" onclick="goToPreviousDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                                    Önceki
+                                </button>
                                 <button type="button" class="add-btn bg-edit p-0">
-                                    <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
+                                    <a href="edit.php?edit-date='.$just_journal_date.'" class="btn">Güncelle</a>
+                                </button>
+                                <button type="button" class="add-btn bg-password p-0" onclick="goToNextDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                                    Sonraki
                                 </button>
                             </div>
                             <div class="col-xs-6 col-sm-3 px-0">
