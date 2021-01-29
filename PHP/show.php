@@ -473,6 +473,59 @@
         }
     }
 
+    // Next and Previos button handler
+    else if (isset($_GET["next"])) {
+        // Date parameter
+        if(!empty($_GET["date"])) {
+            $date = test_input($_GET["date"]);
+        }
+        else {
+            $error = true;
+            $errorText = "Gün bulunamadı!";
+        }
+        // IsNext parameter --> Next or Previos day requested
+        $isNextDay = false;
+        if(!empty($_GET["next"]) &&
+            test_input($_GET["next"]) == "1") {
+            $isNextDay = true;
+        }
+
+        if(!empty($date)){
+            // Show section update
+            $showSection = 1;
+
+            // Create SQL query for next or previos day
+            if($isNextDay){
+                $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
+                        FROM gunluk WHERE name=? AND date > ? ORDER BY date ASC LIMIT 1";
+            }
+            else {
+                $sql = "SELECT id, work_happiness, daily_happiness, total_happiness, content, date
+                        FROM gunluk WHERE name=? AND date < ? ORDER BY date DESC LIMIT 1";
+            }
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)){
+                $error = true;
+            }
+            else{
+                // Bind inputs to query parameters
+                mysqli_stmt_bind_param($stmt, "ss", $name, $date);
+                // Execute sql statement
+                if(!mysqli_stmt_execute($stmt)){
+                    $error = true;
+                    $errorText = mysqli_error($conn);
+                }
+                // Bind result variables
+                mysqli_stmt_bind_result($stmt, $journal_id, $work_happiness, $daily_happiness, $total_happiness, $content, $journal_date);
+                // Journal Results fetched below...
+            }
+        }
+        else{
+            $error = true;
+            $errorText = "Önceki ya da sonraki gün bulunamadı.";
+        }
+    }
+
     // Game name form handler for showing game data
     else if(isset($_GET["game"])){
         // Get game id from request
@@ -1206,12 +1259,20 @@
             if(mysqli_stmt_num_rows($stmt) > 0){
                 // Fetch values
                 while (mysqli_stmt_fetch($stmt)) {
-                    echo '<div class="card" style="margin-top:15px;">
+                    // journal_date containes time as well, split that part
+                    $just_journal_date = explode(' ', $journal_date)[0];
+                    echo '<div class="card" id="'.$just_journal_date.'" style="margin-top:15px;">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-2 px-0">
+                                        <button type="button" class="add-btn bg-password p-0" onclick="goToPreviousDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                                            Önceki
+                                        </button>
                                         <button type="button" class="add-btn bg-edit p-0">
-                                            <a href="edit.php?edit-date='.explode(" ",$journal_date)[0].'" class="btn">Güncelle</a>
+                                            <a href="edit.php?edit-date='.$just_journal_date.'" class="btn">Güncelle</a>
+                                        </button>
+                                        <button type="button" class="add-btn bg-password p-0" onclick="goToNextDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                                            Sonraki
                                         </button>
                                     </div>
                                     <div class="col-xs-6 col-sm-3 px-0">
@@ -1542,6 +1603,15 @@
                             </div>
                         </div>';
                 }
+                // If page shows more than one journal, put AJAX call button and loading icon at the end
+                if(mysqli_stmt_num_rows($stmt) > 1){
+                    echo '
+                        <button type="button" id="load-more-btn" class="add-btn bg-show" onclick="getContentCall()">
+                            Daha fazla yükle
+                        </button>
+                        <div id="loader-icon"></div>';
+
+                }
             }
             else{
                 exit("<script>location.href = './show.php?error=not-found';</script>");
@@ -1560,7 +1630,6 @@
                 </div>';
         }
         echo '</div>
-            <div id="loader-icon"></div>
         </div>';
     }
 

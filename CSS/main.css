@@ -371,7 +371,7 @@ button:hover a {
 
 /*Dark Card*/
 .dark-card {
-  background: #222 !important;
+  background: #222;
   color: #fff;
   border: 1px solid #555;
 }
@@ -409,7 +409,7 @@ button:hover a {
   }
 
   .card {
-    background: #222 !important;
+    background: #222;
     color: #fff;
     border: 1px solid #555;
   }
