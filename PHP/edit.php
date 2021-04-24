@@ -25,6 +25,7 @@
     $success = false;
     $isDatePicked = false;
     $errorText = "";
+    $successVerb = "güncellendi";
 
     // Get name from session
     $name = $_SESSION['name'];
@@ -266,30 +267,14 @@
     <?php
     // Success
     if($success) {
-        echo '<!--Success-->
-            <div id="main-success" class="success">
-                <p>Günlük başarılı bir şekilde güncellendi.
-                    <button type="button"
-                        class="fa fa-times-circle btn text-danger" 
-                        aria-hidden="true" 
-                        onclick="$(\'#main-success\').hide()">
-                    </button>
-                </p> 
-            </div>';
+        // Print success message
+        require "./msg/success.php";
     }
 
     // Error
     if($error) {
-        echo '<!--Error-->
-                <div class="error" id="main-error">
-                    <p>Hata meydana geldi. '.$errorText.'
-                        <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
-                            aria-hidden="true" 
-                            onclick="$(\'#main-error\').hide()">
-                        </button>
-                    </p> 
-                </div>';
+        // Print error message
+        require "./msg/error.php";
     }
 
     // First (section) form: Date selection
@@ -1039,7 +1024,7 @@
                                 onclick="$(\'#get-series-names-error\').hide()">
                             </button>
                         </p> 
-                </div>
+                    </div>
                 </div>
 
                 <!--Daily Entertainment: Watching movies-->

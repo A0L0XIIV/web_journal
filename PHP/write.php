@@ -20,6 +20,7 @@
     $error = false;
     $success = false;
     $errorText = "";
+    $successVerb = "eklendi";
     $id = -1;
 
     // Check request method for post
@@ -240,30 +241,14 @@
     <?php
     // Success
     if($success) {
-        echo '<!--Success-->
-            <div id="main-success" class="success">
-                <p>Günlük başarılı bir şekilde eklendi.
-                    <button type="button"
-                        class="fa fa-times-circle btn text-danger" 
-                        aria-hidden="true" 
-                        onclick="$(\'#main-success\').hide()">
-                    </button>
-                </p> 
-            </div>';
+        // Print success message
+        require "./msg/success.php";
     }
 
     // Error
     if($error) {
-        echo '<!--Error-->
-                <div class="error" id="main-error">
-                    <p>Hata meydana geldi. '.$errorText.'
-                        <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
-                            aria-hidden="true" 
-                            onclick="$(\'#main-error\').hide()">
-                        </button>
-                    </p> 
-                </div>';
+        // Print error message
+        require "./msg/error.php";
     }
     ?>
 
@@ -285,15 +270,15 @@
 
         <?php 
             // Journal happiness and text inputs
-            require "inputs/journal-inputs.php";
+            require "./inputs/journal-inputs.php";
             // Daily Entertainment Inputs: Playing Games
-            require "inputs/ent-game-inputs.php";
+            require "./inputs/ent-game-inputs.php";
             // Daily Entertainment Inputs: Watching Series
-            require "inputs/ent-series-inputs.php";
+            require "./inputs/ent-series-inputs.php";
             // Daily Entertainment Inputs: Watching movies
-            require "inputs/ent-movie-inputs.php";
+            require "./inputs/ent-movie-inputs.php";
             // Daily Entertainment Inputs: Reading Books
-            require "inputs/ent-book-inputs.php";
+            require "./inputs/ent-book-inputs.php";
         ?>
 
         <hr>
