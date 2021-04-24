@@ -1798,15 +1798,10 @@
             </div>';
     }
 
-    // Error V2
+    // Date Error
     else{
-        echo '<div id="dateError" class="error">
-            <p>Hata meydana geldi.</p>
-            <p>Burada olmaman gerek!.</p>
-            <br/>
-            <p>There is an error about something.</p>
-            <p>You were not suppose to be here!</p>
-        </div>';
+        // Print error message
+        require "./msg/date-error.php";
     }
     ?>
 
