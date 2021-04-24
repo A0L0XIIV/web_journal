@@ -62,27 +62,46 @@ function addToTheList(type) {
   var duration;
   var seriesError = false;
   if (type === "series") {
-    // Get begin and end episode number
+    // Get begin, end episode and total watched episode numbers
     var beginSeason = Number($("#series-season-begin").val());
     var beginEpisode = Number($("#series-episode-begin").val());
     var endSeason = Number($("#series-season-end").val());
     var endEpisode = Number($("#series-episode-end").val());
+    var numOfEpisodes = Number($("#series-watched-number").val());
+    // Series episode input used
+    var isWatchedNumberVisible = $("#series-episode-number").is(":visible");
     // Check season and episode errors
     if (
-      beginSeason == null ||
-      beginSeason == 0 ||
-      beginEpisode == null ||
-      beginEpisode == 0 ||
-      endSeason == null ||
-      endSeason == 0 ||
-      endEpisode == null ||
-      endEpisode == 0 ||
-      beginSeason > endSeason ||
-      (beginSeason == endSeason &&
-      beginEpisode > endEpisode)
+      beginSeason == null
+      || beginSeason <= 0
+      || beginEpisode == null
+      || beginEpisode <= 0
+      || (
+        (isWatchedNumberVisible
+          && (numOfEpisodes == null
+          || numOfEpisodes <= 0)
+        )
+        || 
+        (!isWatchedNumberVisible
+          && (endSeason == null
+          || endSeason <= 0
+          || endEpisode == null
+          || endEpisode <= 0 
+          || beginSeason > endSeason
+          || (beginSeason == endSeason
+          && beginEpisode > endEpisode))
+        )
+      )
     ) {
       seriesError = true;
     } else {
+      // Calculate the last season and episode based on watched episode numbers: User used #watchedEpisodes input
+      if (isWatchedNumberVisible) {
+        // The same season, it did not change
+        endSeason = beginSeason;
+        // #episodes
+        endEpisode = beginEpisode + numOfEpisodes - 1;
+      }
       // Series have episodes
       duration =
         "S" +
@@ -462,4 +481,11 @@ function getLastWatchedSeriesEpisode(){
     // Always promise --> success or fail
     request.always(function () {});
   }
+}
+
+function openLastEpisodeSeasonInputs() {
+  // Hide series number of episode watched input area
+  $('#series-episode-number').hide();
+  // Show series watched last season and episode input area
+  $('#series-last-episode').show();
 }

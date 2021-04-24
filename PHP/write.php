@@ -496,7 +496,24 @@
                             maxlength="2"
                             style="width:45%;">
                     </div>
-                    <div class="col-xs-3 col-sm-6">
+                    <!-- Watched only one season, the first and the last episodes are in the same season -->
+                    <div class="col-xs-3 col-sm-6" id="series-episode-number">
+                        <p>Bölüm Sayısı:</p>
+                        <input 
+                            type="number" 
+                            name="series-watched-number" 
+                            placeholder="İzlenen bölüm sayısı"
+                            id="series-watched-number"
+                            min="0"
+                            max="50"
+                            step="1"
+                            minlength="0"
+                            maxlength="2"
+                            style="width:45%;">
+                        <button type="button" class="bg-series" style="width:45%" onclick="openLastEpisodeSeasonInputs()">Farklı sezon bölümleri</button>
+                    </div>
+                    <!-- Watched more than one season, the first and the last episodes are  not in the same season -->
+                    <div class="col-xs-3 col-sm-6" id="series-last-episode" style="display: none;">
                         <p>Bitiş:</p>
                         <input 
                             type="number" 
