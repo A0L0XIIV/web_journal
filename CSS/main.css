@@ -289,6 +289,45 @@ button:hover a {
 }
 /* --- Buttons  --- */
 
+/* --- Entertainment List Items  --- */
+.entertainment-list {
+  display: inline-block;
+}
+
+.entertainment-list-item {
+  width: fit-content;
+  float: left;
+  margin: 0.5rem 0.2rem !important;
+}
+
+.entertainment-card-image {
+  width: 10vw;
+  margin: auto;
+}
+
+.entertainment-card-body {
+  padding: 0;
+}
+
+.entertainment-card-title {
+  margin: 0;
+}
+
+.entertainment-card-text {
+  margin: 0;
+}
+
+.entertainment-card-remove-btn {
+  position: absolute;
+  top: 0;
+  right: 5%;
+  width: fit-content;
+  padding: 0;
+  font-size: 2rem;
+  color: #fff !important;
+}
+/* --- Entertainment List Items  --- */
+
 /* --- Error and success styles  --- */
 .error,
 .success {

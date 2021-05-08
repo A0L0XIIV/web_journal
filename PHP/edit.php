@@ -830,7 +830,7 @@
                             </div>
 
                             <!--Game list-->
-                            <ul id="game-list" class="mb-0 px-3"></ul>
+                            <ul id="game-list" class="mb-0 px-3 entertainment-list"></ul>
 
                             <input type="number" name="journal_id" value="'.$journal_id.'" hidden/>
                             <input type="text" name="date" value="'.$date.'" hidden/>
@@ -997,7 +997,7 @@
                             </div>
 
                             <!--Series list-->
-                            <ul id="series-list" class="mb-0 px-3"></ul>
+                            <ul id="series-list" class="mb-0 px-3 entertainment-list"></ul>
 
                             <input type="number" name="journal_id" value="'.$journal_id.'" hidden/>
                             <input type="text" name="date" value="'.$date.'" hidden/>
@@ -1103,7 +1103,7 @@
                             </div>
 
                             <!--Movie list-->
-                            <ul id="movie-list" class="mb-0 px-3"></ul>
+                            <ul id="movie-list" class="mb-0 px-3 entertainment-list"></ul>
 
                             <input type="number" name="journal_id" value="'.$journal_id.'" hidden/>
                             <input type="text" name="date" value="'.$date.'" hidden/>
@@ -1209,7 +1209,7 @@
                             </div>
 
                             <!--Book list-->
-                            <ul id="book-list" class="mb-0 px-3"></ul>
+                            <ul id="book-list" class="mb-0 px-3 entertainment-list"></ul>
 
                             <input type="number" name="journal_id" value="'.$journal_id.'" hidden/>
                             <input type="text" name="date" value="'.$date.'" hidden/>

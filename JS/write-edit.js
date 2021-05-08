@@ -143,28 +143,59 @@ function addToTheList(type) {
         .find("option:selected")
         .text();
 
-      // Create a new li element
+      // Get selected option's image URL data
+      var selectedItemImage = $("#" + type + "-select")
+        .find("option:selected")
+        .attr("img-src");
+
+      // If image source URL is empty use the default image
+      if(selectedItemImage === ""){
+        selectedItemImage = "./default_entertainment.png";
+      }
+
+      // Create a new li card element
       var li = $("<li></li>");
       var elementId = type + "-" + selectedItemValue;
       li.attr("id", elementId); // Set ID
-      li.text(selectedItemName + " | " + duration); // Set text
-      li.attr("style", "width: fit-content;"); // Set width
       // Set classes - Every type has different color
-      li.attr("class", type + "-element card bg-" + type + " mt-2 px-3 py-2 mx-auto");
+      li.attr("class", "card entertainment-list-item " + type + "-element bg-" + type + " mt-2 px-3 py-2 mx-auto");
+
+      // Create card image
+      var img = $("<img>");
+      img.attr("class", "card-img-top entertainment-card-image");
+      img.attr("src", selectedItemImage);
+      //img.attr("alt", selectedItemName);
+
+      // Create card body
+      var cardBody = $("<div></div>");
+      cardBody.attr("class", "card-body entertainment-card-body");
+
+      // Create card title
+      var cardTitle = $("<h3></h3>");
+      cardTitle.attr("class", "card-title entertainment-card-title");
+      cardTitle.text(selectedItemName);
+
+      // Create card text
+      var cardText = $("<p></p>");
+      cardText.attr("class", "card-text entertainment-card-text");
+      cardText.text(duration);
 
       // Create remove button for li element
       var removeBtn = $(
         "<button>" +
-          '<i class="fa fa-trash" aria-hidden="true"></i>' +
+          '<i class="fa fa-times-circle" aria-hidden="true"></i>' +
           "</button>"
       );
       removeBtn.attr("type", "button"); // Set type
-      removeBtn.attr("class", "btn bg-logout mx-auto"); // Set class
-      removeBtn.attr("style", "width: fit-content;"); // Set width
+      removeBtn.attr("class", "btn entertainment-card-remove-btn"); // Set class
       removeBtn.attr("onclick", "removeFromTheList('" + elementId + "')"); // Set function
 
       // Append button to li element
-      li.append(removeBtn);
+      li.append(img);
+      cardBody.append(cardTitle);
+      cardBody.append(cardText);
+      cardBody.append(removeBtn);
+      li.append(cardBody);
 
       // Hidden input for entertainment name (form request)
       var hiddenInputName = $('<input type="hidden" />');
@@ -228,8 +259,10 @@ function getEntertainmentNames(type) {
         sel.append(
           '<option value="' +
             response[i].id +
+            '" img-src="' +
+            response[i].img_url +
             '">' +
-            response[i].desc +
+            response[i].name +
             "</option>"
         );
       }
@@ -301,6 +334,7 @@ function addNewEntertainment(type) {
   // jQuery request variable
   var request;
   var newEntertainmentName = $("#new-entertainment-name").val();
+  var newEntertainmentImgSrc = $("#new-entertainment-image-src").val();
 
   // Abort any pending request
   if (request) {
@@ -311,7 +345,7 @@ function addNewEntertainment(type) {
   request = $.ajax({
     type: "POST",
     url: "entertainment.php",
-    data: { type: type, name: newEntertainmentName },
+    data: { type: type, name: newEntertainmentName, img_url: newEntertainmentImgSrc },
     dataType: "json",
   });
 
@@ -322,7 +356,13 @@ function addNewEntertainment(type) {
       //console.log(response + response.length);
       var sel = $("#" + type + "-select");
       sel.append(
-        '<option value="' + response.id + '">' + response.desc + "</option>"
+        '<option value="' +
+        response.id +
+        '" img-src="' +
+        response.img_url +
+        '">' +
+        response.name +
+        "</option>"
       );
 
       // If AJAX error is displayed, hide it

@@ -63,7 +63,7 @@
             </p> 
         </div>
         <!--Movie list-->
-        <ul id="movie-list" class="mb-0 px-3"></ul>
+        <ul id="movie-list" class="mb-0 px-3 entertainment-list"></ul>
     </div>
 
     <div id="get-movie-names-error" class="error mt-3" style="display:none;">

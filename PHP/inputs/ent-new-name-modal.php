@@ -15,6 +15,13 @@
                         placeholder="Ad (En fazla 50 harf)" 
                         maxlength="50" 
                         required>
+                <div style="margin: 1rem;"></div>
+                <input type="text" 
+                        name="new-entertainment-image-src" 
+                        id="new-entertainment-image-src" 
+                        placeholder="Resim URL (200 harf)" 
+                        maxlength="200" 
+                        required>
                 
                 <div id="add-entertainment-success" class="success" style="display:none;">
                     <!--Success-->

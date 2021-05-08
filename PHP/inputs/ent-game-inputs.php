@@ -63,7 +63,7 @@
             </p> 
         </div>
         <!--Game list-->
-        <ul id="game-list" class="mb-0 px-3"></ul>
+        <ul id="game-list" class="mb-0 px-3 entertainment-list"></ul>
     </div>
 
     <div id="get-game-names-error" class="error mt-3" style="display:none;">

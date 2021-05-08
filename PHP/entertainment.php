@@ -19,6 +19,7 @@
 
         // Variables
         $entertainment_name = $entertainment_id = "";
+        $entertainment_image_url = "";
 
         // Get entertainment type
         $type = test_input($_GET['type']);
@@ -27,22 +28,22 @@
         // Get game names
         if($type === "game"){
             // Check DB for picked date
-            $sql = "SELECT name, id FROM game ORDER BY name";
+            $sql = "SELECT name, id, image_url FROM game ORDER BY name";
         }
         // Series SQL
         else if($type === "series"){
             // Check DB for picked date
-            $sql = "SELECT name, id FROM series ORDER BY name";
+            $sql = "SELECT name, id, image_url FROM series ORDER BY name";
         }
         // Series SQL
         else if($type === "movie"){
             // Check DB for picked date
-            $sql = "SELECT name, id FROM movie ORDER BY name";
+            $sql = "SELECT name, id, image_url FROM movie ORDER BY name";
         }
         // Series SQL
         else if($type === "book"){
             // Check DB for picked date
-            $sql = "SELECT name, id FROM book ORDER BY name";
+            $sql = "SELECT name, id, image_url FROM book ORDER BY name";
         }
 
         // Start SQL query
@@ -56,7 +57,7 @@
             // Execute sql statement
             mysqli_stmt_execute($stmt);
             // Bind result variables
-            mysqli_stmt_bind_result($stmt, $entertainment_name, $entertainment_id);
+            mysqli_stmt_bind_result($stmt, $entertainment_name, $entertainment_id, $entertainment_image_url);
             // Results fetched below...
             if(mysqli_stmt_store_result($stmt)){
                 // Check if DB returned any result
@@ -67,7 +68,8 @@
                         //array_push($gameArray, array('value' => htmlspecialchars($work_happiness), 'name' => $work_happiness));
                         $gameArray[] = array(
                             'id' =>htmlspecialchars($entertainment_id),
-                            'desc' => $entertainment_name,
+                            'name' => htmlspecialchars($entertainment_name),
+                            'img_url' => htmlspecialchars($entertainment_image_url),
                             );
                     }
                     // Return result array as JSON
@@ -143,7 +145,7 @@
                 }
                 else {
                     $addEntertainmentErrorText = mysqli_error($conn);
-                    http_response_code(400);
+                    http_response_code(404);
                     exit($addEntertainmentErrorText);
                 }
             }
@@ -159,10 +161,12 @@
     // AJAX request handler for adding new entertainments to DB
     else if ($_SERVER["REQUEST_METHOD"] === "POST"
         && isset($_POST["type"])
-        && isset($_POST["name"])) {
+        && isset($_POST["name"])
+        && isset($_POST["img_url"])) {
 
         // define variables and set to empty values
         $new_entertainment_name = "";
+        $new_entertainment_image_url = "";
         $addEntertainmentErrorText = "";
         $id = -1;
 
@@ -170,22 +174,24 @@
         $entertainment_type = $_POST["type"];
         // Security operations on text
         $new_entertainment_name = test_input($_POST["name"]);
+        $new_entertainment_image_url = test_input($_POST["img_url"]);
         // Encoding change
         $new_entertainment_name = mb_convert_encoding($new_entertainment_name, "UTF-8");
+        $new_entertainment_image_url = mb_convert_encoding($new_entertainment_image_url, "UTF-8");
 
         // Save entertainment into DB by types
         switch($entertainment_type){
             case "game":
-                $sql = "INSERT INTO game (name) VALUES (?)";
+                $sql = "INSERT INTO game (name, image_url) VALUES (?,?)";
                 break;
             case "series":
-                $sql = "INSERT INTO series (name) VALUES (?)";
+                $sql = "INSERT INTO series (name, image_url) VALUES (?,?)";
                 break;
             case "movie":
-                $sql = "INSERT INTO movie (name) VALUES (?)";
+                $sql = "INSERT INTO movie (name, image_url) VALUES (?,?)";
                 break;
             case "book":
-                $sql = "INSERT INTO book (name) VALUES (?)";
+                $sql = "INSERT INTO book (name, image_url) VALUES (?,?)";
                 break;
             default:
                 $addEntertainmentErrorText = "Undefined entertainment type!";
@@ -203,7 +209,7 @@
         }
         else{
             // Bind inputs to query parameters
-            mysqli_stmt_bind_param($stmt, "s", $new_entertainment_name);
+            mysqli_stmt_bind_param($stmt, "ss", $new_entertainment_name, $new_entertainment_image_url);
             // Execute sql statement
             if(mysqli_stmt_execute($stmt)){
                 // Get new entertainment's id
@@ -252,7 +258,8 @@
                             while (mysqli_stmt_fetch($stmt)) {
                                 $response = array(
                                     'id' => $id,
-                                    'desc' => $new_entertainment_name,
+                                    'name' => $new_entertainment_name,
+                                    'img_url' => $new_entertainment_image_url,
                                 );
                                 // Return id and name in JSON
                                 exit(json_encode($response));
