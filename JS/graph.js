@@ -82,3 +82,12 @@ function journalDateSubmit(){
 
   return true;
 }
+
+
+// Next day button call
+function goToNextDay(getDate, journalDate){
+}
+
+// Previous day button call
+function goToPreviousDay(getDate, journalDate){
+}

@@ -257,8 +257,7 @@
         name="write-form"
         id="write-form"
         action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"
-        method="post"
-        onsubmit="return getDate()">
+        method="post">
     
         <h1>Günlüğe hoşgeldin
             <?php
@@ -267,6 +266,10 @@
                 }
             ?>!
         </h1>
+
+        <!--Input for journal date-->
+        <p>Tarih</p>
+        <input type="datetime-local" step="1" value="" name="date" id="date-input" required/>
 
         <?php 
             // Journal happiness and text inputs
@@ -282,9 +285,6 @@
         ?>
 
         <hr>
-
-        <!--Input for submitting the form, type=submit-->
-        <input type="text" value="" name="date" id="date-input" hidden />
 
         <!--Button for submitting the form-->
         <div>

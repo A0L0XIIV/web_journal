@@ -125,7 +125,8 @@
 }
 /*Navbar login button*/
 #nav-login:before{
-  content: "\f090";
+  font-family: "Font Awesome 5 Free";
+  content: "\f2f6";
   border-color: var(--login);
 }
 #nav-login:hover,
@@ -194,7 +195,8 @@
   z-index: 1;
   transition: all 0.75s ease-in-out;
 }
-.ent-btn:hover{
+.ent-btn:hover,
+.ent-btn:hover > a{
   color: #fff !important;
   font-style: italic;
   transition: all 0.75s ease-in-out;

@@ -15,7 +15,7 @@
     $total_happiness_array = array();
     $date_array = array();
     $duration_array = array();
-    $date = $duration = "";
+    $date = $duration = $date_type = "";
     $error = false;
     $errorText = "";
     $showSection = 0;
@@ -35,9 +35,11 @@
 
         if(!empty($_GET["month"])){
             $date = test_input($_GET["month"]);
+            $date_type = "month";
         }
         else if(!empty($_GET["year"])){
             $date = test_input($_GET["year"]);
+            $date_type = "year";
         }
         else{
             $error = true;
@@ -633,6 +635,18 @@
                 }
                 echo $date.' tarihili mutluluk grafiğin';
         echo '</h1>';
+        echo '
+        <div class="mx-auto">
+            <button type="button" class="btn bg-password" onclick="goToPreviousDay(\''.$date.'\', \''.$date.'\')">
+                <i class="fas fa-arrow-alt-circle-left"></i>
+            </button>
+            <button type="button" class="ent-btn bg-show p-0">
+                <a href="show.php?journal-'.$date_type.'='.$date.'" class="btn">Görüntüle</a>
+            </button>
+            <button type="button" class="btn bg-password" onclick="goToNextDay(\''.$date.'\', \''.$date.'\')">
+                <i class="fas fa-arrow-alt-circle-right"></i>
+            </button>
+        </div>';
 
         // Store SQL results
         if(mysqli_stmt_store_result($stmt)){

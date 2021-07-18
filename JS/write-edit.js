@@ -1,39 +1,39 @@
+$(document).ready(function() {
+  setJournalDate();
+});
+
 // Get current date and set it to input
-function getDate() {
+function setJournalDate() {
   var currentdate = new Date();
 
-  // 2 AM check, ask user for saving journal for yesterday or today
-  if (currentdate.getHours() <= 2) {
-    if (
-      confirm(
-        "Saat 12 ile 2 arasında olduğu için bu günlüğü dün tarihli kaydetmek ister misin?"
-      )
-    ) {
-      // Set date to yesterday
-      currentdate.setDate(currentdate.getDate() - 1);
-      alert("Tarih " + currentdate + " olarak kaydedildi.");
-    } else {
-      alert("Tarih " + currentdate + " olarak kaydedildi.");
-    }
+  var year = currentdate.getFullYear();
+  var month = currentdate.getMonth() + 1;
+  var day = currentdate.getDate();
+
+  var hour = currentdate.getHours();
+  var minute = currentdate.getMinutes();
+  var second = currentdate.getSeconds();
+
+  // 2 AM check, change date input to yesterday
+  if (hour <= 2) {
+      // Set day to yesterday
+      day--;
   }
 
-  var datetime =
-    currentdate.getFullYear() +
+  var datetime = 
+    year +
     "-" +
-    (currentdate.getMonth() + 1) +
+    (month < 10 ? "0"+month : month) +
     "-" +
-    currentdate.getDate() +
-    " " +
-    currentdate.getHours() +
+    (day < 10 ? "0"+day : day) +
+    "T" +
+    (hour < 10 ? "0"+hour : hour) +
     ":" +
-    currentdate.getMinutes() +
+    (minute < 10 ? "0"+minute : minute) +
     ":" +
-    currentdate.getSeconds();
-  //console.log(datetime);
+    (second < 10 ? "0"+second : second);
+
   $("#date-input").val(datetime);
-  console.log(datetime);
-  // Return true
-  return true;
 }
 
 /*Game, movie, book section functions*/

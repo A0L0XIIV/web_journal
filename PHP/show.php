@@ -410,7 +410,7 @@
     // define variables and set to empty values
     $journal_id = "";
     $work_happiness = $daily_happiness = $total_happiness = $content = "";
-    $date = "";
+    $date = $date_type = "";
     $game_id = $game_name = $game_duration = "";
     $series_id =  $series_name = $series_begin_season = $series_begin_episode = $series_end_season = $series_end_episode = "";
     $movie_id = $movie_name = $movie_duration = "";
@@ -437,12 +437,15 @@
 
         if(!empty($_GET["journal-date"])){
             $date = test_input($_GET["journal-date"]);
+            $date_type = "day";
         }
         else if(!empty($_GET["journal-month"])){
             $date = test_input($_GET["journal-month"]);
+            $date_type = "month";
         }
         else if(!empty($_GET["journal-year"])){
             $date = test_input($_GET["journal-year"]);
+            $date_type = "year";
         }
         else{
             $error = true;
@@ -1252,6 +1255,17 @@
             }
             echo '<span id="date">'.$date.'</span> tarihili günlüklerin';
         echo'</h1>
+            <div class="mx-auto">
+                <button type="button" class="btn bg-password" onclick="goToPreviousDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                </button>
+                <button type="button" class="ent-btn bg-graph p-0">
+                    <a href="graph.php?'.$date_type.'='.$date.'" class="btn">Grafik</a>
+                </button>
+                <button type="button" class="btn bg-password" onclick="goToNextDay(\''.$date.'\', \''.$just_journal_date.'\')">
+                    <i class="fas fa-arrow-alt-circle-right"></i>
+                </button>
+            </div>
             <div id="journals">';
 
         if(mysqli_stmt_store_result($stmt)){
@@ -1265,14 +1279,8 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-xs-6 col-sm-2 px-0">
-                                        <button type="button" class="add-btn bg-password p-0" onclick="goToPreviousDay(\''.$date.'\', \''.$just_journal_date.'\')">
-                                            Önceki
-                                        </button>
-                                        <button type="button" class="add-btn bg-edit p-0">
+                                        <button type="button" class="ent-btn bg-edit p-0">
                                             <a href="edit.php?edit-date='.$just_journal_date.'" class="btn">Güncelle</a>
-                                        </button>
-                                        <button type="button" class="add-btn bg-password p-0" onclick="goToNextDay(\''.$date.'\', \''.$just_journal_date.'\')">
-                                            Sonraki
                                         </button>
                                     </div>
                                     <div class="col-xs-6 col-sm-3 px-0">

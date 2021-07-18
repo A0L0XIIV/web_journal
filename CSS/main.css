@@ -107,6 +107,11 @@ meta {
 ul {
   list-style-type: none;
 }
+
+/*Rounded buttons*/
+button {
+  border-radius: 8px;
+}
 /* --- HTML tags --- */
 
 /* --- Inputs --- */
