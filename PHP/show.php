@@ -98,38 +98,38 @@
                                 <p class="orange-text">İş/Okul:</p>';
                                 switch($work_happiness){
                                     case 10:
-                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        $AJAXoutput .= '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        $AJAXoutput .= '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        $AJAXoutput .= '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        $AJAXoutput .= '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        $AJAXoutput .= '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        $AJAXoutput .= '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        $AJAXoutput .= '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        $AJAXoutput .= '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        $AJAXoutput .= '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        $AJAXoutput .= '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
                                     default:
-                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        $AJAXoutput .= '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                         break;
                                 }
                             $AJAXoutput .=
@@ -138,38 +138,38 @@
                                 <p class="orange-text">İş/Okul dışı:</p>';
                                 switch($daily_happiness){
                                     case 10:
-                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        $AJAXoutput .= '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        $AJAXoutput .= '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        $AJAXoutput .= '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        $AJAXoutput .= '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        $AJAXoutput .= '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        $AJAXoutput .= '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        $AJAXoutput .= '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        $AJAXoutput .= '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        $AJAXoutput .= '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        $AJAXoutput .= '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
                                     default:
-                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        $AJAXoutput .= '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                         break;
                                 }
                             $AJAXoutput .=
@@ -178,38 +178,38 @@
                                 <p class="orange-text">Genel:</p>';
                                 switch($total_happiness){
                                     case 10:
-                                        $AJAXoutput .= '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                        $AJAXoutput .= '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                         break;
                                     case 9:
-                                        $AJAXoutput .= '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                        $AJAXoutput .= '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                         break;
                                     case 8:
-                                        $AJAXoutput .= '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                        $AJAXoutput .= '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                         break;
                                     case 7:
-                                        $AJAXoutput .= '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                        $AJAXoutput .= '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                         break;
                                     case 6:
-                                        $AJAXoutput .= '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                        $AJAXoutput .= '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                         break;
                                     case 5:
-                                        $AJAXoutput .= '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                        $AJAXoutput .= '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                         break;
                                     case 4:
-                                        $AJAXoutput .= '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                        $AJAXoutput .= '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                         break;
                                     case 3:
-                                        $AJAXoutput .= '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                        $AJAXoutput .= '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                         break;
                                     case 2:
-                                        $AJAXoutput .= '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                        $AJAXoutput .= '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                         break;
                                     case 1:
-                                        $AJAXoutput .= '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                        $AJAXoutput .= '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                         break;
                                     case 0:
                                     default:
-                                        $AJAXoutput .= '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                        $AJAXoutput .= '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                         break;
                                 }
                             $AJAXoutput .=
@@ -1283,38 +1283,38 @@
                                         <p class="orange-text">İş/Okul:</p>';
                                         switch($work_happiness){
                                             case 10:
-                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                echo '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                                 break;
                                             case 9:
-                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                echo '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                                 break;
                                             case 8:
-                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                echo '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                                 break;
                                             case 7:
-                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                echo '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                                 break;
                                             case 6:
-                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                echo '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                                 break;
                                             case 5:
-                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                echo '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                                 break;
                                             case 4:
-                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                echo '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                                 break;
                                             case 3:
-                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                echo '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                                 break;
                                             case 2:
-                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                echo '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                                 break;
                                             case 1:
-                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                echo '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                                 break;
                                             case 0:
                                             default:
-                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                echo '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                                 break;
                                         }
                                     echo
@@ -1323,38 +1323,38 @@
                                         <p class="orange-text">İş/Okul dışı:</p>';
                                         switch($daily_happiness){
                                             case 10:
-                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                echo '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                                 break;
                                             case 9:
-                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                echo '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                                 break;
                                             case 8:
-                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                echo '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                                 break;
                                             case 7:
-                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                echo '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                                 break;
                                             case 6:
-                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                echo '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                                 break;
                                             case 5:
-                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                echo '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                                 break;
                                             case 4:
-                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                echo '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                                 break;
                                             case 3:
-                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                echo '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                                 break;
                                             case 2:
-                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                echo '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                                 break;
                                             case 1:
-                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                echo '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                                 break;
                                             case 0:
                                             default:
-                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                echo '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                                 break;
                                         }
                                     echo
@@ -1363,38 +1363,38 @@
                                         <p class="orange-text">Genel:</p>';
                                         switch($total_happiness){
                                             case 10:
-                                                echo '<p class="opt10"><i class="fa fa-smile-o"></i> Muhteşem</p>';
+                                                echo '<p class="opt10"><i class="far fa-grin-stars"></i> Muhteşem</p>';
                                                 break;
                                             case 9:
-                                                echo '<p class="opt9"><i class="fa fa-smile-o"></i> Şahane</p>';
+                                                echo '<p class="opt9"><i class="far fa-laugh-beam"></i> Şahane</p>';
                                                 break;
                                             case 8:
-                                                echo '<p class="opt8"><i class="fa fa-smile-o"></i> Baya iyi</p>';
+                                                echo '<p class="opt8"><i class="far fa-grin-beam"></i> Baya iyi</p>';
                                                 break;
                                             case 7:
-                                                echo '<p class="opt7"><i class="fa fa-smile-o"></i> Gayet iyi</p>';
+                                                echo '<p class="opt7"><i class="far fa-grin"></i> Gayet iyi</p>';
                                                 break;
                                             case 6:
-                                                echo '<p class="opt6"><i class="fa fa-meh-o"></i> Fena değil</p>';
+                                                echo '<p class="opt6"><i class="far fa-smile"></i> Fena değil</p>';
                                                 break;
                                             case 5:
-                                                echo '<p class="opt5"><i class="fa fa-meh-o"></i> Normal</p>';
+                                                echo '<p class="opt5"><i class="far fa-meh"></i> Normal</p>';
                                                 break;
                                             case 4:
-                                                echo '<p class="opt4"><i class="fa fa-meh-o"></i> Biraz kötü</p>';
+                                                echo '<p class="opt4"><i class="far fa-frown"></i> Biraz kötü</p>';
                                                 break;
                                             case 3:
-                                                echo '<p class="opt3"><i class="fa fa-frown-o"></i> Kötü</p>';
+                                                echo '<p class="opt3"><i class="far fa-sad-tear"></i> Kötü</p>';
                                                 break;
                                             case 2:
-                                                echo '<p class="opt2"><i class="fa fa-frown-o"></i> Berbat</p>';
+                                                echo '<p class="opt2"><i class="far fa-sad-cry"></i> Berbat</p>';
                                                 break;
                                             case 1:
-                                                echo '<p class="opt1"><i class="fa fa-frown-o"></i> Berbat ötesi</p>';
+                                                echo '<p class="opt1"><i class="far fa-dizzy"></i> Berbat ötesi</p>';
                                                 break;
                                             case 0:
                                             default:
-                                                echo '<p class="opt0"><i class="fa fa-circle-o"></i> Yorum Yok</p>';
+                                                echo '<p class="opt0"><i class="far fa-meh-blank"></i> Yorum Yok</p>';
                                                 break;
                                         }
                                     echo
@@ -1444,7 +1444,7 @@
                                             <div class="error" id="dbError">
                                                 <p>Oyunlar için veritabanı \'store\' hatası.
                                                     <button type="button"
-                                                        class="fa fa-times-circle btn text-danger" 
+                                                        class="fas fa-times-circle btn text-danger" 
                                                         aria-hidden="true" 
                                                         onclick="$(\'#dbError\').hide()">
                                                     </button>
@@ -1499,7 +1499,7 @@
                                             <div class="error" id="dbError">
                                                 <p>Diziler için veritabanı \'store\' hatası.
                                                     <button type="button"
-                                                        class="fa fa-times-circle btn text-danger" 
+                                                        class="fas fa-times-circle btn text-danger" 
                                                         aria-hidden="true" 
                                                         onclick="$(\'#dbError\').hide()">
                                                     </button>
@@ -1545,7 +1545,7 @@
                                             <div class="error" id="dbError">
                                                 <p>Filmler için veritabanı \'store\' hatası.
                                                     <button type="button"
-                                                        class="fa fa-times-circle btn text-danger" 
+                                                        class="fas fa-times-circle btn text-danger" 
                                                         aria-hidden="true" 
                                                         onclick="$(\'#dbError\').hide()">
                                                     </button>
@@ -1591,7 +1591,7 @@
                                             <div class="error" id="dbError">
                                                 <p>Kitaplar için veritabanı \'store\' hatası.
                                                     <button type="button"
-                                                        class="fa fa-times-circle btn text-danger" 
+                                                        class="fas fa-times-circle btn text-danger" 
                                                         aria-hidden="true" 
                                                         onclick="$(\'#dbError\').hide()">
                                                     </button>
@@ -1613,7 +1613,7 @@
                 <div class="error" id="dbError">
                     <p>Veritabanı \'store\' hatası.
                         <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
+                            class="fas fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$(\'#dbError\').hide()">
                         </button>

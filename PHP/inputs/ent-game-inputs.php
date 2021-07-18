@@ -37,16 +37,16 @@
         <!--Add a game to list & error messages-->
         <div class="mx-auto" style="width:100%">
             <button type="button"
-                    class="add-btn bg-game mt-2"
+                    class="add-btn add-game-btn bg-game mt-2"
                     onclick="addToTheList('game')">
-                    Ekle
+                    <i class="fas fa-plus"></i>
             </button>
         </div>
         <div id="game-add-error" class="error mt-3" style="display:none;">
             <!--game-add-error-->
             <p>Oyun adı ya da süresi uygun değil. 
                 <button type="button"
-                    class="fa fa-times-circle btn text-danger" 
+                    class="fas fa-times-circle btn text-danger" 
                     aria-hidden="true" 
                     onclick="$('#game-add-error').hide()">
                 </button>
@@ -56,21 +56,21 @@
             <!--game-exist-error-->
             <p>Oyun zaten var, silip tekrar ekleyebilirsin. 
                 <button type="button"
-                    class="fa fa-times-circle btn text-danger" 
+                    class="fas fa-times-circle btn text-danger" 
                     aria-hidden="true" 
                     onclick="$('#game-exist-error').hide()">
                 </button>
             </p> 
         </div>
         <!--Game list-->
-        <ul id="game-list" class="mb-0 px-3 entertainment-list"></ul>
+        <ul id="game-list" class="mb-0 p-0 entertainment-list"></ul>
     </div>
 
     <div id="get-game-names-error" class="error mt-3" style="display:none;">
         <!--get-game-names-error-->
         <p>AJAX hatası. Oyun isimlerini sunucudan alamadık.  
             <button type="button"
-                class="fa fa-times-circle btn text-danger" 
+                class="fas fa-times-circle btn text-danger" 
                 aria-hidden="true" 
                 onclick="$('#get-game-names-error').hide()">
             </button>

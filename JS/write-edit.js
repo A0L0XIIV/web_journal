@@ -158,7 +158,7 @@ function addToTheList(type) {
       var elementId = type + "-" + selectedItemValue;
       li.attr("id", elementId); // Set ID
       // Set classes - Every type has different color
-      li.attr("class", "card entertainment-list-item " + type + "-element bg-" + type + " mt-2 px-3 py-2 mx-auto");
+      li.attr("class", "card entertainment-list-item " + type + "-element bg-" + type + " mt-2 mx-auto");
 
       // Create card image
       var img = $("<img>");
@@ -168,7 +168,7 @@ function addToTheList(type) {
 
       // Create card body
       var cardBody = $("<div></div>");
-      cardBody.attr("class", "card-body entertainment-card-body");
+      cardBody.attr("class", "card-body entertainment-card-body p-2");
 
       // Create card title
       var cardTitle = $("<h3></h3>");
@@ -183,8 +183,11 @@ function addToTheList(type) {
       // Create remove button for li element
       var removeBtn = $(
         "<button>" +
-          '<i class="fa fa-times-circle" aria-hidden="true"></i>' +
-          "</button>"
+          '<span class="fa-stack fa-lg">' +
+            '<i class="fas fa-circle fa-stack-1x" style="color:white;"></i>' +
+            '<i class="fas fa-times-circle fa-stack-1x" style="color:red;"></i>' +
+          '</span>' +
+        "</button>"
       );
       removeBtn.attr("type", "button"); // Set type
       removeBtn.attr("class", "btn entertainment-card-remove-btn"); // Set class

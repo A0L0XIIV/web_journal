@@ -96,9 +96,9 @@
         <!--Add a series to list & error messages-->
         <div class="mx-auto" style="width:100%">
             <button type="button"
-                    class="add-btn bg-series mt-2"
+                    class="add-btn add-series-btn bg-series mt-2"
                     onclick="addToTheList('series')">
-                    Ekle
+                    <i class="fas fa-plus"></i>
             </button>
         </div>
         <div id="series-add-error" class="error mt-3" style="display:none;">
@@ -106,7 +106,7 @@
             <p>Dizi adı ya da bölümleri uygun değil. <br>
                 Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
                 <button type="button"
-                    class="fa fa-times-circle btn text-danger" 
+                    class="fas fa-times-circle btn text-danger" 
                     aria-hidden="true" 
                     onclick="$('#series-add-error').hide()">
                 </button>
@@ -116,21 +116,21 @@
             <!--series-exist-error-->
             <p>Dizi zaten var, silip tekrar ekleyebilirsin. 
                 <button type="button"
-                    class="fa fa-times-circle btn text-danger" 
+                    class="fas fa-times-circle btn text-danger" 
                     aria-hidden="true" 
                     onclick="$('#series-exist-error').hide()">
                 </button>
             </p> 
         </div>
         <!--Series list-->
-        <ul id="series-list" class="mb-0 px-3 entertainment-list"></ul>
+        <ul id="series-list" class="mb-0 p-0 entertainment-list"></ul>
     </div>
 
     <div id="get-series-names-error" class="error mt-3" style="display:none;">
         <!--get-series-names-error-->
         <p>AJAX hatası. Dizi isimlerini sunucudan alamadık.  
             <button type="button"
-                class="fa fa-times-circle btn text-danger" 
+                class="fas fa-times-circle btn text-danger" 
                 aria-hidden="true" 
                 onclick="$('#get-series-names-error').hide()">
             </button>

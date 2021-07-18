@@ -71,7 +71,7 @@ html {
 body {
   margin: 0;
   font-size: 1.5rem;
-  font-family: Helvetica, sans-serif;
+  font-family: Trebuchet MS, sans-serif;
   background: rgba(200, 200, 200, 0.3);
   min-width: 100%;
   min-height: 100%;
@@ -140,7 +140,7 @@ textarea {
 }
 
 select {
-  font-family: "FontAwesome", "Helvetica";
+  font-family: "Font Awesome 5 Free", "Trebuchet MS, sans-serif";
   text-align: center;
   text-align-last: center;
   -moz-text-align-last: center;
@@ -295,14 +295,28 @@ button:hover a {
 }
 
 .entertainment-list-item {
-  width: fit-content;
+  width: 16vh;
   float: left;
-  margin: 0.5rem 0.2rem !important;
+  margin: 1em 0.3em !important;
+  border-radius: 8px;
+  box-shadow: -5px 10px 15px rgb(0 0 0 / 50%);
+}
+
+.entertainment-list-item:hover {
+  box-shadow: -8px 13px 15px rgb(0 0 0 / 50%);
+  transform: scale(1.05);
+}
+
+.entertainment-list-item:hover img {
+  transform: scale(1.01);
 }
 
 .entertainment-card-image {
-  width: 10vw;
+  width: calc(16vh - 2px);
+  height: 20vh;
+  object-fit: cover;
   margin: auto;
+  border-radius: 8px 8px 0 0;
 }
 
 .entertainment-card-body {
@@ -311,19 +325,24 @@ button:hover a {
 
 .entertainment-card-title {
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 0 2px 3px #fff;
 }
 
 .entertainment-card-text {
   margin: 0;
+  text-shadow: 0 2px 5px #ddd;
 }
 
 .entertainment-card-remove-btn {
   position: absolute;
-  top: 0;
-  right: 5%;
+  top: -2%;
+  right: -8%;
   width: fit-content;
   padding: 0;
-  font-size: 2rem;
+  font-size: 20px;
   color: #fff !important;
 }
 /* --- Entertainment List Items  --- */

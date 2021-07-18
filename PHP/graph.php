@@ -829,7 +829,7 @@
                 <div class="error" id="dbError">
                     <p>Veritabanı \'store\' hatası.
                         <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
+                            class="fas fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$(\'#dbError\').hide()">
                         </button>

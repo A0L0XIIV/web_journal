@@ -27,7 +27,7 @@
                     <!--Success-->
                     <p><span class="entertaintment-type"></span> başarılı bir şekilde eklendi. Lütfen bekleyin... 
                         <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
+                            class="fas fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$('#add-entertainment-success').hide()">
                         </button>
@@ -38,7 +38,7 @@
                     <!--Error-->
                     <p>Hata meydana geldi. <span id="add-entertainment-error-text"></span> 
                         <button type="button"
-                            class="fa fa-times-circle btn text-danger" 
+                            class="fas fa-times-circle btn text-danger" 
                             aria-hidden="true" 
                             onclick="$('#add-entertainment-error').hide()">
                         </button>

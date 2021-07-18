@@ -356,17 +356,17 @@
                                     <p>İşte/okulda</p>
                                     <select name="work_happiness" class="custom-select">
                                         <option value="" hidden selected>günün nasıl geçti?</option>
-                                        <option value="10" class="opt10"'.($work_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                                        <option value="9" class="opt9"'.($work_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                                        <option value="8" class="opt8"'.($work_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                                        <option value="7" class="opt7"'.($work_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                                        <option value="6" class="opt6"'.($work_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                                        <option value="10" class="opt10"'.($work_happiness==10 ? "selected" : "").'>&#xf587; Muhteşem</option>
+                                        <option value="9" class="opt9"'.($work_happiness==9 ? "selected" : "").'>&#xf59a; Şahane</option>
+                                        <option value="8" class="opt8"'.($work_happiness==8 ? "selected" : "").'>&#xf582; Baya iyi</option>
+                                        <option value="7" class="opt7"'.($work_happiness==7 ? "selected" : "").'>&#xf580; Gayet iyi</option>
+                                        <option value="6" class="opt6"'.($work_happiness==6 ? "selected" : "").'>&#xf118; Fena değil</option>
                                         <option value="5" class="opt5"'.($work_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                                        <option value="4" class="opt4"'.($work_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                                        <option value="3" class="opt3"'.($work_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                                        <option value="2" class="opt2"'.($work_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                                        <option value="1" class="opt1"'.($work_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                                        <option value="0" class="opt0"'.($work_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                                        <option value="4" class="opt4"'.($work_happiness==4 ? "selected" : "").'>&#xf119; Biraz kötü</option>
+                                        <option value="3" class="opt3"'.($work_happiness==3 ? "selected" : "").'>&#xf5b4; Kötü</option>
+                                        <option value="2" class="opt2"'.($work_happiness==2 ? "selected" : "").'>&#xf5b3; Berbat</option>
+                                        <option value="1" class="opt1"'.($work_happiness==1 ? "selected" : "").'>&#xf567; Berbat ötesi</option>
+                                        <option value="0" class="opt0"'.($work_happiness==0 ? "selected" : "").'>&#xf5a4; Yorum Yok</option>
                                     </select>
 
                                     <hr>
@@ -374,17 +374,17 @@
                                     <p>İş/okul dışında</p>
                                     <select name="daily_happiness" class="custom-select">
                                         <option value="" hidden selected>günün nasıl geçti?</option>
-                                        <option value="10" class="opt10"'.($daily_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                                        <option value="9" class="opt9"'.($daily_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                                        <option value="8" class="opt8"'.($daily_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                                        <option value="7" class="opt7"'.($daily_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                                        <option value="6" class="opt6"'.($daily_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                                        <option value="10" class="opt10"'.($daily_happiness==10 ? "selected" : "").'>&#xf587; Muhteşem</option>
+                                        <option value="9" class="opt9"'.($daily_happiness==9 ? "selected" : "").'>&#xf59a; Şahane</option>
+                                        <option value="8" class="opt8"'.($daily_happiness==8 ? "selected" : "").'>&#xf582; Baya iyi</option>
+                                        <option value="7" class="opt7"'.($daily_happiness==7 ? "selected" : "").'>&#xf580; Gayet iyi</option>
+                                        <option value="6" class="opt6"'.($daily_happiness==6 ? "selected" : "").'>&#xf118; Fena değil</option>
                                         <option value="5" class="opt5"'.($daily_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                                        <option value="4" class="opt4"'.($daily_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                                        <option value="3" class="opt3"'.($daily_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                                        <option value="2" class="opt2"'.($daily_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                                        <option value="1" class="opt1"'.($daily_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                                        <option value="0" class="opt0"'.($daily_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                                        <option value="4" class="opt4"'.($daily_happiness==4 ? "selected" : "").'>&#xf119; Biraz kötü</option>
+                                        <option value="3" class="opt3"'.($daily_happiness==3 ? "selected" : "").'>&#xf5b4; Kötü</option>
+                                        <option value="2" class="opt2"'.($daily_happiness==2 ? "selected" : "").'>&#xf5b3; Berbat</option>
+                                        <option value="1" class="opt1"'.($daily_happiness==1 ? "selected" : "").'>&#xf567; Berbat ötesi</option>
+                                        <option value="0" class="opt0"'.($daily_happiness==0 ? "selected" : "").'>&#xf5a4; Yorum Yok</option>
                                     </select>
 
                                     <hr>
@@ -392,17 +392,17 @@
                                     <p>Genelde</p>
                                     <select name="total_happiness" class="custom-select">
                                         <option value="" hidden selected>günün nasıl geçti?</option>
-                                        <option value="10" class="opt10"'.($total_happiness==10 ? "selected" : "").'>&#xf118; Muhteşem</option>
-                                        <option value="9" class="opt9"'.($total_happiness==9 ? "selected" : "").'>&#xf118; Şahane</option>
-                                        <option value="8" class="opt8"'.($total_happiness==8 ? "selected" : "").'>&#xf118; Baya iyi</option>
-                                        <option value="7" class="opt7"'.($total_happiness==7 ? "selected" : "").'>&#xf118; Gayet iyi</option>
-                                        <option value="6" class="opt6"'.($total_happiness==6 ? "selected" : "").'>&#xf11a; Fena değil</option>
+                                        <option value="10" class="opt10"'.($total_happiness==10 ? "selected" : "").'>&#xf587; Muhteşem</option>
+                                        <option value="9" class="opt9"'.($total_happiness==9 ? "selected" : "").'>&#xf59a; Şahane</option>
+                                        <option value="8" class="opt8"'.($total_happiness==8 ? "selected" : "").'>&#xf582; Baya iyi</option>
+                                        <option value="7" class="opt7"'.($total_happiness==7 ? "selected" : "").'>&#xf580; Gayet iyi</option>
+                                        <option value="6" class="opt6"'.($total_happiness==6 ? "selected" : "").'>&#xf118; Fena değil</option>
                                         <option value="5" class="opt5"'.($total_happiness==5 ? "selected" : "").'>&#xf11a; Normal</option>
-                                        <option value="4" class="opt4"'.($total_happiness==4 ? "selected" : "").'>&#xf11a; Biraz kötü</option>
-                                        <option value="3" class="opt3"'.($total_happiness==3 ? "selected" : "").'>&#xf119; Kötü</option>
-                                        <option value="2" class="opt2"'.($total_happiness==2 ? "selected" : "").'>&#xf119; Berbat</option>
-                                        <option value="1" class="opt1"'.($total_happiness==1 ? "selected" : "").'>&#xf119; Berbat ötesi</option>
-                                        <option value="0" class="opt0"'.($total_happiness==0 ? "selected" : "").'>&#xf1db; Yorum Yok</option>
+                                        <option value="4" class="opt4"'.($total_happiness==4 ? "selected" : "").'>&#xf119; Biraz kötü</option>
+                                        <option value="3" class="opt3"'.($total_happiness==3 ? "selected" : "").'>&#xf5b4; Kötü</option>
+                                        <option value="2" class="opt2"'.($total_happiness==2 ? "selected" : "").'>&#xf5b3; Berbat</option>
+                                        <option value="1" class="opt1"'.($total_happiness==1 ? "selected" : "").'>&#xf567; Berbat ötesi</option>
+                                        <option value="0" class="opt0"'.($total_happiness==0 ? "selected" : "").'>&#xf5a4; Yorum Yok</option>
                                     </select>
 
                                     <hr>
@@ -443,7 +443,7 @@
                             <div class="error" id="dbError">
                                 <p>Veritabanı \'store\' hatası. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#dbError\').hide()">
                                     </button>
@@ -509,15 +509,15 @@
                                                     type="button" 
                                                     class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                         <div class="success" style="display:none;">
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-check-circle" aria-hidden="true"></i>     
                                             <span>Silindi</span>
                                         </div>
                                         <div class="error" style="display:none;">
-                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-times-circle" aria-hidden="true"></i>     
                                             <span>Silinemedi!</span>
                                             <p class="error-msg"></p>
                                         </div>
@@ -532,7 +532,7 @@
                         <div class="error" id="dbError">
                             <p>Oyunlar için veritabanı \'store\' hatası. 
                                 <button type="button"
-                                    class="fa fa-times-circle btn text-danger" 
+                                    class="fas fa-times-circle btn text-danger" 
                                     aria-hidden="true" 
                                     onclick="$(\'#dbError\').hide()">
                                 </button>
@@ -587,15 +587,15 @@
                                                     type="button" 
                                                     class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                         <div class="success" style="display:none;">
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-check-circle" aria-hidden="true"></i>     
                                             <span>Silindi</span>
                                         </div>
                                         <div class="error" style="display:none;">
-                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-times-circle" aria-hidden="true"></i>     
                                             <span>Silinemedi!</span>
                                             <p class="error-msg"></p>
                                         </div>
@@ -650,15 +650,15 @@
                                                     type="button" 
                                                     class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                         <div class="success" style="display:none;">
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-check-circle" aria-hidden="true"></i>     
                                             <span>Silindi</span>
                                         </div>
                                         <div class="error" style="display:none;">
-                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-times-circle" aria-hidden="true"></i>     
                                             <span>Silinemedi!</span>
                                             <p class="error-msg"></p>
                                         </div>
@@ -713,15 +713,15 @@
                                                     type="button" 
                                                     class="btn bg-logout mx-auto" 
                                                     style="width: fit-content;">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                         <div class="success" style="display:none;">
-                                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-check-circle" aria-hidden="true"></i>     
                                             <span>Silindi</span>
                                         </div>
                                         <div class="error" style="display:none;">
-                                            <i class="fa fa-times-circle-o" aria-hidden="true"></i>     
+                                            <i class="far fa-times-circle" aria-hidden="true"></i>     
                                             <span>Silinemedi!</span>
                                             <p class="error-msg"></p>
                                         </div>
@@ -799,12 +799,12 @@
                             <!--Add a game to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="add-btn bg-game mt-2"
+                                        class="add-btn add-game-btn bg-game mt-2"
                                         id="asd"
                                         onclick="addToTheList(\'game\'); 
                                                 $(\'#edit-game-form-submit\').show();
                                                 highlight(\'#edit-game-form-submit\');">
-                                        Ekle
+                                        <i class="fas fa-plus"></i>
                                 </button>
                             </div>
 
@@ -812,7 +812,7 @@
                                 <!--game-add-error-->
                                 <p>Oyun adı ya da süresi uygun değil. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#game-add-error\').hide()">
                                     </button>
@@ -822,7 +822,7 @@
                                 <!--game-exist-error-->
                                 <p>Oyun zaten var, silip tekrar ekleyebilirsin. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#game-exist-error\').hide()">
                                     </button>
@@ -852,7 +852,7 @@
                         <!--get-game-names-error-->
                         <p>AJAX hatası. Oyun isimlerini sunucudan alamadık.  
                             <button type="button"
-                                class="fa fa-times-circle btn text-danger" 
+                                class="fas fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-game-names-error\').hide()">
                             </button>
@@ -966,11 +966,11 @@
                             <!--Add a series to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="add-btn bg-series mt-2"
+                                        class="add-btn add-series-btn bg-series mt-2"
                                         onclick="addToTheList(\'series\');
                                                 $(\'#edit-series-form-submit\').show();
                                                 highlight(\'#edit-series-form-submit\');">
-                                        Ekle
+                                        <i class="fas fa-plus"></i>
                                 </button>
                             </div>
 
@@ -979,7 +979,7 @@
                                 <p>Dizi adı ya da bölümleri uygun değil. <br>
                                     Başlangıç sezon ve/veya bölüm sayısı bitiş sayılarından büyük olamaz.
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#series-add-error\').hide()">
                                     </button>
@@ -989,7 +989,7 @@
                                 <!--series-exist-error-->
                                 <p>Dizi zaten var, silip tekrar ekleyebilirsin. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#series-exist-error\').hide()">
                                     </button>
@@ -1019,7 +1019,7 @@
                         <!--get-series-names-error-->
                         <p>AJAX hatası. Dizi isimlerini sunucudan alamadık.  
                             <button type="button"
-                                class="fa fa-times-circle btn text-danger" 
+                                class="fas fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-series-names-error\').hide()">
                             </button>
@@ -1073,11 +1073,11 @@
                             <!--Add a movie to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="add-btn bg-movie mt-2"
+                                        class="add-btn add-movie-btn bg-movie mt-2"
                                         onclick="addToTheList(\'movie\')
                                                 $(\'#edit-movie-form-submit\').show();
                                                 highlight(\'#edit-movie-form-submit\');">
-                                        Ekle
+                                        <i class="fas fa-plus"></i>
                                 </button>
                             </div>
 
@@ -1085,7 +1085,7 @@
                                 <!--movie-add-error-->
                                 <p>Film adı ya da süresi uygun değil.
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#movie-add-error\').hide()">
                                     </button>
@@ -1095,7 +1095,7 @@
                                 <!--movie-exist-error-->
                                 <p>Film zaten var, silip tekrar ekleyebilirsin.
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#movie-exist-error\').hide()">
                                     </button>
@@ -1126,7 +1126,7 @@
                         <!--get-movie-names-error-->
                         <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
                             <button type="button"
-                                class="fa fa-times-circle btn text-danger" 
+                                class="fas fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-movie-names-error\').hide()">
                             </button>
@@ -1180,18 +1180,18 @@
                             <!--Add a book to list & error messages-->
                             <div class="mx-auto" style="width:100%">
                                 <button type="button"
-                                        class="add-btn bg-book mt-2"
+                                        class="add-btn add-book-btn bg-book mt-2"
                                         onclick="addToTheList(\'book\')
                                                 $(\'#edit-book-form-submit\').show();
                                                 highlight(\'#edit-book-form-submit\');">
-                                        Ekle
+                                        <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                             <div id="book-add-error" class="error mt-3" style="display:none;">
                                 <!--book-add-error-->
                                 <p>Kitap adı ya da süresi uygun değil. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#book-add-error\').hide()">
                                     </button>
@@ -1201,7 +1201,7 @@
                                 <!--book-exist-error-->
                                 <p>Kitap zaten var, silip tekrar ekleyebilirsin. 
                                     <button type="button"
-                                        class="fa fa-times-circle btn text-danger" 
+                                        class="fas fa-times-circle btn text-danger" 
                                         aria-hidden="true" 
                                         onclick="$(\'#book-exist-error\').hide()">
                                     </button>
@@ -1231,7 +1231,7 @@
                         <!--get-book-names-error-->
                         <p>AJAX hatası. Film isimlerini sunucudan alamadık. 
                             <button type="button"
-                                class="fa fa-times-circle btn text-danger" 
+                                class="fas fa-times-circle btn text-danger" 
                                 aria-hidden="true" 
                                 onclick="$(\'#get-book-names-error\').hide()">
                             </button>

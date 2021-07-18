@@ -30,6 +30,7 @@
 
 /*Navbar write button*/
 #nav-write:before{
+  font-family: "Font Awesome 5 Free";
   content: "\f067";
   border-color: var(--write);
 }
@@ -45,7 +46,8 @@
 }
 /*Navbar edit button*/
 #nav-edit:before{
-  content: "\f040";
+  font-family: "Font Awesome 5 Free";
+  content: "\f303";
   border-color: var(--edit);
 }
 #nav-edit:hover,
@@ -59,7 +61,8 @@
   box-shadow: 0 -0.5em 0.5em -0.4em var(--edit);}
 /*Navbar show button*/
 #nav-show:before{
-  content: "\f0ce";
+  font-family: "Font Awesome 5 Free";
+  content: "\f5da";
   border-color: var(--show);
 }
 #nav-show:hover,
@@ -74,6 +77,7 @@
 }
 /*Navbar graph button*/
 #nav-graph:before{
+  font-family: "Font Awesome 5 Free";
   content: "\f200";
   border-color: var(--graph);
 }
@@ -89,6 +93,7 @@
 }
 /*Navbar password button*/
 #nav-password:before{
+  font-family: "Font Awesome 5 Free";
   content: "\f084";
   border-color: var(--password);
 }
@@ -104,7 +109,8 @@
 }
 /*Navbar logout button*/
 #nav-logout:before{
-  content: "\f08b";
+  font-family: "Font Awesome 5 Free";
+  content: "\f2f5";
   border-color: var(--logout);
 }
 #nav-logout:hover,
@@ -183,7 +189,8 @@
 
 /* Entertainment button animation */
 .ent-btn {
-  border-radius: 0 0.75em 0 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #000;
   z-index: 1;
   transition: all 0.75s ease-in-out;
 }
@@ -232,30 +239,60 @@
 
 /* Add entertainment button animation */
 .add-btn {
-  border-radius: 0.75em 0 0.75rem 0;
+  border-radius: 0.75em 0 0.75em 0;
+}
+.add-btn > i {
+  transition: 0.25s;
+  transform: rotate(-90deg);
 }
 
 .add-btn:hover,
 .add-btn:focus {
   transition: 0.25s;
-  transform: translateY(-0.25em);
-  box-shadow: 0 0.5em 0.5em -0.4em #000;
+  transform: translateY(-0.15em);
+  box-shadow: 0 0.2em 0.8em -0.2em #000;
+}
+.add-btn:hover > i,
+.add-btn:focus > i {
+  transition: 0.25s;
+  transform: rotate(90deg);
 }
 .add-btn:active {
   transition: 0.15s;
-  transform: translateY(0.25em);
-  box-shadow: 0 0 0.5em #000;
+  transform: translateY(0.15em);
+  box-shadow: 0 0 0.5em 0.2em #000;
+}
+.add-btn:active > i {
+  transition: 0.15s;
+  transform: rotate(540deg);
+}
+.add-game-btn:active {
+  box-shadow: 0 0 0.5em 0.2em var(--game) !important;
+}
+.add-series-btn:active {
+  box-shadow: 0 0 0.5em 0.2em var(--series) !important;
+}
+.add-movie-btn:active {
+  box-shadow: 0 0 0.5em 0.2em var(--movie) !important;
+}
+.add-book-btn:active {
+  box-shadow: 0 0 0.5em 0.2em var(--book) !important;
 }
 
 /* --- Dark Theme  --- */
 @media (prefers-color-scheme: dark) {
+  /* White bordered entertaintment button */
+  .ent-btn {
+    border: 1px solid #fff;
+  }
+
   /* Add entertainment button animation white shadow*/
   .add-btn:hover,
   .add-btn:focus {
     box-shadow: 0 0.5em 0.5em -0.4em #fff;
   }
   .add-btn:active {
-    box-shadow: 0 0 0.5em #fff;
+    box-shadow: 0 0 0.5em 0.2em #fff;
   }
 }
 /* --- Dark Theme  --- */
